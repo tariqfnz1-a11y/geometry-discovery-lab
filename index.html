@@ -7,300 +7,308 @@
 <title>Interactive Geometry Explorer</title>
 
 <style>
-
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-body{
-    font-family:Arial,Helvetica,sans-serif;
-    background:linear-gradient(135deg,#eef4ff,#f8f5ff);
-    color:#20243a;
-    line-height:1.6;
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(135deg, #eef4ff, #fff4fb);
+    color: #20243a;
+    line-height: 1.6;
 }
 
-header{
-    background:linear-gradient(135deg,#5b4bdb,#8e44ad);
-    color:white;
-    padding:35px 20px;
-    text-align:center;
+header {
+    background: linear-gradient(135deg, #5b4bdb, #9b3db5);
+    color: white;
+    text-align: center;
+    padding: 35px 18px;
 }
 
-header h1{
-    font-size:clamp(28px,5vw,48px);
-    margin-bottom:10px;
+header h1 {
+    font-size: clamp(28px, 5vw, 48px);
+    margin-bottom: 8px;
 }
 
-header p{
-    font-size:18px;
+header p {
+    font-size: 18px;
 }
 
-nav{
-    background:white;
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-    gap:8px;
-    padding:12px;
-    position:sticky;
-    top:0;
-    z-index:100;
-    box-shadow:0 3px 12px rgba(0,0,0,.12);
+nav {
+    background: white;
+    padding: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 3px 15px rgba(0,0,0,.12);
 }
 
-nav button{
-    border:none;
-    background:#eeeaff;
-    color:#4b3fbb;
-    padding:10px 15px;
-    border-radius:20px;
-    cursor:pointer;
-    font-weight:bold;
+nav button {
+    border: none;
+    padding: 9px 14px;
+    border-radius: 20px;
+    background: #eeeaff;
+    color: #513cb6;
+    font-weight: bold;
+    cursor: pointer;
 }
 
-nav button:hover{
-    background:#5b4bdb;
-    color:white;
+nav button:hover {
+    background: #5b4bdb;
+    color: white;
 }
 
-.container{
-    width:min(1200px,94%);
-    margin:auto;
+.container {
+    width: min(1200px, 94%);
+    margin: auto;
 }
 
-section{
-    background:white;
-    margin:25px 0;
-    padding:25px;
-    border-radius:20px;
-    box-shadow:0 5px 20px rgba(0,0,0,.08);
+section {
+    background: white;
+    margin: 25px 0;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 5px 20px rgba(0,0,0,.08);
 }
 
-section h2{
-    color:#5538b8;
-    margin-bottom:15px;
+section h2 {
+    color: #5538b8;
+    margin-bottom: 18px;
 }
 
-.grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-    gap:20px;
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: 20px;
 }
 
-.card{
-    background:#f7f8ff;
-    padding:20px;
-    border-radius:18px;
-    border:2px solid #eceaff;
+.card {
+    background: #f8f8ff;
+    border: 2px solid #e9e5ff;
+    padding: 20px;
+    border-radius: 18px;
 }
 
-.card h3{
-    color:#5b4bdb;
-    margin-bottom:10px;
+.card h3 {
+    color: #5b4bdb;
+    margin-bottom: 12px;
 }
 
-canvas{
-    display:block;
-    width:100%;
-    max-width:600px;
-    height:auto;
-    background:white;
-    border:2px solid #ddd;
-    border-radius:15px;
-    margin:15px auto;
+canvas {
+    display: block;
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    margin: 15px auto;
+    background: white;
+    border: 2px solid #ddd;
+    border-radius: 15px;
 }
 
-input[type=range]{
-    width:100%;
-    accent-color:#6c4ee3;
+.control {
+    margin: 15px 0;
 }
 
-input[type=number]{
-    width:100%;
-    padding:10px;
-    border:2px solid #ddd;
-    border-radius:10px;
-    margin:5px 0 10px;
+.control label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
 }
 
-button.action{
-    background:#6c4ee3;
-    color:white;
-    border:none;
-    padding:11px 18px;
-    border-radius:10px;
-    cursor:pointer;
-    font-weight:bold;
-    margin:5px;
+input[type="range"] {
+    width: 100%;
+    accent-color: #6c4ee3;
 }
 
-button.action:hover{
-    background:#4228b0;
+input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
 }
 
-.result{
-    background:#e9fff3;
-    border-left:5px solid #16a085;
-    padding:12px;
-    border-radius:8px;
-    margin-top:10px;
+.value {
+    display: inline-block;
+    background: #6c4ee3;
+    color: white;
+    padding: 3px 9px;
+    border-radius: 10px;
 }
 
-.info{
-    background:#fff8dc;
-    border-left:5px solid #f1c40f;
-    padding:12px;
-    border-radius:8px;
-    margin:10px 0;
+.result {
+    background: #e9fff3;
+    border-left: 5px solid #16a085;
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 12px;
 }
 
-.quiz-question{
-    background:#f8f5ff;
-    padding:20px;
-    border-radius:15px;
-    margin-bottom:18px;
+.info {
+    background: #fff8dc;
+    border-left: 5px solid #f1c40f;
+    padding: 12px;
+    border-radius: 8px;
+    margin: 12px 0;
 }
 
-.option{
-    display:block;
-    background:white;
-    border:2px solid #ddd;
-    padding:10px;
-    margin:7px 0;
-    border-radius:10px;
-    cursor:pointer;
+button.action {
+    background: #6c4ee3;
+    color: white;
+    border: none;
+    padding: 11px 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    margin: 5px;
 }
 
-.option:hover{
-    border-color:#6c4ee3;
-    background:#f0edff;
+button.action:hover {
+    background: #4228b0;
 }
 
-.correct{
-    background:#d9fbe8!important;
-    border-color:#16a085!important;
+.quiz-question {
+    background: #f8f5ff;
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 18px;
 }
 
-.wrong{
-    background:#ffe0e0!important;
-    border-color:#e74c3c!important;
+.option {
+    display: block;
+    background: white;
+    border: 2px solid #ddd;
+    padding: 10px;
+    margin: 7px 0;
+    border-radius: 10px;
+    cursor: pointer;
 }
 
-.score{
-    font-size:22px;
-    font-weight:bold;
-    color:#5b4bdb;
-    margin:15px 0;
+.option:hover {
+    border-color: #6c4ee3;
 }
 
-.note{
-    border:1px solid #ddd;
-    border-radius:12px;
-    margin:10px 0;
-    overflow:hidden;
+.correct {
+    background: #d9fbe8 !important;
+    border-color: #16a085 !important;
 }
 
-.note-title{
-    padding:15px;
-    background:#eeeaff;
-    font-weight:bold;
-    cursor:pointer;
+.wrong {
+    background: #ffe0e0 !important;
+    border-color: #e74c3c !important;
 }
 
-.note-content{
-    padding:15px;
-    display:none;
+.score {
+    font-size: 22px;
+    font-weight: bold;
+    color: #5b4bdb;
+    margin: 15px 0;
 }
 
-.note-content.show{
-    display:block;
+.note {
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    margin: 10px 0;
+    overflow: hidden;
 }
 
-footer{
-    text-align:center;
-    background:#29233f;
-    color:white;
-    padding:30px;
-    margin-top:40px;
+.note-title {
+    padding: 15px;
+    background: #eeeaff;
+    font-weight: bold;
+    cursor: pointer;
 }
 
-@media(max-width:600px){
+.note-content {
+    padding: 15px;
+    display: none;
+}
 
-    section{
-        padding:16px;
+.note-content.show {
+    display: block;
+}
+
+footer {
+    text-align: center;
+    background: #29233f;
+    color: white;
+    padding: 30px;
+    margin-top: 40px;
+}
+
+@media(max-width:600px) {
+    section {
+        padding: 16px;
     }
 
-    nav{
-        position:relative;
+    nav {
+        position: relative;
     }
 
-    nav button{
-        font-size:13px;
-        padding:8px 10px;
+    nav button {
+        font-size: 12px;
+        padding: 8px 10px;
     }
-
 }
-
 </style>
 </head>
 
 <body>
 
 <header>
-
-<h1>📐 Interactive Geometry Explorer</h1>
-
-<p>Explore • Manipulate • Calculate • Test Yourself</p>
-
+    <h1>📐 Interactive Geometry Explorer</h1>
+    <p>Change the measurements and watch the geometry change!</p>
 </header>
 
-
 <nav>
-
-<button onclick="go('lines')">📏 Lines</button>
-<button onclick="go('angles')">📐 Angles</button>
-<button onclick="go('triangles')">🔺 Triangles</button>
-<button onclick="go('quadrilaterals')">▭ Quadrilaterals</button>
-<button onclick="go('circles')">🔵 Circles</button>
-<button onclick="go('areas')">📊 Areas</button>
-<button onclick="go('symmetry')">🪞 Symmetry</button>
-<button onclick="go('transform')">🔄 Transform</button>
-<button onclick="go('quiz')">🧩 Quiz</button>
-<button onclick="go('notes')">📚 Notes</button>
-
+    <button onclick="go('lines')">📏 Lines</button>
+    <button onclick="go('angles')">📐 Angles</button>
+    <button onclick="go('triangles')">🔺 Triangles</button>
+    <button onclick="go('quadrilaterals')">▭ Quadrilaterals</button>
+    <button onclick="go('circles')">🔵 Circles</button>
+    <button onclick="go('areas')">📊 Areas</button>
+    <button onclick="go('volume')">🧊 Volume</button>
+    <button onclick="go('symmetry')">🪞 Symmetry</button>
+    <button onclick="go('transform')">🔄 Transform</button>
+    <button onclick="go('quiz')">🧩 Quiz</button>
+    <button onclick="go('notes')">📚 Notes</button>
 </nav>
-
 
 <div class="container">
 
-
-<!-- LINES -->
+<!-- ================= LINES ================= -->
 
 <section id="lines">
 
-<h2>📏 Interactive Lines & Line Segments</h2>
+<h2>📏 Interactive Line Segment</h2>
 
 <div class="grid">
 
 <div class="card">
 
-<h3>Move the Point</h3>
+<h3>Move Point B</h3>
 
-<canvas id="lineCanvas" width="500" height="220"></canvas>
+<canvas id="lineCanvas" width="600" height="250"></canvas>
 
-<p>
-Move the slider to change the position of point B.
-</p>
+<div class="control">
+<label>
+Position of B:
+<span class="value" id="lineValue">350</span>
+</label>
 
 <input
 type="range"
 id="lineSlider"
-min="50"
-max="450"
+min="80"
+max="520"
 value="350"
 oninput="drawLine()">
+</div>
 
 <div class="result" id="lineResult"></div>
 
@@ -308,13 +316,13 @@ oninput="drawLine()">
 
 <div class="card">
 
-<h3>Key Concepts</h3>
+<h3>Remember</h3>
 
-<p><b>Line:</b> Extends infinitely in both directions.</p>
+<p>• A line extends infinitely in both directions.</p>
 
-<p><b>Line segment:</b> Has two endpoints.</p>
+<p>• A line segment has two endpoints.</p>
 
-<p><b>Ray:</b> Has one endpoint and extends infinitely in one direction.</p>
+<p>• A ray has one endpoint.</p>
 
 </div>
 
@@ -323,7 +331,7 @@ oninput="drawLine()">
 </section>
 
 
-<!-- ANGLES -->
+<!-- ================= ANGLES ================= -->
 
 <section id="angles">
 
@@ -333,20 +341,24 @@ oninput="drawLine()">
 
 <div class="card">
 
-<canvas id="angleCanvas" width="500" height="300"></canvas>
+<canvas id="angleCanvas" width="600" height="350"></canvas>
+
+<div class="control">
 
 <label>
 Angle:
-<strong><span id="angleValue">60</span>°</strong>
+<span class="value" id="angleValue">60°</span>
 </label>
 
 <input
 type="range"
 id="angleSlider"
-min="0"
+min="1"
 max="360"
 value="60"
 oninput="drawAngle()">
+
+</div>
 
 <div class="result" id="angleResult"></div>
 
@@ -356,16 +368,12 @@ oninput="drawAngle()">
 
 <h3>Angle Types</h3>
 
-<ul>
-
-<li>Acute: less than 90°</li>
-<li>Right: exactly 90°</li>
-<li>Obtuse: between 90° and 180°</li>
-<li>Straight: exactly 180°</li>
-<li>Reflex: between 180° and 360°</li>
-<li>Complete: exactly 360°</li>
-
-</ul>
+<p>Acute: less than 90°</p>
+<p>Right: exactly 90°</p>
+<p>Obtuse: 90°–180°</p>
+<p>Straight: exactly 180°</p>
+<p>Reflex: 180°–360°</p>
+<p>Complete: 360°</p>
 
 </div>
 
@@ -374,28 +382,70 @@ oninput="drawAngle()">
 </section>
 
 
-<!-- TRIANGLES -->
+<!-- ================= TRIANGLES ================= -->
 
 <section id="triangles">
 
-<h2>🔺 Interactive Triangle Explorer</h2>
+<h2>🔺 Fully Interactive Triangle</h2>
 
 <div class="grid">
 
 <div class="card">
 
-<h3>Change the Sides</h3>
+<h3>Change All Three Sides</h3>
 
-<label>Side A</label>
-<input type="number" id="sideA" value="5" min="1" oninput="triangle()">
+<div class="control">
 
-<label>Side B</label>
-<input type="number" id="sideB" value="5" min="1" oninput="triangle()">
+<label>
+Side A:
+<span class="value" id="aValue">6</span>
+</label>
 
-<label>Side C</label>
-<input type="number" id="sideC" value="5" min="1" oninput="triangle()">
+<input
+type="range"
+id="sideA"
+min="2"
+max="15"
+value="6"
+oninput="drawTriangle()">
 
-<canvas id="triangleCanvas" width="500" height="300"></canvas>
+</div>
+
+<div class="control">
+
+<label>
+Side B:
+<span class="value" id="bValue">7</span>
+</label>
+
+<input
+type="range"
+id="sideB"
+min="2"
+max="15"
+value="7"
+oninput="drawTriangle()">
+
+</div>
+
+<div class="control">
+
+<label>
+Side C:
+<span class="value" id="cValue">8</span>
+</label>
+
+<input
+type="range"
+id="sideC"
+min="2"
+max="15"
+value="8"
+oninput="drawTriangle()">
+
+</div>
+
+<canvas id="triangleCanvas" width="600" height="400"></canvas>
 
 <div class="result" id="triangleResult"></div>
 
@@ -403,13 +453,17 @@ oninput="drawAngle()">
 
 <div class="card">
 
-<h3>Triangle Types</h3>
+<h3>Experiment</h3>
 
-<p><b>Equilateral:</b> All three sides equal.</p>
+<p>Make all three sides equal.</p>
 
-<p><b>Isosceles:</b> Two sides equal.</p>
+<p>Then make only two sides equal.</p>
 
-<p><b>Scalene:</b> All sides different.</p>
+<p>Finally make all three different.</p>
+
+<div class="info">
+The drawing itself changes because the three side lengths are used to calculate the actual triangle coordinates.
+</div>
 
 </div>
 
@@ -418,19 +472,24 @@ oninput="drawAngle()">
 </section>
 
 
-<!-- QUADRILATERALS -->
+<!-- ================= QUADRILATERAL ================= -->
 
 <section id="quadrilaterals">
 
-<h2>▭ Interactive Quadrilateral Explorer</h2>
+<h2>▭ Interactive Rectangle — Perimeter & Area</h2>
 
 <div class="grid">
 
 <div class="card">
 
-<h3>Rectangle</h3>
+<h3>Change Length</h3>
 
-<label>Length</label>
+<div class="control">
+
+<label>
+Length:
+<span class="value" id="rectLengthValue">10</span>
+</label>
 
 <input
 type="range"
@@ -438,9 +497,16 @@ id="rectLength"
 min="2"
 max="20"
 value="10"
-oninput="rectangle()">
+oninput="drawRectangle()">
 
-<label>Width</label>
+</div>
+
+<div class="control">
+
+<label>
+Width:
+<span class="value" id="rectWidthValue">6</span>
+</label>
 
 <input
 type="range"
@@ -448,9 +514,11 @@ id="rectWidth"
 min="2"
 max="15"
 value="6"
-oninput="rectangle()">
+oninput="drawRectangle()">
 
-<canvas id="rectCanvas" width="500" height="300"></canvas>
+</div>
+
+<canvas id="rectCanvas" width="600" height="400"></canvas>
 
 <div class="result" id="rectResult"></div>
 
@@ -458,15 +526,17 @@ oninput="rectangle()">
 
 <div class="card">
 
-<h3>Explore</h3>
+<h3>What to Observe</h3>
 
-<p>Change the length and width.</p>
+<p>Increase the length.</p>
 
-<p>Observe how perimeter and area change.</p>
+<p>Increase the width.</p>
 
-<p><b>Area = length × width</b></p>
+<p>Watch the rectangle actually become longer or wider.</p>
 
-<p><b>Perimeter = 2(length + width)</b></p>
+<p><b>Perimeter = 2 × (L + W)</b></p>
+
+<p><b>Area = L × W</b></p>
 
 </div>
 
@@ -475,27 +545,34 @@ oninput="rectangle()">
 </section>
 
 
-<!-- CIRCLE -->
+<!-- ================= CIRCLE ================= -->
 
 <section id="circles">
 
-<h2>🔵 Interactive Circle Explorer</h2>
+<h2>🔵 Interactive Circle</h2>
 
 <div class="grid">
 
 <div class="card">
 
-<h3>Change Radius</h3>
+<div class="control">
 
-<canvas id="circleCanvas" width="500" height="300"></canvas>
+<label>
+Radius:
+<span class="value" id="radiusValue">5</span>
+</label>
 
 <input
 type="range"
 id="radiusSlider"
 min="1"
-max="100"
-value="50"
-oninput="circle()">
+max="15"
+value="5"
+oninput="drawCircle()">
+
+</div>
+
+<canvas id="circleCanvas" width="600" height="400"></canvas>
 
 <div class="result" id="circleResult"></div>
 
@@ -503,15 +580,13 @@ oninput="circle()">
 
 <div class="card">
 
-<h3>Circle Formulas</h3>
+<h3>Circle Relationships</h3>
 
-<p><b>Diameter = 2r</b></p>
+<p><b>Diameter = 2 × radius</b></p>
 
 <p><b>Circumference = 2πr</b></p>
 
 <p><b>Area = πr²</b></p>
-
-<p>Use π ≈ 3.14159</p>
 
 </div>
 
@@ -520,19 +595,22 @@ oninput="circle()">
 </section>
 
 
-<!-- AREAS -->
+<!-- ================= AREA ================= -->
 
 <section id="areas">
 
-<h2>📊 Interactive Area Explorer</h2>
+<h2>📊 Interactive Area Investigation</h2>
 
 <div class="grid">
 
 <div class="card">
 
-<h3>Rectangle Area</h3>
+<div class="control">
 
-<label>Length</label>
+<label>
+Length:
+<span class="value" id="areaLengthValue">8</span>
+</label>
 
 <input
 type="range"
@@ -540,9 +618,16 @@ id="areaLength"
 min="1"
 max="20"
 value="8"
-oninput="area()">
+oninput="drawArea()">
 
-<label>Width</label>
+</div>
+
+<div class="control">
+
+<label>
+Width:
+<span class="value" id="areaWidthValue">5</span>
+</label>
 
 <input
 type="range"
@@ -550,9 +635,11 @@ id="areaWidth"
 min="1"
 max="15"
 value="5"
-oninput="area()">
+oninput="drawArea()">
 
-<canvas id="areaCanvas" width="500" height="250"></canvas>
+</div>
+
+<canvas id="areaCanvas" width="600" height="400"></canvas>
 
 <div class="result" id="areaResult"></div>
 
@@ -560,15 +647,11 @@ oninput="area()">
 
 <div class="card">
 
-<h3>Think & Predict</h3>
+<h3>Predict First</h3>
 
-<p>
-What happens to the area if the length doubles?
-</p>
+<p>What will happen to the area if you double the length?</p>
 
-<p>
-Try it using the sliders.
-</p>
+<p>Change the slider and test your prediction.</p>
 
 </div>
 
@@ -577,17 +660,110 @@ Try it using the sliders.
 </section>
 
 
-<!-- SYMMETRY -->
+<!-- ================= VOLUME ================= -->
 
-<section id="symmetry">
+<section id="volume">
 
-<h2>🪞 Interactive Symmetry Explorer</h2>
+<h2>🧊 Interactive 3D Volume Explorer</h2>
 
 <div class="grid">
 
 <div class="card">
 
-<canvas id="symmetryCanvas" width="500" height="300"></canvas>
+<div class="control">
+
+<label>
+Length:
+<span class="value" id="volumeLengthValue">8</span>
+</label>
+
+<input
+type="range"
+id="volumeLength"
+min="2"
+max="15"
+value="8"
+oninput="drawCuboid()">
+
+</div>
+
+<div class="control">
+
+<label>
+Width:
+<span class="value" id="volumeWidthValue">5</span>
+</label>
+
+<input
+type="range"
+id="volumeWidth"
+min="2"
+max="12"
+value="5"
+oninput="drawCuboid()">
+
+</div>
+
+<div class="control">
+
+<label>
+Height:
+<span class="value" id="volumeHeightValue">4</span>
+</label>
+
+<input
+type="range"
+id="volumeHeight"
+min="2"
+max="10"
+value="4"
+oninput="drawCuboid()">
+
+</div>
+
+<canvas id="volumeCanvas" width="600" height="450"></canvas>
+
+<div class="result" id="volumeResult"></div>
+
+</div>
+
+<div class="card">
+
+<h3>Explore Volume</h3>
+
+<p>Change length.</p>
+
+<p>Change width.</p>
+
+<p>Change height.</p>
+
+<p>Watch the 3D cuboid change in all three dimensions.</p>
+
+<p><b>Volume = Length × Width × Height</b></p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= SYMMETRY ================= -->
+
+<section id="symmetry">
+
+<h2>🪞 Interactive Symmetry</h2>
+
+<div class="grid">
+
+<div class="card">
+
+<div class="control">
+
+<label>
+Symmetry Line:
+<span class="value" id="symmetryValue">Vertical</span>
+</label>
 
 <input
 type="range"
@@ -595,7 +771,11 @@ id="symmetrySlider"
 min="0"
 max="2"
 value="0"
-oninput="symmetry()">
+oninput="drawSymmetry()">
+
+</div>
+
+<canvas id="symmetryCanvas" width="600" height="350"></canvas>
 
 <div class="result" id="symmetryResult"></div>
 
@@ -603,15 +783,11 @@ oninput="symmetry()">
 
 <div class="card">
 
-<h3>Lines of Symmetry</h3>
+<h3>Think</h3>
 
-<p>
-A line of symmetry divides a shape into two matching halves.
-</p>
+<p>A line of symmetry divides a shape into matching halves.</p>
 
-<p>
-Try different symmetry positions.
-</p>
+<p>Try all three positions.</p>
 
 </div>
 
@@ -620,19 +796,22 @@ Try different symmetry positions.
 </section>
 
 
-<!-- TRANSFORMATIONS -->
+<!-- ================= TRANSFORMATIONS ================= -->
 
 <section id="transform">
 
-<h2>🔄 Interactive Transformations</h2>
+<h2>🔄 Interactive Transformation</h2>
 
 <div class="grid">
 
 <div class="card">
 
-<canvas id="transformCanvas" width="500" height="300"></canvas>
+<div class="control">
 
-<label>Rotation</label>
+<label>
+Rotation:
+<span class="value" id="rotationValue">0°</span>
+</label>
 
 <input
 type="range"
@@ -640,21 +819,28 @@ id="rotationSlider"
 min="0"
 max="360"
 value="0"
-oninput="transform()">
+oninput="drawTransform()">
 
-<label>Horizontal Movement</label>
+</div>
+
+<div class="control">
+
+<label>
+Horizontal Movement:
+<span class="value" id="moveValue">0</span>
+</label>
 
 <input
 type="range"
 id="moveSlider"
-min="-100"
-max="100"
+min="-150"
+max="150"
 value="0"
-oninput="transform()">
+oninput="drawTransform()">
 
-<div class="result">
-Move the slider and watch the shape transform.
 </div>
+
+<canvas id="transformCanvas" width="600" height="350"></canvas>
 
 </div>
 
@@ -662,13 +848,13 @@ Move the slider and watch the shape transform.
 
 <h3>Transformations</h3>
 
-<p><b>Translation:</b> Moving a shape.</p>
+<p>Translation = moving.</p>
 
-<p><b>Rotation:</b> Turning a shape.</p>
+<p>Rotation = turning.</p>
 
-<p><b>Reflection:</b> Flipping a shape.</p>
+<p>Reflection = flipping.</p>
 
-<p><b>Enlargement:</b> Changing its size.</p>
+<p>Enlargement = changing size.</p>
 
 </div>
 
@@ -677,27 +863,24 @@ Move the slider and watch the shape transform.
 </section>
 
 
-<!-- QUIZ -->
+<!-- ================= QUIZ ================= -->
 
 <section id="quiz">
 
 <h2>🧩 Geometry Challenge — 15 MCQs</h2>
 
 <div class="score">
-
-Score:
-<span id="score">0</span>/15
-
+Score: <span id="score">0</span>/15
 </div>
 
 <div id="quizContainer"></div>
 
 <button class="action" onclick="checkQuiz()">
-Check My Answers
+Check Answers
 </button>
 
 <button class="action" onclick="resetQuiz()">
-Reset Quiz
+Reset
 </button>
 
 <div id="quizResult"></div>
@@ -705,11 +888,11 @@ Reset Quiz
 </section>
 
 
-<!-- NOTES -->
+<!-- ================= NOTES ================= -->
 
 <section id="notes">
 
-<h2>📚 Interactive Study Notes</h2>
+<h2>📚 Study Notes</h2>
 
 <div class="note">
 
@@ -718,19 +901,10 @@ Reset Quiz
 </div>
 
 <div class="note-content">
-
-<p>
-An angle is formed when two rays meet at a common endpoint.
-</p>
-
-<p>
-The common endpoint is called the vertex.
-</p>
-
+An angle is formed by two rays meeting at a common endpoint called the vertex.
 </div>
 
 </div>
-
 
 <div class="note">
 
@@ -739,19 +913,10 @@ The common endpoint is called the vertex.
 </div>
 
 <div class="note-content">
-
-<p>
-A triangle has three sides and three angles.
-</p>
-
-<p>
-The interior angles of a triangle add up to 180°.
-</p>
-
+A triangle has three sides and three angles. The interior angles total 180°.
 </div>
 
 </div>
-
 
 <div class="note">
 
@@ -760,19 +925,10 @@ The interior angles of a triangle add up to 180°.
 </div>
 
 <div class="note-content">
-
-<p>
-A quadrilateral has four sides.
-</p>
-
-<p>
-The interior angles add up to 360°.
-</p>
-
+A quadrilateral has four sides. Its interior angles total 360°.
 </div>
 
 </div>
-
 
 <div class="note">
 
@@ -781,44 +937,34 @@ The interior angles add up to 360°.
 </div>
 
 <div class="note-content">
-
-<p>
-A circle is a curved closed shape.
-</p>
-
-<p>
-Radius goes from the centre to the circumference.
-</p>
-
-<p>
-Diameter passes through the centre and equals twice the radius.
-</p>
-
+Radius is the distance from the centre to the circumference. Diameter is twice the radius.
 </div>
 
 </div>
-
 
 <div class="note">
 
 <div class="note-title" onclick="toggleNote(this)">
-📊 Area & Perimeter
+📊 Area
 </div>
 
 <div class="note-content">
-
-<p>
-Area measures the surface inside a shape.
-</p>
-
-<p>
-Perimeter measures the distance around a shape.
-</p>
-
+Area measures the surface inside a two-dimensional shape.
 </div>
 
 </div>
 
+<div class="note">
+
+<div class="note-title" onclick="toggleNote(this)">
+🧊 Volume
+</div>
+
+<div class="note-content">
+Volume measures the amount of three-dimensional space occupied by an object.
+</div>
+
+</div>
 
 <div class="note">
 
@@ -827,19 +973,7 @@ Perimeter measures the distance around a shape.
 </div>
 
 <div class="note-content">
-
-<p>
-Translations move shapes.
-</p>
-
-<p>
-Rotations turn shapes.
-</p>
-
-<p>
-Reflections flip shapes.
-</p>
-
+Translations move shapes, rotations turn shapes, and reflections flip shapes.
 </div>
 
 </div>
@@ -852,420 +986,819 @@ Reflections flip shapes.
 <footer>
 
 <p>📐 Interactive Geometry Explorer</p>
-
-<p>Explore mathematics through interaction.</p>
+<p>Learn Geometry by changing it.</p>
 
 </footer>
 
 
 <script>
 
+/* ================= NAVIGATION ================= */
 
-/* NAVIGATION */
-
-function go(id){
-
-    document.getElementById(id)
-    .scrollIntoView({
-        behavior:"smooth"
+function go(id) {
+    document.getElementById(id).scrollIntoView({
+        behavior: "smooth"
     });
-
 }
 
 
-/* LINES */
+/* ================= LINE ================= */
 
-function drawLine(){
+function drawLine() {
 
-    const c=document.getElementById("lineCanvas");
-    const ctx=c.getContext("2d");
+    const canvas = document.getElementById("lineCanvas");
+    const ctx = canvas.getContext("2d");
 
-    const x=document.getElementById("lineSlider").value;
+    const x = Number(document.getElementById("lineSlider").value);
 
-    ctx.clearRect(0,0,c.width,c.height);
+    document.getElementById("lineValue").textContent = x;
+
+    ctx.clearRect(0,0,canvas.width,canvas.height);
 
     ctx.beginPath();
+    ctx.moveTo(70,125);
+    ctx.lineTo(530,125);
 
-    ctx.moveTo(50,110);
-    ctx.lineTo(450,110);
-
-    ctx.strokeStyle="#6c4ee3";
-    ctx.lineWidth=5;
-
+    ctx.strokeStyle = "#6c4ee3";
+    ctx.lineWidth = 6;
     ctx.stroke();
 
-    ctx.fillStyle="#e74c3c";
-
+    ctx.fillStyle = "#e74c3c";
     ctx.beginPath();
-    ctx.arc(50,110,8,0,Math.PI*2);
+    ctx.arc(70,125,10,0,Math.PI*2);
     ctx.fill();
 
-    ctx.fillStyle="#16a085";
-
+    ctx.fillStyle = "#16a085";
     ctx.beginPath();
-    ctx.arc(x,110,10,0,Math.PI*2);
+    ctx.arc(x,125,11,0,Math.PI*2);
     ctx.fill();
 
-    ctx.fillStyle="#222";
+    ctx.fillStyle = "#222";
+    ctx.font = "18px Arial";
 
-    ctx.font="18px Arial";
+    ctx.fillText("A",60,100);
+    ctx.fillText("B",x-5,100);
 
-    ctx.fillText("A",40,90);
-    ctx.fillText("B",x-5,85);
+    const distance = (x-70)/10;
 
-    document.getElementById("lineResult").innerHTML=
-    "Distance from A to B = "+((x-50)/10).toFixed(1)+" units";
+    document.getElementById("lineResult").innerHTML =
+        "Distance AB = <b>" + distance.toFixed(1) +
+        " units</b>";
 
 }
 
 
-/* ANGLES */
+/* ================= ANGLE ================= */
 
-function drawAngle(){
+function drawAngle() {
 
-    const c=document.getElementById("angleCanvas");
-    const ctx=c.getContext("2d");
+    const canvas = document.getElementById("angleCanvas");
+    const ctx = canvas.getContext("2d");
 
-    const angle=Number(
+    const angle = Number(
         document.getElementById("angleSlider").value
     );
 
-    document.getElementById("angleValue").textContent=angle;
+    document.getElementById("angleValue").textContent =
+        angle + "°";
 
-    ctx.clearRect(0,0,c.width,c.height);
+    ctx.clearRect(0,0,canvas.width,canvas.height);
 
-    const cx=250;
-    const cy=160;
-    const r=100;
+    const cx = 300;
+    const cy = 190;
+    const r = 130;
+
+    const rad = -angle * Math.PI / 180;
 
     ctx.beginPath();
-
     ctx.moveTo(cx,cy);
-
     ctx.lineTo(cx+r,cy);
 
     ctx.moveTo(cx,cy);
-
-    const rad=-angle*Math.PI/180;
-
     ctx.lineTo(
         cx+r*Math.cos(rad),
         cy+r*Math.sin(rad)
     );
 
-    ctx.strokeStyle="#6c4ee3";
-    ctx.lineWidth=7;
-
+    ctx.strokeStyle = "#6c4ee3";
+    ctx.lineWidth = 7;
     ctx.stroke();
+
+    ctx.beginPath();
+    ctx.arc(cx,cy,70,0,rad,true);
+
+    ctx.strokeStyle = "#e74c3c";
+    ctx.lineWidth = 5;
+    ctx.stroke();
+
+    let type;
+
+    if(angle < 90) type = "Acute Angle";
+    else if(angle === 90) type = "Right Angle";
+    else if(angle < 180) type = "Obtuse Angle";
+    else if(angle === 180) type = "Straight Angle";
+    else if(angle < 360) type = "Reflex Angle";
+    else type = "Complete Angle";
+
+    document.getElementById("angleResult").innerHTML =
+        "<b>" + angle + "°</b> → " + type;
+}
+
+
+/* ================= TRIANGLE ================= */
+
+function drawTriangle() {
+
+    const a = Number(document.getElementById("sideA").value);
+    const b = Number(document.getElementById("sideB").value);
+    const c = Number(document.getElementById("sideC").value);
+
+    document.getElementById("aValue").textContent = a;
+    document.getElementById("bValue").textContent = b;
+    document.getElementById("cValue").textContent = c;
+
+    const canvas = document.getElementById("triangleCanvas");
+    const ctx = canvas.getContext("2d");
+
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    /*
+       Triangle construction using
+       side lengths.
+
+       A = left point
+       B = right point
+       C = calculated third point
+    */
+
+    if(a+b <= c || a+c <= b || b+c <= a) {
+
+        ctx.fillStyle = "#e74c3c";
+        ctx.font = "22px Arial";
+        ctx.textAlign = "center";
+
+        ctx.fillText(
+            "These sides cannot form a triangle",
+            300,
+            200
+        );
+
+        document.getElementById("triangleResult").innerHTML =
+            "<b>Invalid triangle</b> — the sum of any two sides must be greater than the third.";
+
+        return;
+    }
+
+    const scale = 30;
+
+    const base = c * scale;
+
+    const xA = 300 - base/2;
+    const xB = 300 + base/2;
+
+    const xC =
+        (a*a - b*b + c*c) / (2*c);
+
+    const heightSquared =
+        a*a - xC*xC;
+
+    const height =
+        Math.sqrt(Math.max(0,heightSquared));
+
+    const maxWidth = 480;
+    const maxHeight = 300;
+
+    const drawingScale =
+        Math.min(
+            maxWidth / base,
+            maxHeight / (height*scale)
+        );
+
+    const finalBase = base * drawingScale;
+    const finalHeight = height * scale * drawingScale;
+
+    const left =
+        300 - finalBase/2;
+
+    const right =
+        300 + finalBase/2;
+
+    const thirdX =
+        left + xC*scale*drawingScale;
+
+    const bottom = 320;
+
+    const top =
+        bottom - finalHeight;
+
+    ctx.beginPath();
+
+    ctx.moveTo(left,bottom);
+    ctx.lineTo(right,bottom);
+    ctx.lineTo(thirdX,top);
+    ctx.closePath();
+
+    ctx.fillStyle = "#eeeaff";
+    ctx.fill();
+
+    ctx.strokeStyle = "#5b4bdb";
+    ctx.lineWidth = 6;
+    ctx.stroke();
+
+    ctx.fillStyle = "#e74c3c";
+
+    [
+        [left,bottom],
+        [right,bottom],
+        [thirdX,top]
+    ].forEach(p => {
+
+        ctx.beginPath();
+        ctx.arc(p[0],p[1],8,0,Math.PI*2);
+        ctx.fill();
+
+    });
+
+    ctx.fillStyle = "#222";
+    ctx.font = "18px Arial";
+
+    ctx.fillText("A",left-20,bottom+5);
+    ctx.fillText("B",right+10,bottom+5);
+    ctx.fillText("C",thirdX+10,top-10);
+
+    let type;
+
+    if(a === b && b === c)
+        type = "Equilateral Triangle";
+    else if(a === b || a === c || b === c)
+        type = "Isosceles Triangle";
+    else
+        type = "Scalene Triangle";
+
+    const s = (a+b+c)/2;
+
+    const area =
+        Math.sqrt(
+            s*(s-a)*(s-b)*(s-c)
+        );
+
+    document.getElementById("triangleResult").innerHTML =
+        "<b>" + type + "</b>" +
+        "<br>Perimeter = " + (a+b+c).toFixed(2) +
+        " units" +
+        "<br>Area = " + area.toFixed(2) +
+        " square units";
+}
+
+
+/* ================= RECTANGLE ================= */
+
+function drawRectangle() {
+
+    const length =
+        Number(document.getElementById("rectLength").value);
+
+    const width =
+        Number(document.getElementById("rectWidth").value);
+
+    document.getElementById("rectLengthValue").textContent =
+        length;
+
+    document.getElementById("rectWidthValue").textContent =
+        width;
+
+    const canvas =
+        document.getElementById("rectCanvas");
+
+    const ctx =
+        canvas.getContext("2d");
+
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    const availableWidth = 480;
+    const availableHeight = 280;
+
+    const scale =
+        Math.min(
+            availableWidth/length,
+            availableHeight/width
+        );
+
+    const w = length * scale;
+    const h = width * scale;
+
+    const x = (600-w)/2;
+    const y = (400-h)/2;
+
+    ctx.fillStyle = "#eeeaff";
+
+    ctx.fillRect(x,y,w,h);
+
+    ctx.strokeStyle = "#5b4bdb";
+    ctx.lineWidth = 6;
+
+    ctx.strokeRect(x,y,w,h);
+
+    ctx.fillStyle = "#222";
+    ctx.font = "18px Arial";
+
+    ctx.fillText(
+        "L = " + length,
+        x+w/2-30,
+        y-15
+    );
+
+    ctx.fillText(
+        "W = " + width,
+        x+w+10,
+        y+h/2
+    );
+
+    const perimeter =
+        2*(length+width);
+
+    const area =
+        length*width;
+
+    document.getElementById("rectResult").innerHTML =
+        "<b>Perimeter = " +
+        perimeter +
+        " units</b>" +
+        "<br>Area = " +
+        area +
+        " square units";
+}
+
+
+/* ================= CIRCLE ================= */
+
+function drawCircle() {
+
+    const r =
+        Number(document.getElementById("radiusSlider").value);
+
+    document.getElementById("radiusValue").textContent = r;
+
+    const canvas =
+        document.getElementById("circleCanvas");
+
+    const ctx =
+        canvas.getContext("2d");
+
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    const radius =
+        Math.min(
+            r*15,
+            150
+        );
+
+    const cx = 300;
+    const cy = 200;
 
     ctx.beginPath();
 
     ctx.arc(
         cx,
         cy,
-        60,
-        0,
-        rad,
-        true
-    );
-
-    ctx.strokeStyle="#e74c3c";
-    ctx.lineWidth=4;
-
-    ctx.stroke();
-
-    let type="";
-
-    if(angle<90)
-        type="Acute Angle";
-
-    else if(angle===90)
-        type="Right Angle";
-
-    else if(angle<180)
-        type="Obtuse Angle";
-
-    else if(angle===180)
-        type="Straight Angle";
-
-    else if(angle<360)
-        type="Reflex Angle";
-
-    else
-        type="Complete Angle";
-
-    document.getElementById("angleResult").innerHTML=
-    "<b>"+angle+"°</b> → "+type;
-
-}
-
-
-/* TRIANGLE */
-
-function triangle(){
-
-    const a=Number(document.getElementById("sideA").value);
-    const b=Number(document.getElementById("sideB").value);
-    const c=Number(document.getElementById("sideC").value);
-
-    const canvas=document.getElementById("triangleCanvas");
-    const ctx=canvas.getContext("2d");
-
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-
-    let type;
-
-    if(a+b<=c || a+c<=b || b+c<=a){
-
-        type="These side lengths cannot form a triangle.";
-
-    }else{
-
-        if(a===b && b===c)
-            type="Equilateral Triangle";
-
-        else if(a===b || a===c || b===c)
-            type="Isosceles Triangle";
-
-        else
-            type="Scalene Triangle";
-
-        ctx.beginPath();
-
-        ctx.moveTo(100,230);
-        ctx.lineTo(400,230);
-        ctx.lineTo(250,50);
-        ctx.closePath();
-
-        ctx.strokeStyle="#6c4ee3";
-        ctx.lineWidth=6;
-
-        ctx.stroke();
-
-    }
-
-    document.getElementById("triangleResult").innerHTML=
-    "<b>"+type+"</b>";
-
-}
-
-
-/* RECTANGLE */
-
-function rectangle(){
-
-    const l=Number(
-        document.getElementById("rectLength").value
-    );
-
-    const w=Number(
-        document.getElementById("rectWidth").value
-    );
-
-    const c=document.getElementById("rectCanvas");
-    const ctx=c.getContext("2d");
-
-    ctx.clearRect(0,0,c.width,c.height);
-
-    const scale=18;
-
-    const width=l*scale;
-    const height=w*scale;
-
-    ctx.strokeStyle="#6c4ee3";
-    ctx.lineWidth=5;
-
-    ctx.strokeRect(
-        (500-width)/2,
-        (300-height)/2,
-        width,
-        height
-    );
-
-    const area=l*w;
-    const perimeter=2*(l+w);
-
-    document.getElementById("rectResult").innerHTML=
-
-    "Length = "+l+
-    "<br>Width = "+w+
-    "<br>Area = "+area+" square units"+
-    "<br>Perimeter = "+perimeter+" units";
-
-}
-
-
-/* CIRCLE */
-
-function circle(){
-
-    const r=Number(
-        document.getElementById("radiusSlider").value
-    );
-
-    const c=document.getElementById("circleCanvas");
-    const ctx=c.getContext("2d");
-
-    ctx.clearRect(0,0,c.width,c.height);
-
-    const radius=Math.min(r*1.2,110);
-
-    ctx.beginPath();
-
-    ctx.arc(
-        250,
-        150,
         radius,
         0,
         Math.PI*2
     );
 
-    ctx.strokeStyle="#6c4ee3";
-    ctx.lineWidth=5;
+    ctx.fillStyle = "#eeeaff";
+    ctx.fill();
 
+    ctx.strokeStyle = "#5b4bdb";
+    ctx.lineWidth = 6;
     ctx.stroke();
+
+    /* radius */
 
     ctx.beginPath();
 
-    ctx.moveTo(250,150);
-    ctx.lineTo(250+radius,150);
+    ctx.moveTo(cx,cy);
+    ctx.lineTo(cx+radius,cy);
 
-    ctx.strokeStyle="#e74c3c";
+    ctx.strokeStyle = "#e74c3c";
+    ctx.lineWidth = 5;
     ctx.stroke();
 
-    document.getElementById("circleResult").innerHTML=
+    ctx.fillStyle = "#222";
+    ctx.font = "18px Arial";
 
-    "Radius = "+r+
-    "<br>Diameter = "+(2*r).toFixed(2)+
-    "<br>Circumference = "+(2*Math.PI*r).toFixed(2)+
-    "<br>Area = "+(Math.PI*r*r).toFixed(2);
+    ctx.fillText(
+        "r = " + r,
+        cx+radius/2,
+        cy-10
+    );
 
+    const diameter = 2*r;
+
+    const circumference =
+        2*Math.PI*r;
+
+    const area =
+        Math.PI*r*r;
+
+    document.getElementById("circleResult").innerHTML =
+        "Radius = <b>" + r + "</b>" +
+        "<br>Diameter = <b>" + diameter.toFixed(2) + "</b>" +
+        "<br>Circumference = <b>" +
+        circumference.toFixed(2) +
+        "</b>" +
+        "<br>Area = <b>" +
+        area.toFixed(2) +
+        " square units</b>";
 }
 
 
-/* AREA */
+/* ================= AREA ================= */
 
-function area(){
+function drawArea() {
 
-    const l=Number(
-        document.getElementById("areaLength").value
+    const length =
+        Number(document.getElementById("areaLength").value);
+
+    const width =
+        Number(document.getElementById("areaWidth").value);
+
+    document.getElementById("areaLengthValue").textContent =
+        length;
+
+    document.getElementById("areaWidthValue").textContent =
+        width;
+
+    const canvas =
+        document.getElementById("areaCanvas");
+
+    const ctx =
+        canvas.getContext("2d");
+
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    const scale =
+        Math.min(
+            500/length,
+            300/width
+        );
+
+    const w = length*scale;
+    const h = width*scale;
+
+    const x = (600-w)/2;
+    const y = (400-h)/2;
+
+    ctx.fillStyle = "#dff8ee";
+
+    ctx.fillRect(x,y,w,h);
+
+    ctx.strokeStyle = "#16a085";
+    ctx.lineWidth = 6;
+
+    ctx.strokeRect(x,y,w,h);
+
+    ctx.fillStyle = "#222";
+    ctx.font = "20px Arial";
+    ctx.textAlign = "center";
+
+    ctx.fillText(
+        length + " units",
+        300,
+        y-15
     );
-
-    const w=Number(
-        document.getElementById("areaWidth").value
-    );
-
-    const c=document.getElementById("areaCanvas");
-    const ctx=c.getContext("2d");
-
-    ctx.clearRect(0,0,c.width,c.height);
-
-    const scale=18;
-
-    ctx.strokeStyle="#16a085";
-    ctx.lineWidth=5;
-
-    ctx.strokeRect(
-        250-l*scale/2,
-        125-w*scale/2,
-        l*scale,
-        w*scale
-    );
-
-    document.getElementById("areaResult").innerHTML=
-
-    "Area = "+(l*w)+
-    " square units";
-
-}
-
-
-/* SYMMETRY */
-
-function symmetry(){
-
-    const value=Number(
-        document.getElementById("symmetrySlider").value
-    );
-
-    const c=document.getElementById("symmetryCanvas");
-    const ctx=c.getContext("2d");
-
-    ctx.clearRect(0,0,c.width,c.height);
-
-    ctx.beginPath();
-
-    ctx.moveTo(180,220);
-    ctx.lineTo(320,220);
-    ctx.lineTo(250,70);
-    ctx.closePath();
-
-    ctx.strokeStyle="#6c4ee3";
-    ctx.lineWidth=6;
-
-    ctx.stroke();
-
-    ctx.setLineDash([8,8]);
-
-    ctx.beginPath();
-
-    if(value===0){
-
-        ctx.moveTo(250,40);
-        ctx.lineTo(250,250);
-
-    }else if(value===1){
-
-        ctx.moveTo(120,150);
-        ctx.lineTo(380,150);
-
-    }else{
-
-        ctx.moveTo(150,50);
-        ctx.lineTo(350,250);
-
-    }
-
-    ctx.strokeStyle="#e74c3c";
-
-    ctx.stroke();
-
-    ctx.setLineDash([]);
-
-    const text=[
-        "Vertical line",
-        "Horizontal line",
-        "Diagonal line"
-    ];
-
-    document.getElementById("symmetryResult").innerHTML=
-    "Selected: "+text[value];
-
-}
-
-
-/* TRANSFORMATION */
-
-function transform(){
-
-    const rotation=Number(
-        document.getElementById("rotationSlider").value
-    );
-
-    const move=Number(
-        document.getElementById("moveSlider").value
-    );
-
-    const c=document.getElementById("transformCanvas");
-    const ctx=c.getContext("2d");
-
-    ctx.clearRect(0,0,c.width,c.height);
 
     ctx.save();
 
     ctx.translate(
-        250+move,
-        150
+        x-25,
+        y+h/2
+    );
+
+    ctx.rotate(-Math.PI/2);
+
+    ctx.fillText(
+        width + " units",
+        0,
+        0
+    );
+
+    ctx.restore();
+
+    const area =
+        length*width;
+
+    document.getElementById("areaResult").innerHTML =
+        "<b>Area = " +
+        area +
+        " square units</b>";
+}
+
+
+/* ================= VOLUME ================= */
+
+function drawCuboid() {
+
+    const L =
+        Number(document.getElementById("volumeLength").value);
+
+    const W =
+        Number(document.getElementById("volumeWidth").value);
+
+    const H =
+        Number(document.getElementById("volumeHeight").value);
+
+    document.getElementById("volumeLengthValue").textContent = L;
+    document.getElementById("volumeWidthValue").textContent = W;
+    document.getElementById("volumeHeightValue").textContent = H;
+
+    const canvas =
+        document.getElementById("volumeCanvas");
+
+    const ctx =
+        canvas.getContext("2d");
+
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    /*
+       Isometric 3D projection.
+
+       Every dimension changes the
+       actual visible cuboid.
+    */
+
+    const scale =
+        Math.min(
+            28,
+            300/(L+W),
+            280/H
+        );
+
+    const frontW = L*scale;
+    const frontH = H*scale;
+
+    const depthX = W*scale*0.55;
+    const depthY = W*scale*0.30;
+
+    const x = 300 - frontW/2 - depthX/2;
+    const y = 330 - frontH;
+
+    /* FRONT */
+
+    ctx.beginPath();
+
+    ctx.moveTo(x,y);
+    ctx.lineTo(x+frontW,y);
+    ctx.lineTo(x+frontW,y+frontH);
+    ctx.lineTo(x,y+frontH);
+    ctx.closePath();
+
+    ctx.fillStyle = "#eeeaff";
+    ctx.fill();
+
+    ctx.strokeStyle = "#5b4bdb";
+    ctx.lineWidth = 4;
+    ctx.stroke();
+
+
+    /* TOP */
+
+    ctx.beginPath();
+
+    ctx.moveTo(x,y);
+
+    ctx.lineTo(
+        x+depthX,
+        y-depthY
+    );
+
+    ctx.lineTo(
+        x+frontW+depthX,
+        y-depthY
+    );
+
+    ctx.lineTo(
+        x+frontW,
+        y
+    );
+
+    ctx.closePath();
+
+    ctx.fillStyle = "#d9d2ff";
+    ctx.fill();
+
+    ctx.stroke();
+
+
+    /* SIDE */
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        x+frontW,
+        y
+    );
+
+    ctx.lineTo(
+        x+frontW+depthX,
+        y-depthY
+    );
+
+    ctx.lineTo(
+        x+frontW+depthX,
+        y+frontH-depthY
+    );
+
+    ctx.lineTo(
+        x+frontW,
+        y+frontH
+    );
+
+    ctx.closePath();
+
+    ctx.fillStyle = "#c5bbff";
+    ctx.fill();
+
+    ctx.stroke();
+
+
+    /* LABELS */
+
+    ctx.fillStyle = "#222";
+    ctx.font = "18px Arial";
+
+    ctx.fillText(
+        "L = "+L,
+        x+frontW/2-25,
+        y+frontH+30
+    );
+
+    ctx.fillText(
+        "H = "+H,
+        x-50,
+        y+frontH/2
+    );
+
+    ctx.fillText(
+        "W = "+W,
+        x+frontW+depthX/2,
+        y-depthY/2
+    );
+
+
+    const volume =
+        L*W*H;
+
+    document.getElementById("volumeResult").innerHTML =
+        "<b>Volume = " +
+        volume +
+        " cubic units</b>" +
+        "<br>" +
+        L + " × " +
+        W + " × " +
+        H +
+        " = " +
+        volume;
+}
+
+
+/* ================= SYMMETRY ================= */
+
+function drawSymmetry() {
+
+    const value =
+        Number(document.getElementById("symmetrySlider").value);
+
+    const canvas =
+        document.getElementById("symmetryCanvas");
+
+    const ctx =
+        canvas.getContext("2d");
+
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    /* draw butterfly-like shape */
+
+    ctx.beginPath();
+
+    ctx.moveTo(300,70);
+    ctx.bezierCurveTo(
+        220,90,
+        170,150,
+        220,230
+    );
+
+    ctx.bezierCurveTo(
+        260,250,
+        280,220,
+        300,200
+    );
+
+    ctx.bezierCurveTo(
+        320,220,
+        340,250,
+        380,230
+    );
+
+    ctx.bezierCurveTo(
+        430,150,
+        380,90,
+        300,70
+    );
+
+    ctx.closePath();
+
+    ctx.fillStyle = "#eeeaff";
+    ctx.fill();
+
+    ctx.strokeStyle = "#5b4bdb";
+    ctx.lineWidth = 5;
+    ctx.stroke();
+
+    ctx.setLineDash([10,8]);
+
+    ctx.beginPath();
+
+    if(value === 0) {
+
+        ctx.moveTo(300,40);
+        ctx.lineTo(300,290);
+
+    } else if(value === 1) {
+
+        ctx.moveTo(100,165);
+        ctx.lineTo(500,165);
+
+    } else {
+
+        ctx.moveTo(150,50);
+        ctx.lineTo(450,280);
+
+    }
+
+    ctx.strokeStyle = "#e74c3c";
+    ctx.lineWidth = 4;
+    ctx.stroke();
+
+    ctx.setLineDash([]);
+
+    const names = [
+        "Vertical symmetry",
+        "Horizontal symmetry",
+        "Diagonal symmetry"
+    ];
+
+    document.getElementById("symmetryValue").textContent =
+        names[value];
+
+    document.getElementById("symmetryResult").innerHTML =
+        "Selected: <b>" + names[value] + "</b>";
+}
+
+
+/* ================= TRANSFORMATION ================= */
+
+function drawTransform() {
+
+    const rotation =
+        Number(document.getElementById("rotationSlider").value);
+
+    const movement =
+        Number(document.getElementById("moveSlider").value);
+
+    document.getElementById("rotationValue").textContent =
+        rotation + "°";
+
+    document.getElementById("moveValue").textContent =
+        movement;
+
+    const canvas =
+        document.getElementById("transformCanvas");
+
+    const ctx =
+        canvas.getContext("2d");
+
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    /* original shape */
+
+    ctx.strokeStyle = "#aaa";
+    ctx.lineWidth = 3;
+
+    ctx.strokeRect(
+        220,
+        120,
+        100,
+        80
+    );
+
+    /* transformed shape */
+
+    ctx.save();
+
+    ctx.translate(
+        300+movement,
+        160
     );
 
     ctx.rotate(
@@ -1274,15 +1807,18 @@ function transform(){
 
     ctx.beginPath();
 
-    ctx.moveTo(-60,-40);
-    ctx.lineTo(60,-40);
-    ctx.lineTo(60,40);
-    ctx.lineTo(-60,40);
-    ctx.closePath();
+    ctx.rect(
+        -50,
+        -40,
+        100,
+        80
+    );
 
-    ctx.strokeStyle="#6c4ee3";
-    ctx.lineWidth=7;
+    ctx.fillStyle = "#eeeaff";
+    ctx.fill();
 
+    ctx.strokeStyle = "#5b4bdb";
+    ctx.lineWidth = 6;
     ctx.stroke();
 
     ctx.restore();
@@ -1290,47 +1826,45 @@ function transform(){
 }
 
 
-/* NOTES */
+/* ================= NOTES ================= */
 
-function toggleNote(element){
+function toggleNote(element) {
 
-    const content=element.nextElementSibling;
-
-    content.classList.toggle("show");
+    element.nextElementSibling.classList.toggle("show");
 
 }
 
 
-/* QUIZ */
+/* ================= QUIZ ================= */
 
-const questions=[
+const questions = [
 
 {
-q:"An angle of 45° is a:",
-o:["Right angle","Acute angle","Obtuse angle","Straight angle"],
+q:"An angle of 45° is:",
+o:["Right","Acute","Obtuse","Straight"],
 a:1
 },
 
 {
-q:"How many degrees are in a right angle?",
+q:"A right angle measures:",
 o:["45°","90°","180°","360°"],
 a:1
 },
 
 {
-q:"How many sides does a triangle have?",
-o:["2","3","4","5"],
+q:"A triangle has:",
+o:["2 sides","3 sides","4 sides","5 sides"],
 a:1
 },
 
 {
-q:"The angles of a triangle add up to:",
+q:"Angles in a triangle total:",
 o:["90°","180°","270°","360°"],
 a:1
 },
 
 {
-q:"A triangle with three equal sides is:",
+q:"Three equal sides make a:",
 o:["Scalene","Isosceles","Equilateral","Right"],
 a:2
 },
@@ -1342,55 +1876,55 @@ a:1
 },
 
 {
-q:"The angles of a quadrilateral add up to:",
+q:"Angles in a quadrilateral total:",
 o:["180°","270°","360°","720°"],
 a:2
 },
 
 {
-q:"The distance from the centre of a circle to its edge is called:",
-o:["Diameter","Radius","Chord","Circumference"],
+q:"Distance from centre to circumference:",
+o:["Diameter","Radius","Chord","Perimeter"],
 a:1
 },
 
 {
-q:"The diameter of a circle is:",
-o:["Half the radius","Equal to radius","Twice the radius","Three times radius"],
+q:"Diameter is:",
+o:["Half radius","Equal radius","Twice radius","Three times radius"],
 a:2
 },
 
 {
-q:"The formula for rectangle area is:",
-o:["2(l+w)","l×w","πr²","l+w"],
+q:"Rectangle area is:",
+o:["2(L+W)","L×W","L+W","L×2"],
 a:1
 },
 
 {
 q:"Perimeter measures:",
-o:["Space inside","Distance around","Weight","Volume"],
+o:["Inside space","Distance around","Weight","Volume"],
 a:1
 },
 
 {
-q:"A shape flipped over a line undergoes:",
+q:"Flipping a shape is:",
 o:["Translation","Rotation","Reflection","Enlargement"],
 a:2
 },
 
 {
-q:"Turning a shape around a point is called:",
+q:"Turning a shape is:",
 o:["Reflection","Rotation","Translation","Division"],
 a:1
 },
 
 {
-q:"A straight angle measures:",
+q:"A straight angle is:",
 o:["45°","90°","180°","360°"],
 a:2
 },
 
 {
-q:"A complete angle measures:",
+q:"A complete angle is:",
 o:["90°","180°","270°","360°"],
 a:3
 }
@@ -1398,87 +1932,91 @@ a:3
 ];
 
 
-function loadQuiz(){
+function loadQuiz() {
 
-    const container=
-    document.getElementById("quizContainer");
+    const container =
+        document.getElementById("quizContainer");
 
-    container.innerHTML="";
+    questions.forEach((question,index) => {
 
-    questions.forEach((item,index)=>{
+        const box =
+            document.createElement("div");
 
-        const div=document.createElement("div");
+        box.className = "quiz-question";
 
-        div.className="quiz-question";
+        let html =
+            "<h3>" +
+            (index+1) +
+            ". " +
+            question.q +
+            "</h3>";
 
-        let html=
-        "<h3>"+(index+1)+". "+item.q+"</h3>";
+        question.o.forEach((option,i) => {
 
-        item.o.forEach((option,i)=>{
-
-            html+=`
-
-            <label class="option">
-
-            <input
-            type="radio"
-            name="q${index}"
-            value="${i}">
-
-            ${option}
-
-            </label>
-
+            html += `
+                <label class="option">
+                    <input
+                        type="radio"
+                        name="q${index}"
+                        value="${i}">
+                    ${option}
+                </label>
             `;
 
         });
 
-        div.innerHTML=html;
+        box.innerHTML = html;
 
-        container.appendChild(div);
+        container.appendChild(box);
 
     });
-
 }
 
 
-function checkQuiz(){
+function checkQuiz() {
 
-    let score=0;
+    let score = 0;
 
-    questions.forEach((question,index)=>{
+    questions.forEach((question,index) => {
 
-        const selected=
-        document.querySelector(
-            `input[name="q${index}"]:checked`
-        );
+        const selected =
+            document.querySelector(
+                `input[name="q${index}"]:checked`
+            );
 
-        const options=
-        document.querySelectorAll(
-            `input[name="q${index}"]`
-        );
+        const options =
+            document.querySelectorAll(
+                `input[name="q${index}"]`
+            );
 
-        options.forEach((input,i)=>{
+        options.forEach((input,i) => {
 
             input.parentElement.classList.remove(
                 "correct",
                 "wrong"
             );
 
-            if(i===question.a)
-                input.parentElement.classList.add("correct");
+            if(i === question.a) {
+
+                input.parentElement.classList.add(
+                    "correct"
+                );
+
+            }
 
         });
 
-        if(selected){
+        if(selected) {
 
-            if(Number(selected.value)===question.a){
+            if(Number(selected.value) === question.a) {
 
                 score++;
 
-            }else{
+            } else {
 
-                selected.parentElement.classList.add("wrong");
+                selected.parentElement.classList.add(
+                    "wrong"
+                );
 
             }
 
@@ -1486,67 +2024,64 @@ function checkQuiz(){
 
     });
 
-    document.getElementById("score").textContent=score;
+    document.getElementById("score").textContent =
+        score;
 
-    let message="Keep practising!";
+    let message;
 
-    if(score>=13)
-        message="🏆 Excellent! Geometry expert!";
+    if(score >= 13)
+        message = "🏆 Excellent!";
+    else if(score >= 10)
+        message = "🌟 Great work!";
+    else if(score >= 7)
+        message = "👍 Good effort!";
+    else
+        message = "📚 Keep practising!";
 
-    else if(score>=10)
-        message="🌟 Great work!";
-
-    else if(score>=7)
-        message="👍 Good effort!";
-
-    document.getElementById("quizResult").innerHTML=
-
-    `<div class="result">
-    You scored <b>${score}/15</b>.
-    <br>${message}
-    </div>`;
-
+    document.getElementById("quizResult").innerHTML =
+        `<div class="result">
+            You scored <b>${score}/15</b>.
+            <br>${message}
+        </div>`;
 }
 
 
-function resetQuiz(){
+function resetQuiz() {
 
     document
-    .querySelectorAll(".quiz-question input")
-    .forEach(input=>{
-
-        input.checked=false;
-
-    });
+        .querySelectorAll(".quiz-question input")
+        .forEach(input => {
+            input.checked = false;
+        });
 
     document
-    .querySelectorAll(".option")
-    .forEach(option=>{
+        .querySelectorAll(".option")
+        .forEach(option => {
+            option.classList.remove(
+                "correct",
+                "wrong"
+            );
+        });
 
-        option.classList.remove(
-            "correct",
-            "wrong"
-        );
+    document.getElementById("score").textContent =
+        "0";
 
-    });
-
-    document.getElementById("score").textContent="0";
-
-    document.getElementById("quizResult").innerHTML="";
-
+    document.getElementById("quizResult").innerHTML =
+        "";
 }
 
 
-/* INITIALISE */
+/* ================= START ================= */
 
 drawLine();
 drawAngle();
-triangle();
-rectangle();
-circle();
-area();
-symmetry();
-transform();
+drawTriangle();
+drawRectangle();
+drawCircle();
+drawArea();
+drawCuboid();
+drawSymmetry();
+drawTransform();
 loadQuiz();
 
 </script>
