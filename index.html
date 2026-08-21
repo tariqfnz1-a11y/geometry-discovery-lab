@@ -1,27 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0"
->
-
-<meta
-name="description"
-content="Interactive Geometry Discovery Lab"
->
-
-<title>Geometry Discovery Lab</title>
+<title>Interactive Geometry Explorer</title>
 
 <style>
-
-/* =====================================================
-   GLOBAL
-===================================================== */
 
 *{
     box-sizing:border-box;
@@ -29,1872 +14,307 @@ content="Interactive Geometry Discovery Lab"
     padding:0;
 }
 
-html{
-    scroll-behavior:smooth;
-}
-
 body{
-
-    font-family:
-    "Segoe UI",
-    Arial,
-    sans-serif;
-
-    color:#172033;
-
-    min-height:100vh;
-
-    background:
-    linear-gradient(
-        135deg,
-        #eff6ff,
-        #fdf2f8,
-        #ecfeff
-    );
-
+    font-family:Arial,Helvetica,sans-serif;
+    background:linear-gradient(135deg,#eef4ff,#f8f5ff);
+    color:#20243a;
+    line-height:1.6;
 }
-
-
-/* =====================================================
-   HEADER
-===================================================== */
 
 header{
-
-    position:relative;
-
-    overflow:hidden;
-
+    background:linear-gradient(135deg,#5b4bdb,#8e44ad);
     color:white;
-
+    padding:35px 20px;
     text-align:center;
-
-    padding:
-    32px 18px 45px;
-
-    background:
-    linear-gradient(
-        135deg,
-        #0369a1,
-        #4f46e5,
-        #9333ea
-    );
-
-}
-
-header:before{
-
-    content:"";
-
-    position:absolute;
-
-    width:350px;
-    height:350px;
-
-    border-radius:50%;
-
-    background:
-    rgba(255,255,255,.10);
-
-    left:-150px;
-    top:-180px;
-
-}
-
-header:after{
-
-    content:"";
-
-    position:absolute;
-
-    width:350px;
-    height:350px;
-
-    border-radius:50%;
-
-    background:
-    rgba(255,255,255,.10);
-
-    right:-150px;
-    bottom:-200px;
-
-}
-
-.header-content{
-
-    position:relative;
-
-    z-index:2;
-
-}
-
-.logo{
-
-    font-size:4rem;
-
 }
 
 header h1{
-
-    font-size:
-    clamp(2rem,6vw,4rem);
-
-    font-weight:900;
-
+    font-size:clamp(28px,5vw,48px);
+    margin-bottom:10px;
 }
 
 header p{
-
-    margin-top:8px;
-
-    font-size:
-    clamp(1rem,2.5vw,1.3rem);
-
+    font-size:18px;
 }
 
-
-/* =====================================================
-   NAV
-===================================================== */
-
 nav{
-
-    position:sticky;
-
-    top:0;
-
-    z-index:1000;
-
+    background:white;
     display:flex;
-
     flex-wrap:wrap;
-
     justify-content:center;
-
-    gap:7px;
-
-    padding:10px;
-
-    background:
-    rgba(17,24,39,.97);
-
-    box-shadow:
-    0 4px 18px
-    rgba(0,0,0,.18);
-
+    gap:8px;
+    padding:12px;
+    position:sticky;
+    top:0;
+    z-index:100;
+    box-shadow:0 3px 12px rgba(0,0,0,.12);
 }
 
 nav button{
-
     border:none;
-
-    color:white;
-
-    background:#374151;
-
-    padding:
-    10px 13px;
-
-    border-radius:10px;
-
+    background:#eeeaff;
+    color:#4b3fbb;
+    padding:10px 15px;
+    border-radius:20px;
     cursor:pointer;
-
-    font-size:.84rem;
-
-    font-weight:700;
-
-    transition:.2s;
-
+    font-weight:bold;
 }
 
 nav button:hover{
-
-    background:#2563eb;
-
-    transform:
-    translateY(-2px);
-
+    background:#5b4bdb;
+    color:white;
 }
 
-nav button.active-nav{
-
-    background:#7c3aed;
-
-}
-
-
-/* =====================================================
-   MAIN
-===================================================== */
-
-main{
-
-    max-width:1250px;
-
+.container{
+    width:min(1200px,94%);
     margin:auto;
-
-    padding:
-    25px 18px 60px;
-
 }
 
-.section{
-
-    display:none;
-
-    animation:
-    fadeIn .35s ease;
-
+section{
+    background:white;
+    margin:25px 0;
+    padding:25px;
+    border-radius:20px;
+    box-shadow:0 5px 20px rgba(0,0,0,.08);
 }
 
-.section.active{
-
-    display:block;
-
+section h2{
+    color:#5538b8;
+    margin-bottom:15px;
 }
 
-@keyframes fadeIn{
-
-    from{
-
-        opacity:0;
-
-        transform:
-        translateY(12px);
-
-    }
-
-    to{
-
-        opacity:1;
-
-        transform:
-        translateY(0);
-
-    }
-
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:20px;
 }
-
-
-/* =====================================================
-   CARDS
-===================================================== */
 
 .card{
-
-    background:
-    rgba(255,255,255,.97);
-
-    border-radius:20px;
-
-    padding:25px;
-
-    margin-bottom:22px;
-
-    box-shadow:
-    0 10px 30px
-    rgba(31,41,55,.10);
-
-}
-
-.card h2{
-
-    color:#4c1d95;
-
-    margin-bottom:14px;
-
-    font-size:
-    clamp(1.4rem,4vw,2rem);
-
+    background:#f7f8ff;
+    padding:20px;
+    border-radius:18px;
+    border:2px solid #eceaff;
 }
 
 .card h3{
-
-    color:#1d4ed8;
-
-    margin:
-    18px 0 8px;
-
+    color:#5b4bdb;
+    margin-bottom:10px;
 }
 
-
-/* =====================================================
-   HOME
-===================================================== */
-
-.welcome{
-
-    text-align:center;
-
-}
-
-.welcome h2{
-
-    color:#6d28d9;
-
-    font-size:
-    clamp(1.8rem,5vw,2.5rem);
-
-}
-
-.welcome-text{
-
-    max-width:850px;
-
-    margin:
-    10px auto 25px;
-
-    font-size:1.05rem;
-
-}
-
-.learning-grid{
-
-    display:grid;
-
-    grid-template-columns:
-    repeat(
-        auto-fit,
-        minmax(190px,1fr)
-    );
-
-    gap:18px;
-
-}
-
-.learning-card{
-
-    min-height:165px;
-
-    padding:22px;
-
-    border-radius:18px;
-
-    color:white;
-
-    cursor:pointer;
-
-    transition:
-    transform .25s,
-    box-shadow .25s;
-
-}
-
-.learning-card:hover{
-
-    transform:
-    translateY(-7px)
-    scale(1.02);
-
-    box-shadow:
-    0 15px 30px
-    rgba(0,0,0,.15);
-
-}
-
-.learning-card .icon{
-
-    font-size:3rem;
-
-    margin-bottom:8px;
-
-}
-
-.learning-card h3{
-
-    color:white;
-
-    margin:
-    0 0 6px;
-
-}
-
-.blue{
-
-    background:
-    linear-gradient(
-        135deg,
-        #0284c7,
-        #2563eb
-    );
-
-}
-
-.purple{
-
-    background:
-    linear-gradient(
-        135deg,
-        #7c3aed,
-        #a855f7
-    );
-
-}
-
-.green{
-
-    background:
-    linear-gradient(
-        135deg,
-        #059669,
-        #10b981
-    );
-
-}
-
-.orange{
-
-    background:
-    linear-gradient(
-        135deg,
-        #ea580c,
-        #f59e0b
-    );
-
-}
-
-.pink{
-
-    background:
-    linear-gradient(
-        135deg,
-        #db2777,
-        #f43f5e
-    );
-
-}
-
-.indigo{
-
-    background:
-    linear-gradient(
-        135deg,
-        #4338ca,
-        #6366f1
-    );
-
-}
-
-
-/* =====================================================
-   BUTTONS
-===================================================== */
-
-.btn{
-
-    border:none;
-
-    color:white;
-
-    padding:
-    12px 20px;
-
-    border-radius:12px;
-
-    cursor:pointer;
-
-    font-size:1rem;
-
-    font-weight:700;
-
-    margin:5px;
-
-    transition:.2s;
-
-}
-
-.btn:hover{
-
-    transform:
-    translateY(-2px);
-
-}
-
-.btn-blue{
-    background:#2563eb;
-}
-
-.btn-purple{
-    background:#7c3aed;
-}
-
-.btn-green{
-    background:#059669;
-}
-
-.btn-orange{
-    background:#ea580c;
-}
-
-.btn-pink{
-    background:#db2777;
-}
-
-.btn-gray{
-    background:#6b7280;
-}
-
-
-/* =====================================================
-   CONTROLS
-===================================================== */
-
-.control-grid{
-
-    display:grid;
-
-    grid-template-columns:
-    repeat(
-        auto-fit,
-        minmax(200px,1fr)
-    );
-
-    gap:18px;
-
-    margin:
-    20px 0;
-
-}
-
-.control{
-
-    background:#f8fafc;
-
-    padding:18px;
-
-    border-radius:15px;
-
-    border:
-    2px solid #e2e8f0;
-
-}
-
-.control label{
-
+canvas{
     display:block;
-
-    font-weight:700;
-
-    margin-bottom:8px;
-
+    width:100%;
+    max-width:600px;
+    height:auto;
+    background:white;
+    border:2px solid #ddd;
+    border-radius:15px;
+    margin:15px auto;
 }
 
-input[type="number"],
-input[type="text"],
-select{
-
+input[type=range]{
     width:100%;
+    accent-color:#6c4ee3;
+}
 
-    padding:12px;
-
-    border:
-    2px solid #cbd5e1;
-
+input[type=number]{
+    width:100%;
+    padding:10px;
+    border:2px solid #ddd;
     border-radius:10px;
-
-    font-size:1rem;
-
+    margin:5px 0 10px;
 }
 
-input[type="range"]{
-
-    width:100%;
-
-    accent-color:#7c3aed;
-
+button.action{
+    background:#6c4ee3;
+    color:white;
+    border:none;
+    padding:11px 18px;
+    border-radius:10px;
     cursor:pointer;
-
+    font-weight:bold;
+    margin:5px;
 }
 
-
-/* =====================================================
-   RESULT
-===================================================== */
+button.action:hover{
+    background:#4228b0;
+}
 
 .result{
-
-    background:
-    linear-gradient(
-        135deg,
-        #eff6ff,
-        #f5f3ff
-    );
-
-    border-left:
-    6px solid #2563eb;
-
-    padding:18px;
-
-    border-radius:12px;
-
-    margin-top:18px;
-
-    font-size:1.05rem;
-
+    background:#e9fff3;
+    border-left:5px solid #16a085;
+    padding:12px;
+    border-radius:8px;
+    margin-top:10px;
 }
 
-.highlight{
-
-    color:#7c3aed;
-
-    font-weight:900;
-
-}
-
-
-/* =====================================================
-   SVG LAB
-===================================================== */
-
-.canvas-box{
-
-    width:100%;
-
-    max-width:800px;
-
-    margin:
-    20px auto;
-
-    background:
-    linear-gradient(
-        135deg,
-        #f8fafc,
-        #eef2ff
-    );
-
-    border:
-    2px solid #c7d2fe;
-
-    border-radius:20px;
-
-    padding:10px;
-
-}
-
-svg{
-
-    display:block;
-
-    width:100%;
-
-    height:auto;
-
-}
-
-
-/* =====================================================
-   ANGLE LAB
-===================================================== */
-
-.angle-value{
-
-    text-align:center;
-
-    font-size:
-    clamp(3rem,10vw,6rem);
-
-    font-weight:900;
-
-    background:
-    linear-gradient(
-        135deg,
-        #2563eb,
-        #9333ea
-    );
-
-    -webkit-background-clip:text;
-
-    background-clip:text;
-
-    color:transparent;
-
-}
-
-
-/* =====================================================
-   SHAPE DISPLAY
-===================================================== */
-
-.shape-display{
-
-    min-height:320px;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    background:
-    linear-gradient(
-        135deg,
-        #eff6ff,
-        #faf5ff
-    );
-
-    border-radius:20px;
-
-    border:
-    2px solid #c7d2fe;
-
-}
-
-
-/* =====================================================
-   GRID
-===================================================== */
-
-.coordinate-grid{
-
-    width:100%;
-
-    max-width:650px;
-
-    aspect-ratio:1;
-
-    margin:
-    20px auto;
-
-    border:
-    2px solid #334155;
-
-    background-size:
-    10% 10%;
-
-    background-image:
-    linear-gradient(
-        #cbd5e1 1px,
-        transparent 1px
-    ),
-    linear-gradient(
-        90deg,
-        #cbd5e1 1px,
-        transparent 1px
-    );
-
-    position:relative;
-
-}
-
-.axis-x{
-
-    position:absolute;
-
-    top:50%;
-
-    left:0;
-
-    width:100%;
-
-    height:2px;
-
-    background:#dc2626;
-
-}
-
-.axis-y{
-
-    position:absolute;
-
-    left:50%;
-
-    top:0;
-
-    width:2px;
-
-    height:100%;
-
-    background:#dc2626;
-
-}
-
-.coordinate-point{
-
-    position:absolute;
-
-    width:20px;
-
-    height:20px;
-
-    border-radius:50%;
-
-    background:#7c3aed;
-
-    border:
-    3px solid white;
-
-    box-shadow:
-    0 2px 8px
-    rgba(0,0,0,.25);
-
-    transform:
-    translate(-50%,-50%);
-
-}
-
-
-/* =====================================================
-   SHAPE CARDS
-===================================================== */
-
-.shape-grid{
-
-    display:grid;
-
-    grid-template-columns:
-    repeat(
-        auto-fit,
-        minmax(180px,1fr)
-    );
-
-    gap:16px;
-
-}
-
-.shape-card{
-
-    background:
-    #f8fafc;
-
-    border:
-    2px solid #e2e8f0;
-
-    border-radius:16px;
-
-    padding:18px;
-
-    text-align:center;
-
-    cursor:pointer;
-
-    transition:.2s;
-
-}
-
-.shape-card:hover{
-
-    border-color:#818cf8;
-
-    transform:
-    translateY(-4px);
-
-}
-
-.shape-icon{
-
-    font-size:4rem;
-
-}
-
-
-/* =====================================================
-   SYMMETRY
-===================================================== */
-
-.symmetry-grid{
-
-    display:grid;
-
-    grid-template-columns:
-    repeat(
-        auto-fit,
-        minmax(200px,1fr)
-    );
-
-    gap:18px;
-
-}
-
-.symmetry-card{
-
-    text-align:center;
-
-    background:#f8fafc;
-
-    border-radius:18px;
-
-    padding:18px;
-
-}
-
-.symmetry-shape{
-
-    font-size:7rem;
-
-    line-height:1;
-
-    margin:15px;
-
-}
-
-
-/* =====================================================
-   GAME
-===================================================== */
-
-.match-grid{
-
-    display:grid;
-
-    grid-template-columns:
-    repeat(
-        auto-fit,
-        minmax(150px,1fr)
-    );
-
-    gap:15px;
-
-    margin-top:20px;
-
-}
-
-.match-card{
-
-    min-height:110px;
-
-    border:none;
-
-    border-radius:16px;
-
-    background:
-    linear-gradient(
-        135deg,
-        #2563eb,
-        #7c3aed
-    );
-
-    color:white;
-
-    font-size:1.1rem;
-
-    font-weight:800;
-
-    cursor:pointer;
-
-    box-shadow:
-    0 6px 15px
-    rgba(0,0,0,.12);
-
-    transition:.2s;
-
-}
-
-.match-card:hover{
-
-    transform:
-    translateY(-4px);
-
-}
-
-.match-card.correct{
-
-    background:
-    linear-gradient(
-        135deg,
-        #059669,
-        #10b981
-    );
-
-}
-
-.match-card.wrong{
-
-    background:
-    linear-gradient(
-        135deg,
-        #dc2626,
-        #f43f5e
-    );
-
-}
-
-
-/* =====================================================
-   NOTES
-===================================================== */
-
-.definition{
-
-    background:
-    linear-gradient(
-        135deg,
-        #eff6ff,
-        #f5f3ff
-    );
-
-    border-left:
-    6px solid #6366f1;
-
-    padding:18px;
-
-    border-radius:12px;
-
-    margin:15px 0;
-
-}
-
-.notes-list{
-
-    padding-left:22px;
-
-}
-
-.notes-list li{
-
-    margin:
-    10px 0;
-
-}
-
-
-/* =====================================================
-   PROBLEMS
-===================================================== */
-
-.problem{
-
-    background:
-    linear-gradient(
-        135deg,
-        #fff7ed,
-        #fef3c7
-    );
-
-    border:
-    2px solid #fdba74;
-
-    padding:20px;
-
-    border-radius:16px;
-
-    margin:
-    15px 0;
-
-}
-
-.problem-answer{
-
-    display:none;
-
-    background:#ecfdf5;
-
-    border-left:
-    5px solid #059669;
-
-    padding:15px;
-
-    margin-top:12px;
-
-    border-radius:10px;
-
-}
-
-
-/* =====================================================
-   QUIZ
-===================================================== */
-
-.quiz-header{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    flex-wrap:wrap;
-
-    gap:10px;
-
-}
-
-.score-badge{
-
-    background:
-    linear-gradient(
-        135deg,
-        #f59e0b,
-        #ea580c
-    );
-
-    color:white;
-
-    padding:
-    10px 18px;
-
-    border-radius:30px;
-
-    font-weight:800;
-
-}
-
-.progress-container{
-
-    height:14px;
-
-    width:100%;
-
-    background:#e5e7eb;
-
-    border-radius:20px;
-
-    overflow:hidden;
-
-    margin:
-    15px 0 25px;
-
-}
-
-.progress-bar{
-
-    height:100%;
-
-    width:0%;
-
-    background:
-    linear-gradient(
-        90deg,
-        #2563eb,
-        #7c3aed,
-        #db2777
-    );
-
-    transition:.3s;
-
+.info{
+    background:#fff8dc;
+    border-left:5px solid #f1c40f;
+    padding:12px;
+    border-radius:8px;
+    margin:10px 0;
 }
 
 .quiz-question{
-
-    background:#f8fafc;
-
+    background:#f8f5ff;
     padding:20px;
-
-    border-radius:16px;
-
+    border-radius:15px;
     margin-bottom:18px;
-
-    border:
-    2px solid #e2e8f0;
-
-}
-
-.quiz-question h3{
-
-    color:#172033;
-
-    margin-top:0;
-
 }
 
 .option{
-
     display:block;
-
-    padding:12px;
-
-    margin:8px 0;
-
     background:white;
-
-    border:
-    2px solid #e5e7eb;
-
+    border:2px solid #ddd;
+    padding:10px;
+    margin:7px 0;
     border-radius:10px;
-
     cursor:pointer;
-
 }
 
 .option:hover{
-
-    background:#eff6ff;
-
-    border-color:#60a5fa;
-
+    border-color:#6c4ee3;
+    background:#f0edff;
 }
 
-.option input{
-
-    width:auto;
-
-    margin-right:8px;
-
+.correct{
+    background:#d9fbe8!important;
+    border-color:#16a085!important;
 }
 
-.quiz-feedback{
-
-    margin-top:8px;
-
-    font-weight:700;
-
+.wrong{
+    background:#ffe0e0!important;
+    border-color:#e74c3c!important;
 }
 
-.correct-answer{
-
-    color:#059669;
-
+.score{
+    font-size:22px;
+    font-weight:bold;
+    color:#5b4bdb;
+    margin:15px 0;
 }
 
-.wrong-answer{
-
-    color:#dc2626;
-
+.note{
+    border:1px solid #ddd;
+    border-radius:12px;
+    margin:10px 0;
+    overflow:hidden;
 }
 
+.note-title{
+    padding:15px;
+    background:#eeeaff;
+    font-weight:bold;
+    cursor:pointer;
+}
 
-/* =====================================================
-   FINAL SCORE
-===================================================== */
-
-.final-score{
-
+.note-content{
+    padding:15px;
     display:none;
-
-    text-align:center;
-
-    padding:30px;
-
-    margin-top:20px;
-
-    border-radius:20px;
-
-    background:
-    linear-gradient(
-        135deg,
-        #dbeafe,
-        #ede9fe,
-        #fce7f3
-    );
-
 }
 
-.final-score h2{
-
-    color:#7c3aed;
-
+.note-content.show{
+    display:block;
 }
-
-.score-number{
-
-    font-size:4rem;
-
-    font-weight:900;
-
-    color:#ea580c;
-
-}
-
-
-/* =====================================================
-   FOOTER
-===================================================== */
 
 footer{
-
-    background:#111827;
-
-    color:white;
-
     text-align:center;
-
-    padding:30px 15px;
-
+    background:#29233f;
+    color:white;
+    padding:30px;
+    margin-top:40px;
 }
 
-footer strong{
+@media(max-width:600px){
 
-    color:#93c5fd;
-
-}
-
-
-/* =====================================================
-   CONFETTI
-===================================================== */
-
-.confetti{
-
-    position:fixed;
-
-    top:-20px;
-
-    z-index:9999;
-
-    animation:
-    fall 3s linear forwards;
-
-}
-
-@keyframes fall{
-
-    to{
-
-        transform:
-        translateY(110vh)
-        rotate(720deg);
-
-        opacity:0;
-
+    section{
+        padding:16px;
     }
 
-}
-
-
-/* =====================================================
-   MOBILE
-===================================================== */
-
-@media(max-width:700px){
-
-    main{
-
-        padding:
-        15px 10px 40px;
-
-    }
-
-    .card{
-
-        padding:18px;
-
+    nav{
+        position:relative;
     }
 
     nav button{
-
-        flex:
-        1 1 30%;
-
-        font-size:.74rem;
-
-        padding:
-        9px 6px;
-
+        font-size:13px;
+        padding:8px 10px;
     }
 
 }
 
 </style>
-
 </head>
-
 
 <body>
 
-
-<!-- =====================================================
-     HEADER
-===================================================== -->
-
 <header>
 
-<div class="header-content">
+<h1>📐 Interactive Geometry Explorer</h1>
 
-<div class="logo">
-📐
-</div>
-
-<h1>
-Geometry Discovery Lab
-</h1>
-
-<p>
-Explore • Measure • Build • Discover
-</p>
-
-</div>
+<p>Explore • Manipulate • Calculate • Test Yourself</p>
 
 </header>
 
 
-<!-- =====================================================
-     NAVIGATION
-===================================================== -->
-
 <nav>
 
-<button
-class="active-nav"
-onclick="showSection('home',this)"
->
-🏠 Home
-</button>
-
-<button
-onclick="showSection('notes',this)"
->
-📘 Notes
-</button>
-
-<button
-onclick="showSection('angles',this)"
->
-📐 Angles
-</button>
-
-<button
-onclick="showSection('triangles',this)"
->
-🔺 Triangles
-</button>
-
-<button
-onclick="showSection('quadrilaterals',this)"
->
-⬛ Quadrilaterals
-</button>
-
-<button
-onclick="showSection('perimeter',this)"
->
-📏 Perimeter
-</button>
-
-<button
-onclick="showSection('area',this)"
->
-🟦 Area
-</button>
-
-<button
-onclick="showSection('circle',this)"
->
-⭕ Circle
-</button>
-
-<button
-onclick="showSection('solid',this)"
->
-🧊 3D Shapes
-</button>
-
-<button
-onclick="showSection('volume',this)"
->
-📦 Volume
-</button>
-
-<button
-onclick="showSection('symmetry',this)"
->
-🔄 Symmetry
-</button>
-
-<button
-onclick="showSection('coordinates',this)"
->
-📍 Coordinates
-</button>
-
-<button
-onclick="showSection('game',this)"
->
-🧩 Game
-</button>
-
-<button
-onclick="showSection('problems',this)"
->
-💡 Problems
-</button>
-
-<button
-onclick="showSection('quiz',this)"
->
-🏆 Quiz
-</button>
+<button onclick="go('lines')">📏 Lines</button>
+<button onclick="go('angles')">📐 Angles</button>
+<button onclick="go('triangles')">🔺 Triangles</button>
+<button onclick="go('quadrilaterals')">▭ Quadrilaterals</button>
+<button onclick="go('circles')">🔵 Circles</button>
+<button onclick="go('areas')">📊 Areas</button>
+<button onclick="go('symmetry')">🪞 Symmetry</button>
+<button onclick="go('transform')">🔄 Transform</button>
+<button onclick="go('quiz')">🧩 Quiz</button>
+<button onclick="go('notes')">📚 Notes</button>
 
 </nav>
 
 
-<main>
+<div class="container">
 
 
-<!-- =====================================================
-     HOME
-===================================================== -->
+<!-- LINES -->
 
-<section
-id="home"
-class="section active"
->
+<section id="lines">
 
-<div class="card welcome">
+<h2>📏 Interactive Lines & Line Segments</h2>
 
-<h2>
-🌟 Welcome to the Geometry Discovery Lab!
-</h2>
-
-<p class="welcome-text">
-
-Geometry is the study of shapes, sizes,
-positions, angles, distances and space.
-
-Explore the simulations below and discover
-how geometry works visually and interactively.
-
-</p>
-
-
-<div class="learning-grid">
-
-
-<div
-class="learning-card blue"
-onclick="goTo('angles')"
->
-
-<div class="icon">
-📐
-</div>
-
-<h3>
-Angle Explorer
-</h3>
-
-<p>
-Change an angle and identify its type.
-</p>
-
-</div>
-
-
-<div
-class="learning-card purple"
-onclick="goTo('triangles')"
->
-
-<div class="icon">
-🔺
-</div>
-
-<h3>
-Triangle Lab
-</h3>
-
-<p>
-Explore different triangle types.
-</p>
-
-</div>
-
-
-<div
-class="learning-card green"
-onclick="goTo('area')"
->
-
-<div class="icon">
-🟦
-</div>
-
-<h3>
-Area Lab
-</h3>
-
-<p>
-Change dimensions and see area.
-</p>
-
-</div>
-
-
-<div
-class="learning-card orange"
-onclick="goTo('circle')"
->
-
-<div class="icon">
-⭕
-</div>
-
-<h3>
-Circle Lab
-</h3>
-
-<p>
-Explore radius, diameter and circumference.
-</p>
-
-</div>
-
-
-<div
-class="learning-card pink"
-onclick="goTo('coordinates')"
->
-
-<div class="icon">
-📍
-</div>
-
-<h3>
-Coordinate Plane
-</h3>
-
-<p>
-Plot points on a coordinate grid.
-</p>
-
-</div>
-
-
-<div
-class="learning-card indigo"
-onclick="goTo('quiz')"
->
-
-<div class="icon">
-🏆
-</div>
-
-<h3>
-15-MCQ Challenge
-</h3>
-
-<p>
-Test your geometry knowledge.
-</p>
-
-</div>
-
-</div>
-
-</div>
-
+<div class="grid">
 
 <div class="card">
 
-<h2>
-🎯 Geometry Learning Goals
-</h2>
+<h3>Move the Point</h3>
 
-<ul class="notes-list">
+<canvas id="lineCanvas" width="500" height="220"></canvas>
 
-<li>
-Identify and classify common geometric shapes.
-</li>
+<p>
+Move the slider to change the position of point B.
+</p>
 
-<li>
-Understand different types of angles.
-</li>
+<input
+type="range"
+id="lineSlider"
+min="50"
+max="450"
+value="350"
+oninput="drawLine()">
 
-<li>
-Explore properties of triangles and quadrilaterals.
-</li>
-
-<li>
-Calculate perimeter and area.
-</li>
-
-<li>
-Understand circles and their measurements.
-</li>
-
-<li>
-Explore three-dimensional shapes and volume.
-</li>
-
-<li>
-Identify lines of symmetry.
-</li>
-
-<li>
-Plot points using coordinates.
-</li>
-
-</ul>
+<div class="result" id="lineResult"></div>
 
 </div>
-
-</section>
-
-
-<!-- =====================================================
-     NOTES
-===================================================== -->
-
-<section
-id="notes"
-class="section"
->
 
 <div class="card">
 
-<h2>
-📘 Geometry Study Notes
-</h2>
+<h3>Key Concepts</h3>
 
+<p><b>Line:</b> Extends infinitely in both directions.</p>
 
-<div class="definition">
+<p><b>Line segment:</b> Has two endpoints.</p>
 
-<strong>
-Geometry
-</strong>
-is the branch of mathematics that studies
-shapes, sizes, positions, angles and space.
-
-</div>
-
-
-<h3>
-📐 Angles
-</h3>
-
-<ul class="notes-list">
-
-<li>
-Acute angle: less than 90°.
-</li>
-
-<li>
-Right angle: exactly 90°.
-</li>
-
-<li>
-Obtuse angle: greater than 90° but less than 180°.
-</li>
-
-<li>
-Straight angle: exactly 180°.
-</li>
-
-<li>
-Reflex angle: greater than 180° but less than 360°.
-</li>
-
-</ul>
-
-
-<h3>
-🔺 Triangles
-</h3>
-
-<ul class="notes-list">
-
-<li>
-Equilateral triangle — three equal sides.
-</li>
-
-<li>
-Isosceles triangle — two equal sides.
-</li>
-
-<li>
-Scalene triangle — all sides different.
-</li>
-
-<li>
-Right triangle — contains one right angle.
-</li>
-
-</ul>
-
-
-<h3>
-⬛ Quadrilaterals
-</h3>
-
-<ul class="notes-list">
-
-<li>
-Square
-</li>
-
-<li>
-Rectangle
-</li>
-
-<li>
-Parallelogram
-</li>
-
-<li>
-Rhombus
-</li>
-
-<li>
-Trapezium
-</li>
-
-</ul>
-
-
-<h3>
-📏 Perimeter</h3>
-
-<div class="definition">
-
-<strong>
-Perimeter = total distance around a shape
-</strong>
-
-</div>
-
-
-<h3>
-🟦 Area</h3>
-
-<div class="definition">
-
-Rectangle:
-
-<br>
-
-<strong>
-Area = length × width
-</strong>
-
-</div>
-
-
-<h3>
-⭕ Circle</h3>
-
-<div class="definition">
-
-Diameter:
-
-<br>
-
-<strong>
-d = 2r
-</strong>
-
-<br><br>
-
-Circumference:
-
-<br>
-
-<strong>
-C = 2πr
-</strong>
-
-<br><br>
-
-Area:
-
-<br>
-
-<strong>
-A = πr²
-</strong>
-
-</div>
-
-
-<h3>
-📦 Volume</h3>
-
-<div class="definition">
-
-Cuboid:
-
-<br>
-
-<strong>
-Volume = length × width × height
-</strong>
+<p><b>Ray:</b> Has one endpoint and extends infinitely in one direction.</p>
 
 </div>
 
@@ -1903,368 +323,49 @@ Volume = length × width × height
 </section>
 
 
-<!-- =====================================================
-     ANGLE EXPLORER
-===================================================== -->
+<!-- ANGLES -->
 
-<section
-id="angles"
-class="section"
->
+<section id="angles">
+
+<h2>📐 Interactive Angle Explorer</h2>
+
+<div class="grid">
 
 <div class="card">
 
-<h2>
-📐 Interactive Angle Explorer
-</h2>
-
-<p>
-Move the slider to change the angle.
-</p>
-
-
-<div class="control">
+<canvas id="angleCanvas" width="500" height="300"></canvas>
 
 <label>
-
 Angle:
-
-<span
-id="angleValue"
-class="highlight"
->
-45
-</span>°
-
+<strong><span id="angleValue">60</span>°</strong>
 </label>
 
 <input
 type="range"
 id="angleSlider"
-min="1"
-max="359"
-value="45"
-oninput="updateAngle()"
->
+min="0"
+max="360"
+value="60"
+oninput="drawAngle()">
+
+<div class="result" id="angleResult"></div>
 
 </div>
-
-
-<div
-id="angleNumber"
-class="angle-value"
->
-45°
-</div>
-
-
-<div class="canvas-box">
-
-<svg
-viewBox="0 0 700 400"
-id="angleSVG"
->
-
-<line
-x1="350"
-y1="300"
-x2="600"
-y2="300"
-stroke="#2563eb"
-stroke-width="8"
-stroke-linecap="round"
-/>
-
-<line
-id="angleRay"
-x1="350"
-y1="300"
-x2="520"
-y2="150"
-stroke="#7c3aed"
-stroke-width="8"
-stroke-linecap="round"
-/>
-
-<circle
-cx="350"
-cy="300"
-r="12"
-fill="#db2777"
-/>
-
-<path
-id="angleArc"
-d=""
-fill="none"
-stroke="#f59e0b"
-stroke-width="6"
-/>
-
-</svg>
-
-</div>
-
-
-<div
-id="angleResult"
-class="result"
->
-</div>
-
-</div>
-
-</section>
-
-
-<!-- =====================================================
-     TRIANGLES
-===================================================== -->
-
-<section
-id="triangles"
-class="section"
->
 
 <div class="card">
 
-<h2>
-🔺 Interactive Triangle Explorer
-</h2>
+<h3>Angle Types</h3>
 
+<ul>
 
-<div class="control-grid">
+<li>Acute: less than 90°</li>
+<li>Right: exactly 90°</li>
+<li>Obtuse: between 90° and 180°</li>
+<li>Straight: exactly 180°</li>
+<li>Reflex: between 180° and 360°</li>
+<li>Complete: exactly 360°</li>
 
-<div class="control">
-
-<label>
-Side A
-</label>
-
-<input
-type="range"
-id="sideA"
-min="2"
-max="12"
-value="6"
-oninput="updateTriangle()"
->
-
-<span id="sideAValue">
-6
-</span>
-
-</div>
-
-
-<div class="control">
-
-<label>
-Side B
-</label>
-
-<input
-type="range"
-id="sideB"
-min="2"
-max="12"
-value="6"
-oninput="updateTriangle()"
->
-
-<span id="sideBValue">
-6
-</span>
-
-</div>
-
-
-<div class="control">
-
-<label>
-Side C
-</label>
-
-<input
-type="range"
-id="sideC"
-min="2"
-max="12"
-value="6"
-oninput="updateTriangle()"
->
-
-<span id="sideCValue">
-6
-</span>
-
-</div>
-
-</div>
-
-
-<div class="shape-display">
-
-<svg
-viewBox="0 0 500 320"
-width="100%"
->
-
-<polygon
-id="triangleShape"
-points="250,40 80,270 420,270"
-fill="#c4b5fd"
-stroke="#4f46e5"
-stroke-width="8"
-/>
-
-</svg>
-
-</div>
-
-
-<div
-id="triangleResult"
-class="result"
->
-</div>
-
-</div>
-
-</section>
-
-
-<!-- =====================================================
-     QUADRILATERALS
-===================================================== -->
-
-<section
-id="quadrilaterals"
-class="section"
->
-
-<div class="card">
-
-<h2>
-⬛ Quadrilateral Explorer
-</h2>
-
-<p>
-Select a shape to learn about its properties.
-</p>
-
-
-<div class="shape-grid">
-
-
-<div
-class="shape-card"
-onclick="showQuad('Square')"
->
-
-<div class="shape-icon">
-⬜
-</div>
-
-<h3>
-Square
-</h3>
-
-<p>
-4 equal sides
-</p>
-
-</div>
-
-
-<div
-class="shape-card"
-onclick="showQuad('Rectangle')"
->
-
-<div class="shape-icon">
-▭
-</div>
-
-<h3>
-Rectangle
-</h3>
-
-<p>
-Opposite sides equal
-</p>
-
-</div>
-
-
-<div
-class="shape-card"
-onclick="showQuad('Rhombus')"
->
-
-<div class="shape-icon">
-◇
-</div>
-
-<h3>
-Rhombus
-</h3>
-
-<p>
-4 equal sides
-</p>
-
-</div>
-
-
-<div
-class="shape-card"
-onclick="showQuad('Parallelogram')"
->
-
-<div class="shape-icon">
-▱
-</div>
-
-<h3>
-Parallelogram
-</h3>
-
-<p>
-Opposite sides parallel
-</p>
-
-</div>
-
-
-<div
-class="shape-card"
-onclick="showQuad('Trapezium')"
->
-
-<div class="shape-icon">
-⏢
-</div>
-
-<h3>
-Trapezium
-</h3>
-
-<p>
-One pair of parallel sides
-</p>
-
-</div>
-
-</div>
-
-
-<div
-id="quadResult"
-class="result"
->
-
-Choose a quadrilateral above.
+</ul>
 
 </div>
 
@@ -2273,124 +374,100 @@ Choose a quadrilateral above.
 </section>
 
 
-<!-- =====================================================
-     PERIMETER
-===================================================== -->
+<!-- TRIANGLES -->
 
-<section
-id="perimeter"
-class="section"
->
+<section id="triangles">
+
+<h2>🔺 Interactive Triangle Explorer</h2>
+
+<div class="grid">
 
 <div class="card">
 
-<h2>
-📏 Perimeter Lab
-</h2>
+<h3>Change the Sides</h3>
 
-<p>
-Change the length and width of a rectangle.
-</p>
+<label>Side A</label>
+<input type="number" id="sideA" value="5" min="1" oninput="triangle()">
 
+<label>Side B</label>
+<input type="number" id="sideB" value="5" min="1" oninput="triangle()">
 
-<div class="control-grid">
+<label>Side C</label>
+<input type="number" id="sideC" value="5" min="1" oninput="triangle()">
 
-<div class="control">
+<canvas id="triangleCanvas" width="500" height="300"></canvas>
 
-<label>
-Length
-</label>
-
-<input
-type="range"
-id="perLength"
-min="1"
-max="30"
-value="10"
-oninput="updatePerimeter()"
->
-
-<span id="perLengthValue">
-10
-</span>
+<div class="result" id="triangleResult"></div>
 
 </div>
 
+<div class="card">
 
-<div class="control">
+<h3>Triangle Types</h3>
 
-<label>
-Width
-</label>
+<p><b>Equilateral:</b> All three sides equal.</p>
+
+<p><b>Isosceles:</b> Two sides equal.</p>
+
+<p><b>Scalene:</b> All sides different.</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- QUADRILATERALS -->
+
+<section id="quadrilaterals">
+
+<h2>▭ Interactive Quadrilateral Explorer</h2>
+
+<div class="grid">
+
+<div class="card">
+
+<h3>Rectangle</h3>
+
+<label>Length</label>
 
 <input
 type="range"
-id="perWidth"
-min="1"
+id="rectLength"
+min="2"
 max="20"
+value="10"
+oninput="rectangle()">
+
+<label>Width</label>
+
+<input
+type="range"
+id="rectWidth"
+min="2"
+max="15"
 value="6"
-oninput="updatePerimeter()"
->
+oninput="rectangle()">
 
-<span id="perWidthValue">
-6
-</span>
+<canvas id="rectCanvas" width="500" height="300"></canvas>
 
-</div>
+<div class="result" id="rectResult"></div>
 
 </div>
 
+<div class="card">
 
-<div class="shape-display">
+<h3>Explore</h3>
 
-<svg
-viewBox="0 0 600 350"
->
+<p>Change the length and width.</p>
 
-<rect
-id="perimeterRect"
-x="100"
-y="70"
-width="400"
-height="210"
-rx="10"
-fill="#bfdbfe"
-stroke="#2563eb"
-stroke-width="7"
-/>
+<p>Observe how perimeter and area change.</p>
 
-<text
-x="300"
-y="50"
-text-anchor="middle"
-font-size="24"
-fill="#172033"
-id="perLengthText"
->
-10
-</text>
+<p><b>Area = length × width</b></p>
 
-<text
-x="540"
-y="180"
-text-anchor="middle"
-font-size="24"
-fill="#172033"
-id="perWidthText"
-transform="rotate(90 540 180)"
->
-6
-</text>
+<p><b>Perimeter = 2(length + width)</b></p>
 
-</svg>
-
-</div>
-
-
-<div
-id="perimeterResult"
-class="result"
->
 </div>
 
 </div>
@@ -2398,33 +475,64 @@ class="result"
 </section>
 
 
-<!-- =====================================================
-     AREA
-===================================================== -->
+<!-- CIRCLE -->
 
-<section
-id="area"
-class="section"
->
+<section id="circles">
+
+<h2>🔵 Interactive Circle Explorer</h2>
+
+<div class="grid">
 
 <div class="card">
 
-<h2>
-🟦 Interactive Area Lab
-</h2>
+<h3>Change Radius</h3>
 
-<p>
-Change the dimensions and see the area change.
-</p>
+<canvas id="circleCanvas" width="500" height="300"></canvas>
+
+<input
+type="range"
+id="radiusSlider"
+min="1"
+max="100"
+value="50"
+oninput="circle()">
+
+<div class="result" id="circleResult"></div>
+
+</div>
+
+<div class="card">
+
+<h3>Circle Formulas</h3>
+
+<p><b>Diameter = 2r</b></p>
+
+<p><b>Circumference = 2πr</b></p>
+
+<p><b>Area = πr²</b></p>
+
+<p>Use π ≈ 3.14159</p>
+
+</div>
+
+</div>
+
+</section>
 
 
-<div class="control-grid">
+<!-- AREAS -->
 
-<div class="control">
+<section id="areas">
 
-<label>
-Length
-</label>
+<h2>📊 Interactive Area Explorer</h2>
+
+<div class="grid">
+
+<div class="card">
+
+<h3>Rectangle Area</h3>
+
+<label>Length</label>
 
 <input
 type="range"
@@ -2432,21 +540,9 @@ id="areaLength"
 min="1"
 max="20"
 value="8"
-oninput="updateArea()"
->
+oninput="area()">
 
-<span id="areaLengthValue">
-8
-</span>
-
-</div>
-
-
-<div class="control">
-
-<label>
-Width
-</label>
+<label>Width</label>
 
 <input
 type="range"
@@ -2454,33 +550,26 @@ id="areaWidth"
 min="1"
 max="15"
 value="5"
-oninput="updateArea()"
->
+oninput="area()">
 
-<span id="areaWidthValue">
-5
-</span>
+<canvas id="areaCanvas" width="500" height="250"></canvas>
 
-</div>
+<div class="result" id="areaResult"></div>
 
 </div>
 
+<div class="card">
 
-<div
-id="areaGrid"
-class="coordinate-grid"
-style="
-max-width:500px;
-aspect-ratio:1.6;
-"
->
-</div>
+<h3>Think & Predict</h3>
 
+<p>
+What happens to the area if the length doubles?
+</p>
 
-<div
-id="areaResult"
-class="result"
->
+<p>
+Try it using the sliders.
+</p>
+
 </div>
 
 </div>
@@ -2488,102 +577,42 @@ class="result"
 </section>
 
 
-<!-- =====================================================
-     CIRCLE
-===================================================== -->
+<!-- SYMMETRY -->
 
-<section
-id="circle"
-class="section"
->
+<section id="symmetry">
+
+<h2>🪞 Interactive Symmetry Explorer</h2>
+
+<div class="grid">
 
 <div class="card">
 
-<h2>
-⭕ Interactive Circle Lab
-</h2>
-
-
-<div class="control">
-
-<label>
-
-Radius:
-
-<span
-id="radiusValue"
-class="highlight"
->
-5
-</span>
-
-units
-
-</label>
+<canvas id="symmetryCanvas" width="500" height="300"></canvas>
 
 <input
 type="range"
-id="radiusSlider"
-min="1"
-max="20"
-value="5"
-oninput="updateCircle()"
->
+id="symmetrySlider"
+min="0"
+max="2"
+value="0"
+oninput="symmetry()">
+
+<div class="result" id="symmetryResult"></div>
 
 </div>
 
+<div class="card">
 
-<div class="canvas-box">
+<h3>Lines of Symmetry</h3>
 
-<svg
-viewBox="0 0 600 400"
->
+<p>
+A line of symmetry divides a shape into two matching halves.
+</p>
 
-<circle
-id="circleShape"
-cx="300"
-cy="200"
-r="100"
-fill="#ddd6fe"
-stroke="#7c3aed"
-stroke-width="8"
-/>
+<p>
+Try different symmetry positions.
+</p>
 
-<line
-id="radiusLine"
-x1="300"
-y1="200"
-x2="400"
-y2="200"
-stroke="#dc2626"
-stroke-width="6"
-/>
-
-<circle
-cx="300"
-cy="200"
-r="8"
-fill="#dc2626"
-/>
-
-<text
-id="radiusText"
-x="350"
-y="185"
-font-size="22"
->
-r
-</text>
-
-</svg>
-
-</div>
-
-
-<div
-id="circleResult"
-class="result"
->
 </div>
 
 </div>
@@ -2591,372 +620,55 @@ class="result"
 </section>
 
 
-<!-- =====================================================
-     3D SHAPES
-===================================================== -->
+<!-- TRANSFORMATIONS -->
 
-<section
-id="solid"
-class="section"
->
+<section id="transform">
 
-<div class="card">
+<h2>🔄 Interactive Transformations</h2>
 
-<h2>
-🧊 3D Shape Explorer
-</h2>
-
-<p>
-Select a three-dimensional shape.
-</p>
-
-
-<div class="shape-grid">
-
-
-<div
-class="shape-card"
-onclick="showSolid('Cube')"
->
-
-<div class="shape-icon">
-🧊
-</div>
-
-<h3>
-Cube
-</h3>
-
-<p>
-6 square faces
-</p>
-
-</div>
-
-
-<div
-class="shape-card"
-onclick="showSolid('Cuboid')"
->
-
-<div class="shape-icon">
-📦
-</div>
-
-<h3>
-Cuboid
-</h3>
-
-<p>
-6 rectangular faces
-</p>
-
-</div>
-
-
-<div
-class="shape-card"
-onclick="showSolid('Cylinder')"
->
-
-<div class="shape-icon">
-🥫
-</div>
-
-<h3>
-Cylinder
-</h3>
-
-<p>
-2 circular faces
-</p>
-
-</div>
-
-
-<div
-class="shape-card"
-onclick="showSolid('Cone')"
->
-
-<div class="shape-icon">
-🔺
-</div>
-
-<h3>
-Cone
-</h3>
-
-<p>
-1 circular base
-</p>
-
-</div>
-
-
-<div
-class="shape-card"
-onclick="showSolid('Sphere')"
->
-
-<div class="shape-icon">
-⚽
-</div>
-
-<h3>
-Sphere
-</h3>
-
-<p>
-No flat faces
-</p>
-
-</div>
-
-</div>
-
-
-<div
-id="solidResult"
-class="result"
->
-</div>
-
-</div>
-
-</section>
-
-
-<!-- =====================================================
-     VOLUME
-===================================================== -->
-
-<section
-id="volume"
-class="section"
->
+<div class="grid">
 
 <div class="card">
 
-<h2>
-📦 Interactive Volume Lab
-</h2>
+<canvas id="transformCanvas" width="500" height="300"></canvas>
 
-
-<div class="control-grid">
-
-
-<div class="control">
-
-<label>
-Length
-</label>
+<label>Rotation</label>
 
 <input
 type="range"
-id="volLength"
-min="1"
-max="20"
-value="8"
-oninput="updateVolume()"
->
+id="rotationSlider"
+min="0"
+max="360"
+value="0"
+oninput="transform()">
 
-<span id="volLengthValue">
-8
-</span>
-
-</div>
-
-
-<div class="control">
-
-<label>
-Width
-</label>
+<label>Horizontal Movement</label>
 
 <input
 type="range"
-id="volWidth"
-min="1"
-max="15"
-value="5"
-oninput="updateVolume()"
->
+id="moveSlider"
+min="-100"
+max="100"
+value="0"
+oninput="transform()">
 
-<span id="volWidthValue">
-5
-</span>
-
-</div>
-
-
-<div class="control">
-
-<label>
-Height
-</label>
-
-<input
-type="range"
-id="volHeight"
-min="1"
-max="12"
-value="4"
-oninput="updateVolume()"
->
-
-<span id="volHeightValue">
-4
-</span>
-
+<div class="result">
+Move the slider and watch the shape transform.
 </div>
 
 </div>
-
-
-<div class="shape-display">
-
-<div
-id="cubeVisual"
-style="
-font-size:9rem;
-"
->
-📦
-</div>
-
-</div>
-
-
-<div
-id="volumeResult"
-class="result"
->
-</div>
-
-</div>
-
-</section>
-
-
-<!-- =====================================================
-     SYMMETRY
-===================================================== -->
-
-<section
-id="symmetry"
-class="section"
->
 
 <div class="card">
 
-<h2>
-🔄 Symmetry Lab
-</h2>
+<h3>Transformations</h3>
 
-<p>
-Explore the number of lines of symmetry in different shapes.
-</p>
+<p><b>Translation:</b> Moving a shape.</p>
 
+<p><b>Rotation:</b> Turning a shape.</p>
 
-<div class="symmetry-grid">
+<p><b>Reflection:</b> Flipping a shape.</p>
 
-
-<div class="symmetry-card">
-
-<div class="symmetry-shape">
-⬜
-</div>
-
-<h3>
-Square
-</h3>
-
-<p>
-<strong>
-4 lines
-</strong>
-of symmetry
-</p>
-
-</div>
-
-
-<div class="symmetry-card">
-
-<div class="symmetry-shape">
-⚪
-</div>
-
-<h3>
-Circle
-</h3>
-
-<p>
-Infinitely many lines
-</p>
-
-</div>
-
-
-<div class="symmetry-card">
-
-<div class="symmetry-shape">
-🔺
-</div>
-
-<h3>
-Equilateral Triangle
-</h3>
-
-<p>
-<strong>
-3 lines
-</strong>
-of symmetry
-</p>
-
-</div>
-
-
-<div class="symmetry-card">
-
-<div class="symmetry-shape">
-▭
-</div>
-
-<h3>
-Rectangle
-</h3>
-
-<p>
-<strong>
-2 lines
-</strong>
-of symmetry
-</p>
-
-</div>
-
-
-<div class="symmetry-card">
-
-<div class="symmetry-shape">
-◇
-</div>
-
-<h3>
-Rhombus
-</h3>
-
-<p>
-<strong>
-2 lines
-</strong>
-of symmetry
-</p>
-
-</div>
+<p><b>Enlargement:</b> Changing its size.</p>
 
 </div>
 
@@ -2965,2285 +677,879 @@ of symmetry
 </section>
 
 
-<!-- =====================================================
-     COORDINATES
-===================================================== -->
+<!-- QUIZ -->
 
-<section
-id="coordinates"
-class="section"
->
+<section id="quiz">
 
-<div class="card">
+<h2>🧩 Geometry Challenge — 15 MCQs</h2>
 
-<h2>
-📍 Interactive Coordinate Plane
-</h2>
+<div class="score">
+
+Score:
+<span id="score">0</span>/15
+
+</div>
+
+<div id="quizContainer"></div>
+
+<button class="action" onclick="checkQuiz()">
+Check My Answers
+</button>
+
+<button class="action" onclick="resetQuiz()">
+Reset Quiz
+</button>
+
+<div id="quizResult"></div>
+
+</section>
+
+
+<!-- NOTES -->
+
+<section id="notes">
+
+<h2>📚 Interactive Study Notes</h2>
+
+<div class="note">
+
+<div class="note-title" onclick="toggleNote(this)">
+📐 Angles
+</div>
+
+<div class="note-content">
 
 <p>
-Choose x and y coordinates to plot a point.
+An angle is formed when two rays meet at a common endpoint.
 </p>
 
-
-<div class="control-grid">
-
-
-<div class="control">
-
-<label>
-X Coordinate
-</label>
-
-<input
-type="range"
-id="coordX"
-min="-5"
-max="5"
-value="2"
-oninput="updateCoordinate()"
->
-
-<span id="coordXValue">
-2
-</span>
-
-</div>
-
-
-<div class="control">
-
-<label>
-Y Coordinate
-</label>
-
-<input
-type="range"
-id="coordY"
-min="-5"
-max="5"
-value="3"
-oninput="updateCoordinate()"
->
-
-<span id="coordYValue">
-3
-</span>
-
-</div>
-
-</div>
-
-
-<div class="coordinate-grid">
-
-<div class="axis-x"></div>
-
-<div class="axis-y"></div>
-
-<div
-id="coordinatePoint"
-class="coordinate-point"
->
-</div>
-
-</div>
-
-
-<div
-id="coordinateResult"
-class="result"
->
-</div>
-
-</div>
-
-</section>
-
-
-<!-- =====================================================
-     GAME
-===================================================== -->
-
-<section
-id="game"
-class="section"
->
-
-<div class="card">
-
-<h2>
-🧩 Geometry Matching Game
-</h2>
-
 <p>
-Match the shape with its correct property.
-</p>
-
-
-<div
-id="gameMessage"
-class="result"
->
-Match all four pairs!
-</div>
-
-
-<div
-id="matchGrid"
-class="match-grid"
->
-</div>
-
-</div>
-
-</section>
-
-
-<!-- =====================================================
-     PROBLEMS
-===================================================== -->
-
-<section
-id="problems"
-class="section"
->
-
-<div class="card">
-
-<h2>
-💡 Real-Life Geometry Problems
-</h2>
-
-
-<div class="problem">
-
-<strong>
-Problem 1 — Garden
-</strong>
-
-<br><br>
-
-A rectangular garden is 12 m long
-and 8 m wide.
-
-Find its perimeter.
-
-<br><br>
-
-<button
-class="btn btn-orange"
-onclick="toggleAnswer('a1')"
->
-💡 Show Answer
-</button>
-
-<div
-id="a1"
-class="problem-answer"
->
-
-Perimeter
-
-=
-
-2 × (12 + 8)
-
-=
-
-<strong>
-40 m
-</strong>
-
-</div>
-
-</div>
-
-
-<div class="problem">
-
-<strong>
-Problem 2 — Floor
-</strong>
-
-<br><br>
-
-A rectangular floor is 10 m long
-and 6 m wide.
-
-Find its area.
-
-<br><br>
-
-<button
-class="btn btn-orange"
-onclick="toggleAnswer('a2')"
->
-💡 Show Answer
-</button>
-
-<div
-id="a2"
-class="problem-answer"
->
-
-Area
-
-=
-
-10 × 6
-
-=
-
-<strong>
-60 m²
-</strong>
-
-</div>
-
-</div>
-
-
-<div class="problem">
-
-<strong>
-Problem 3 — Triangle
-</strong>
-
-<br><br>
-
-The angles of a triangle are
-50°, 60° and 70°.
-
-What is the sum of the angles?
-
-<br><br>
-
-<button
-class="btn btn-orange"
-onclick="toggleAnswer('a3')"
->
-💡 Show Answer
-</button>
-
-<div
-id="a3"
-class="problem-answer"
->
-
-50 + 60 + 70
-
-=
-
-<strong>
-180°
-</strong>
-
-</div>
-
-</div>
-
-
-<div class="problem">
-
-<strong>
-Problem 4 — Circle
-</strong>
-
-<br><br>
-
-A circle has a radius of 7 cm.
-
-Using π ≈ 22/7,
-find its circumference.
-
-<br><br>
-
-<button
-class="btn btn-orange"
-onclick="toggleAnswer('a4')"
->
-💡 Show Answer
-</button>
-
-<div
-id="a4"
-class="problem-answer"
->
-
-C = 2πr
-
-<br><br>
-
-= 2 × 22/7 × 7
-
-<br><br>
-
-=
-
-<strong>
-44 cm
-</strong>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-
-<!-- =====================================================
-     QUIZ
-===================================================== -->
-
-<section
-id="quiz"
-class="section"
->
-
-<div class="card">
-
-<div class="quiz-header">
-
-<div>
-
-<h2>
-🏆 Geometry Challenge — 15 MCQs
-</h2>
-
-<p>
-Choose the best answer.
+The common endpoint is called the vertex.
 </p>
 
 </div>
 
-<div class="score-badge">
+</div>
 
-Answered:
 
-<span id="liveScore">
-0
-</span>
+<div class="note">
 
-/15
+<div class="note-title" onclick="toggleNote(this)">
+🔺 Triangles
+</div>
+
+<div class="note-content">
+
+<p>
+A triangle has three sides and three angles.
+</p>
+
+<p>
+The interior angles of a triangle add up to 180°.
+</p>
 
 </div>
 
 </div>
 
 
-<div class="progress-container">
+<div class="note">
 
-<div
-id="quizProgress"
-class="progress-bar"
->
+<div class="note-title" onclick="toggleNote(this)">
+▭ Quadrilaterals
+</div>
+
+<div class="note-content">
+
+<p>
+A quadrilateral has four sides.
+</p>
+
+<p>
+The interior angles add up to 360°.
+</p>
+
 </div>
 
 </div>
 
 
-<!-- Q1 -->
+<div class="note">
 
-<div class="quiz-question">
+<div class="note-title" onclick="toggleNote(this)">
+🔵 Circles
+</div>
 
-<h3>
-1. How many degrees are in a right angle?
-</h3>
+<div class="note-content">
 
-<label class="option">
-<input type="radio" name="q1" value="A">
-A. 45°
-</label>
+<p>
+A circle is a curved closed shape.
+</p>
 
-<label class="option">
-<input type="radio" name="q1" value="B">
-B. 90°
-</label>
+<p>
+Radius goes from the centre to the circumference.
+</p>
 
-<label class="option">
-<input type="radio" name="q1" value="C">
-C. 180°
-</label>
+<p>
+Diameter passes through the centre and equals twice the radius.
+</p>
 
-<label class="option">
-<input type="radio" name="q1" value="D">
-D. 360°
-</label>
-
-<div id="feedback1"></div>
+</div>
 
 </div>
 
 
-<!-- Q2 -->
+<div class="note">
 
-<div class="quiz-question">
+<div class="note-title" onclick="toggleNote(this)">
+📊 Area & Perimeter
+</div>
 
-<h3>
-2. An angle smaller than 90° is called:
-</h3>
+<div class="note-content">
 
-<label class="option">
-<input type="radio" name="q2" value="A">
-A. Obtuse
-</label>
+<p>
+Area measures the surface inside a shape.
+</p>
 
-<label class="option">
-<input type="radio" name="q2" value="B">
-B. Straight
-</label>
+<p>
+Perimeter measures the distance around a shape.
+</p>
 
-<label class="option">
-<input type="radio" name="q2" value="C">
-C. Acute
-</label>
-
-<label class="option">
-<input type="radio" name="q2" value="D">
-D. Reflex
-</label>
-
-<div id="feedback2"></div>
+</div>
 
 </div>
 
 
-<!-- Q3 -->
+<div class="note">
 
-<div class="quiz-question">
-
-<h3>
-3. What is the sum of the angles in a triangle?
-</h3>
-
-<label class="option">
-<input type="radio" name="q3" value="A">
-A. 90°
-</label>
-
-<label class="option">
-<input type="radio" name="q3" value="B">
-B. 180°
-</label>
-
-<label class="option">
-<input type="radio" name="q3" value="C">
-C. 270°
-</label>
-
-<label class="option">
-<input type="radio" name="q3" value="D">
-D. 360°
-</label>
-
-<div id="feedback3"></div>
-
+<div class="note-title" onclick="toggleNote(this)">
+🔄 Transformations
 </div>
 
+<div class="note-content">
 
-<!-- Q4 -->
+<p>
+Translations move shapes.
+</p>
 
-<div class="quiz-question">
+<p>
+Rotations turn shapes.
+</p>
 
-<h3>
-4. A triangle with three equal sides is:
-</h3>
+<p>
+Reflections flip shapes.
+</p>
 
-<label class="option">
-<input type="radio" name="q4" value="A">
-A. Scalene
-</label>
-
-<label class="option">
-<input type="radio" name="q4" value="B">
-B. Isosceles
-</label>
-
-<label class="option">
-<input type="radio" name="q4" value="C">
-C. Equilateral
-</label>
-
-<label class="option">
-<input type="radio" name="q4" value="D">
-D. Right
-</label>
-
-<div id="feedback4"></div>
-
-</div>
-
-
-<!-- Q5 -->
-
-<div class="quiz-question">
-
-<h3>
-5. What is the perimeter of a square
-with side 6 cm?
-</h3>
-
-<label class="option">
-<input type="radio" name="q5" value="A">
-A. 12 cm
-</label>
-
-<label class="option">
-<input type="radio" name="q5" value="B">
-B. 18 cm
-</label>
-
-<label class="option">
-<input type="radio" name="q5" value="C">
-C. 24 cm
-</label>
-
-<label class="option">
-<input type="radio" name="q5" value="D">
-D. 36 cm
-</label>
-
-<div id="feedback5"></div>
-
-</div>
-
-
-<!-- Q6 -->
-
-<div class="quiz-question">
-
-<h3>
-6. What is the area of a rectangle
-8 cm by 5 cm?
-</h3>
-
-<label class="option">
-<input type="radio" name="q6" value="A">
-A. 13 cm²
-</label>
-
-<label class="option">
-<input type="radio" name="q6" value="B">
-B. 26 cm²
-</label>
-
-<label class="option">
-<input type="radio" name="q6" value="C">
-C. 40 cm²
-</label>
-
-<label class="option">
-<input type="radio" name="q6" value="D">
-D. 80 cm²
-</label>
-
-<div id="feedback6"></div>
-
-</div>
-
-
-<!-- Q7 -->
-
-<div class="quiz-question">
-
-<h3>
-7. What is the diameter of a circle
-with radius 5 cm?
-</h3>
-
-<label class="option">
-<input type="radio" name="q7" value="A">
-A. 2.5 cm
-</label>
-
-<label class="option">
-<input type="radio" name="q7" value="B">
-B. 5 cm
-</label>
-
-<label class="option">
-<input type="radio" name="q7" value="C">
-C. 10 cm
-</label>
-
-<label class="option">
-<input type="radio" name="q7" value="D">
-D. 25 cm
-</label>
-
-<div id="feedback7"></div>
-
-</div>
-
-
-<!-- Q8 -->
-
-<div class="quiz-question">
-
-<h3>
-8. How many sides does a quadrilateral have?
-</h3>
-
-<label class="option">
-<input type="radio" name="q8" value="A">
-A. 3
-</label>
-
-<label class="option">
-<input type="radio" name="q8" value="B">
-B. 4
-</label>
-
-<label class="option">
-<input type="radio" name="q8" value="C">
-C. 5
-</label>
-
-<label class="option">
-<input type="radio" name="q8" value="D">
-D. 6
-</label>
-
-<div id="feedback8"></div>
-
-</div>
-
-
-<!-- Q9 -->
-
-<div class="quiz-question">
-
-<h3>
-9. A square has how many lines of symmetry?
-</h3>
-
-<label class="option">
-<input type="radio" name="q9" value="A">
-A. 1
-</label>
-
-<label class="option">
-<input type="radio" name="q9" value="B">
-B. 2
-</label>
-
-<label class="option">
-<input type="radio" name="q9" value="C">
-C. 3
-</label>
-
-<label class="option">
-<input type="radio" name="q9" value="D">
-D. 4
-</label>
-
-<div id="feedback9"></div>
-
-</div>
-
-
-<!-- Q10 -->
-
-<div class="quiz-question">
-
-<h3>
-10. Which shape has no vertices?
-</h3>
-
-<label class="option">
-<input type="radio" name="q10" value="A">
-A. Square
-</label>
-
-<label class="option">
-<input type="radio" name="q10" value="B">
-B. Triangle
-</label>
-
-<label class="option">
-<input type="radio" name="q10" value="C">
-C. Circle
-</label>
-
-<label class="option">
-<input type="radio" name="q10" value="D">
-D. Rectangle
-</label>
-
-<div id="feedback10"></div>
-
-</div>
-
-
-<!-- Q11 -->
-
-<div class="quiz-question">
-
-<h3>
-11. What is the volume of a cuboid
-8 × 5 × 2?
-</h3>
-
-<label class="option">
-<input type="radio" name="q11" value="A">
-A. 40
-</label>
-
-<label class="option">
-<input type="radio" name="q11" value="B">
-B. 60
-</label>
-
-<label class="option">
-<input type="radio" name="q11" value="C">
-C. 80
-</label>
-
-<label class="option">
-<input type="radio" name="q11" value="D">
-D. 100
-</label>
-
-<div id="feedback11"></div>
-
-</div>
-
-
-<!-- Q12 -->
-
-<div class="quiz-question">
-
-<h3>
-12. A line segment has:
-</h3>
-
-<label class="option">
-<input type="radio" name="q12" value="A">
-A. One endpoint
-</label>
-
-<label class="option">
-<input type="radio" name="q12" value="B">
-B. Two endpoints
-</label>
-
-<label class="option">
-<input type="radio" name="q12" value="C">
-C. No endpoints
-</label>
-
-<label class="option">
-<input type="radio" name="q12" value="D">
-D. Three endpoints
-</label>
-
-<div id="feedback12"></div>
-
-</div>
-
-
-<!-- Q13 -->
-
-<div class="quiz-question">
-
-<h3>
-13. Which quadrilateral has four equal sides?
-</h3>
-
-<label class="option">
-<input type="radio" name="q13" value="A">
-A. Rhombus
-</label>
-
-<label class="option">
-<input type="radio" name="q13" value="B">
-B. Trapezium
-</label>
-
-<label class="option">
-<input type="radio" name="q13" value="C">
-C. Rectangle
-</label>
-
-<label class="option">
-<input type="radio" name="q13" value="D">
-D. None
-</label>
-
-<div id="feedback13"></div>
-
-</div>
-
-
-<!-- Q14 -->
-
-<div class="quiz-question">
-
-<h3>
-14. What is the coordinate of a point
-2 units right and 3 units up from the origin?
-</h3>
-
-<label class="option">
-<input type="radio" name="q14" value="A">
-A. (3,2)
-</label>
-
-<label class="option">
-<input type="radio" name="q14" value="B">
-B. (2,3)
-</label>
-
-<label class="option">
-<input type="radio" name="q14" value="C">
-C. (-2,3)
-</label>
-
-<label class="option">
-<input type="radio" name="q14" value="D">
-D. (2,-3)
-</label>
-
-<div id="feedback14"></div>
-
-</div>
-
-
-<!-- Q15 -->
-
-<div class="quiz-question">
-
-<h3>
-15. Which formula gives the area of a rectangle?
-</h3>
-
-<label class="option">
-<input type="radio" name="q15" value="A">
-A. 2 × (l + w)
-</label>
-
-<label class="option">
-<input type="radio" name="q15" value="B">
-B. l × w
-</label>
-
-<label class="option">
-<input type="radio" name="q15" value="C">
-C. l + w
-</label>
-
-<label class="option">
-<input type="radio" name="q15" value="D">
-D. l ÷ w
-</label>
-
-<div id="feedback15"></div>
-
-</div>
-
-
-<button
-class="btn btn-purple"
-onclick="checkQuiz()"
->
-🏆 Submit Quiz
-</button>
-
-<button
-class="btn btn-gray"
-onclick="resetQuiz()"
->
-🔄 Reset
-</button>
-
-
-<div
-id="finalScore"
-class="final-score"
->
 </div>
 
 </div>
 
 </section>
 
+</div>
 
-</main>
-
-
-<!-- =====================================================
-     FOOTER
-===================================================== -->
 
 <footer>
 
-<p>
-📐 <strong>Geometry Discovery Lab</strong>
-</p>
+<p>📐 Interactive Geometry Explorer</p>
 
-<p>
-Interactive Mathematics Learning Simulator
-</p>
-
-<p>
-Designed for mobile, tablet and desktop
-</p>
+<p>Explore mathematics through interaction.</p>
 
 </footer>
 
 
 <script>
 
-/* =====================================================
-   NAVIGATION
-===================================================== */
 
-function showSection(id,button=null){
+/* NAVIGATION */
 
-    document
-    .querySelectorAll(".section")
-    .forEach(
-        s=>s.classList.remove("active")
-    );
+function go(id){
 
-    document
-    .getElementById(id)
-    .classList.add("active");
-
-    document
-    .querySelectorAll("nav button")
-    .forEach(
-        b=>b.classList.remove("active-nav")
-    );
-
-    if(button){
-
-        button.classList.add(
-            "active-nav"
-        );
-
-    }
-
-    window.scrollTo({
-        top:0,
+    document.getElementById(id)
+    .scrollIntoView({
         behavior:"smooth"
     });
 
 }
 
 
-function goTo(id){
+/* LINES */
 
-    const buttons =
-    document.querySelectorAll(
-        "nav button"
-    );
+function drawLine(){
 
-    let target=null;
+    const c=document.getElementById("lineCanvas");
+    const ctx=c.getContext("2d");
 
-    buttons.forEach(button=>{
+    const x=document.getElementById("lineSlider").value;
 
-        const action =
-        button.getAttribute(
-            "onclick"
-        );
+    ctx.clearRect(0,0,c.width,c.height);
 
-        if(
-            action &&
-            action.includes(
-                "'" + id + "'"
-            )
-        ){
+    ctx.beginPath();
 
-            target=button;
+    ctx.moveTo(50,110);
+    ctx.lineTo(450,110);
 
-        }
+    ctx.strokeStyle="#6c4ee3";
+    ctx.lineWidth=5;
 
-    });
+    ctx.stroke();
 
-    showSection(id,target);
+    ctx.fillStyle="#e74c3c";
+
+    ctx.beginPath();
+    ctx.arc(50,110,8,0,Math.PI*2);
+    ctx.fill();
+
+    ctx.fillStyle="#16a085";
+
+    ctx.beginPath();
+    ctx.arc(x,110,10,0,Math.PI*2);
+    ctx.fill();
+
+    ctx.fillStyle="#222";
+
+    ctx.font="18px Arial";
+
+    ctx.fillText("A",40,90);
+    ctx.fillText("B",x-5,85);
+
+    document.getElementById("lineResult").innerHTML=
+    "Distance from A to B = "+((x-50)/10).toFixed(1)+" units";
 
 }
 
 
-/* =====================================================
-   ANGLE
-===================================================== */
+/* ANGLES */
 
-function updateAngle(){
+function drawAngle(){
 
-    const angle =
-    Number(
-        document.getElementById(
-            "angleSlider"
-        ).value
+    const c=document.getElementById("angleCanvas");
+    const ctx=c.getContext("2d");
+
+    const angle=Number(
+        document.getElementById("angleSlider").value
     );
 
-    document.getElementById(
-        "angleValue"
-    ).textContent=angle;
+    document.getElementById("angleValue").textContent=angle;
 
-    document.getElementById(
-        "angleNumber"
-    ).textContent=
-    angle+"°";
+    ctx.clearRect(0,0,c.width,c.height);
 
+    const cx=250;
+    const cy=160;
+    const r=100;
+
+    ctx.beginPath();
+
+    ctx.moveTo(cx,cy);
+
+    ctx.lineTo(cx+r,cy);
+
+    ctx.moveTo(cx,cy);
+
+    const rad=-angle*Math.PI/180;
+
+    ctx.lineTo(
+        cx+r*Math.cos(rad),
+        cy+r*Math.sin(rad)
+    );
+
+    ctx.strokeStyle="#6c4ee3";
+    ctx.lineWidth=7;
+
+    ctx.stroke();
+
+    ctx.beginPath();
+
+    ctx.arc(
+        cx,
+        cy,
+        60,
+        0,
+        rad,
+        true
+    );
+
+    ctx.strokeStyle="#e74c3c";
+    ctx.lineWidth=4;
+
+    ctx.stroke();
 
     let type="";
 
-    if(angle<90){
+    if(angle<90)
+        type="Acute Angle";
 
-        type="Acute angle";
+    else if(angle===90)
+        type="Right Angle";
 
-    }
+    else if(angle<180)
+        type="Obtuse Angle";
 
-    else if(angle===90){
+    else if(angle===180)
+        type="Straight Angle";
 
-        type="Right angle";
+    else if(angle<360)
+        type="Reflex Angle";
 
-    }
+    else
+        type="Complete Angle";
 
-    else if(angle<180){
-
-        type="Obtuse angle";
-
-    }
-
-    else if(angle===180){
-
-        type="Straight angle";
-
-    }
-
-    else{
-
-        type="Reflex angle";
-
-    }
-
-
-    document.getElementById(
-        "angleResult"
-    ).innerHTML=`
-
-        <strong>
-        ${angle}°
-        </strong>
-
-        is a
-
-        <span class="highlight">
-        ${type}
-        </span>.
-
-    `;
-
-
-    const rad =
-    angle*Math.PI/180;
-
-    const x=
-    350+
-    200*Math.cos(rad);
-
-    const y=
-    300-
-    200*Math.sin(rad);
-
-    document.getElementById(
-        "angleRay"
-    ).setAttribute(
-        "x2",
-        x
-    );
-
-    document.getElementById(
-        "angleRay"
-    ).setAttribute(
-        "y2",
-        y
-    );
+    document.getElementById("angleResult").innerHTML=
+    "<b>"+angle+"°</b> → "+type;
 
 }
 
 
-/* =====================================================
-   TRIANGLE
-===================================================== */
+/* TRIANGLE */
 
-function updateTriangle(){
+function triangle(){
 
-    const a=
-    Number(
-        document.getElementById(
-            "sideA"
-        ).value
-    );
+    const a=Number(document.getElementById("sideA").value);
+    const b=Number(document.getElementById("sideB").value);
+    const c=Number(document.getElementById("sideC").value);
 
-    const b=
-    Number(
-        document.getElementById(
-            "sideB"
-        ).value
-    );
+    const canvas=document.getElementById("triangleCanvas");
+    const ctx=canvas.getContext("2d");
 
-    const c=
-    Number(
-        document.getElementById(
-            "sideC"
-        ).value
-    );
-
-
-    document.getElementById(
-        "sideAValue"
-    ).textContent=a;
-
-    document.getElementById(
-        "sideBValue"
-    ).textContent=b;
-
-    document.getElementById(
-        "sideCValue"
-    ).textContent=c;
-
+    ctx.clearRect(0,0,canvas.width,canvas.height);
 
     let type;
 
+    if(a+b<=c || a+c<=b || b+c<=a){
 
-    if(
-        a===b &&
-        b===c
-    ){
+        type="These side lengths cannot form a triangle.";
 
-        type=
-        "Equilateral triangle";
+    }else{
 
-    }
+        if(a===b && b===c)
+            type="Equilateral Triangle";
 
-    else if(
-        a===b ||
-        b===c ||
-        a===c
-    ){
+        else if(a===b || a===c || b===c)
+            type="Isosceles Triangle";
 
-        type=
-        "Isosceles triangle";
+        else
+            type="Scalene Triangle";
 
-    }
+        ctx.beginPath();
 
-    else{
+        ctx.moveTo(100,230);
+        ctx.lineTo(400,230);
+        ctx.lineTo(250,50);
+        ctx.closePath();
 
-        type=
-        "Scalene triangle";
+        ctx.strokeStyle="#6c4ee3";
+        ctx.lineWidth=6;
 
-    }
-
-
-    const valid=
-    a+b>c &&
-    a+c>b &&
-    b+c>a;
-
-
-    if(!valid){
-
-        type=
-        "These lengths cannot form a triangle.";
+        ctx.stroke();
 
     }
 
-
-    document.getElementById(
-        "triangleResult"
-    ).innerHTML=`
-
-        Side lengths:
-
-        <strong>
-        ${a}, ${b}, ${c}
-        </strong>
-
-        <br><br>
-
-        Classification:
-
-        <span class="highlight">
-        ${type}
-        </span>
-
-    `;
+    document.getElementById("triangleResult").innerHTML=
+    "<b>"+type+"</b>";
 
 }
 
 
-/* =====================================================
-   QUADRILATERALS
-===================================================== */
+/* RECTANGLE */
 
-function showQuad(shape){
+function rectangle(){
 
-    const info={
-
-        Square:
-        "A square has 4 equal sides and 4 right angles.",
-
-        Rectangle:
-        "A rectangle has 4 right angles and opposite sides equal.",
-
-        Rhombus:
-        "A rhombus has 4 equal sides and opposite sides parallel.",
-
-        Parallelogram:
-        "A parallelogram has two pairs of parallel opposite sides.",
-
-        Trapezium:
-        "A trapezium has one pair of parallel sides."
-
-    };
-
-
-    document.getElementById(
-        "quadResult"
-    ).innerHTML=`
-
-        <h3>
-        ${shape}
-        </h3>
-
-        ${info[shape]}
-
-    `;
-
-}
-
-
-/* =====================================================
-   PERIMETER
-===================================================== */
-
-function updatePerimeter(){
-
-    const l=
-    Number(
-        document.getElementById(
-            "perLength"
-        ).value
+    const l=Number(
+        document.getElementById("rectLength").value
     );
 
-    const w=
-    Number(
-        document.getElementById(
-            "perWidth"
-        ).value
+    const w=Number(
+        document.getElementById("rectWidth").value
     );
 
+    const c=document.getElementById("rectCanvas");
+    const ctx=c.getContext("2d");
 
-    document.getElementById(
-        "perLengthValue"
-    ).textContent=l;
+    ctx.clearRect(0,0,c.width,c.height);
 
-    document.getElementById(
-        "perWidthValue"
-    ).textContent=w;
+    const scale=18;
 
+    const width=l*scale;
+    const height=w*scale;
 
-    const perimeter=
-    2*(l+w);
+    ctx.strokeStyle="#6c4ee3";
+    ctx.lineWidth=5;
 
-
-    document.getElementById(
-        "perimeterResult"
-    ).innerHTML=`
-
-        Perimeter
-
-        = 2 × (length + width)
-
-        <br><br>
-
-        = 2 × (${l} + ${w})
-
-        <br><br>
-
-        =
-
-        <span class="highlight">
-        ${perimeter}
-        </span>
-
-        units
-
-    `;
-
-}
-
-
-/* =====================================================
-   AREA
-===================================================== */
-
-function updateArea(){
-
-    const l=
-    Number(
-        document.getElementById(
-            "areaLength"
-        ).value
+    ctx.strokeRect(
+        (500-width)/2,
+        (300-height)/2,
+        width,
+        height
     );
-
-    const w=
-    Number(
-        document.getElementById(
-            "areaWidth"
-        ).value
-    );
-
-
-    document.getElementById(
-        "areaLengthValue"
-    ).textContent=l;
-
-    document.getElementById(
-        "areaWidthValue"
-    ).textContent=w;
-
 
     const area=l*w;
+    const perimeter=2*(l+w);
 
+    document.getElementById("rectResult").innerHTML=
 
-    const grid=
-    document.getElementById(
-        "areaGrid"
-    );
-
-    grid.style.backgroundSize=
-    `${100/l}% ${100/w}%`;
-
-
-    document.getElementById(
-        "areaResult"
-    ).innerHTML=`
-
-        Area
-
-        = length × width
-
-        <br><br>
-
-        = ${l} × ${w}
-
-        <br><br>
-
-        =
-
-        <span class="highlight">
-        ${area} square units
-        </span>
-
-    `;
+    "Length = "+l+
+    "<br>Width = "+w+
+    "<br>Area = "+area+" square units"+
+    "<br>Perimeter = "+perimeter+" units";
 
 }
 
 
-/* =====================================================
-   CIRCLE
-===================================================== */
+/* CIRCLE */
 
-function updateCircle(){
+function circle(){
 
-    const r=
-    Number(
-        document.getElementById(
-            "radiusSlider"
-        ).value
+    const r=Number(
+        document.getElementById("radiusSlider").value
     );
 
+    const c=document.getElementById("circleCanvas");
+    const ctx=c.getContext("2d");
 
-    document.getElementById(
-        "radiusValue"
-    ).textContent=r;
+    ctx.clearRect(0,0,c.width,c.height);
 
+    const radius=Math.min(r*1.2,110);
 
-    const scale=
-    r*10;
+    ctx.beginPath();
 
-
-    document.getElementById(
-        "circleShape"
-    ).setAttribute(
-        "r",
-        scale
+    ctx.arc(
+        250,
+        150,
+        radius,
+        0,
+        Math.PI*2
     );
 
+    ctx.strokeStyle="#6c4ee3";
+    ctx.lineWidth=5;
 
-    document.getElementById(
-        "radiusLine"
-    ).setAttribute(
-        "x2",
-        300+scale
-    );
+    ctx.stroke();
 
+    ctx.beginPath();
 
-    const diameter=
-    2*r;
+    ctx.moveTo(250,150);
+    ctx.lineTo(250+radius,150);
 
-    const circumference=
-    2*Math.PI*r;
+    ctx.strokeStyle="#e74c3c";
+    ctx.stroke();
 
-    const area=
-    Math.PI*r*r;
+    document.getElementById("circleResult").innerHTML=
 
-
-    document.getElementById(
-        "circleResult"
-    ).innerHTML=`
-
-        Radius:
-
-        <strong>
-        ${r}
-        </strong>
-
-        units
-
-        <br><br>
-
-        Diameter:
-
-        <span class="highlight">
-        ${diameter.toFixed(2)}
-        </span>
-
-        units
-
-        <br><br>
-
-        Circumference:
-
-        <span class="highlight">
-        ${circumference.toFixed(2)}
-        </span>
-
-        units
-
-        <br><br>
-
-        Area:
-
-        <span class="highlight">
-        ${area.toFixed(2)}
-        </span>
-
-        square units
-
-    `;
+    "Radius = "+r+
+    "<br>Diameter = "+(2*r).toFixed(2)+
+    "<br>Circumference = "+(2*Math.PI*r).toFixed(2)+
+    "<br>Area = "+(Math.PI*r*r).toFixed(2);
 
 }
 
 
-/* =====================================================
-   SOLIDS
-===================================================== */
+/* AREA */
 
-function showSolid(shape){
+function area(){
 
-    const info={
+    const l=Number(
+        document.getElementById("areaLength").value
+    );
 
-        Cube:
-        "A cube has 6 equal square faces, 12 edges and 8 vertices.",
+    const w=Number(
+        document.getElementById("areaWidth").value
+    );
 
-        Cuboid:
-        "A cuboid has 6 rectangular faces, 12 edges and 8 vertices.",
+    const c=document.getElementById("areaCanvas");
+    const ctx=c.getContext("2d");
 
-        Cylinder:
-        "A cylinder has 2 circular faces and one curved surface.",
+    ctx.clearRect(0,0,c.width,c.height);
 
-        Cone:
-        "A cone has one circular base, one curved surface and one vertex.",
+    const scale=18;
 
-        Sphere:
-        "A sphere has one curved surface and no edges or vertices."
+    ctx.strokeStyle="#16a085";
+    ctx.lineWidth=5;
 
-    };
+    ctx.strokeRect(
+        250-l*scale/2,
+        125-w*scale/2,
+        l*scale,
+        w*scale
+    );
 
+    document.getElementById("areaResult").innerHTML=
 
-    document.getElementById(
-        "solidResult"
-    ).innerHTML=`
-
-        <h3>
-        ${shape}
-        </h3>
-
-        ${info[shape]}
-
-    `;
+    "Area = "+(l*w)+
+    " square units";
 
 }
 
 
-/* =====================================================
-   VOLUME
-===================================================== */
+/* SYMMETRY */
 
-function updateVolume(){
+function symmetry(){
 
-    const l=
-    Number(
-        document.getElementById(
-            "volLength"
-        ).value
+    const value=Number(
+        document.getElementById("symmetrySlider").value
     );
 
-    const w=
-    Number(
-        document.getElementById(
-            "volWidth"
-        ).value
-    );
+    const c=document.getElementById("symmetryCanvas");
+    const ctx=c.getContext("2d");
 
-    const h=
-    Number(
-        document.getElementById(
-            "volHeight"
-        ).value
-    );
+    ctx.clearRect(0,0,c.width,c.height);
 
+    ctx.beginPath();
 
-    document.getElementById(
-        "volLengthValue"
-    ).textContent=l;
+    ctx.moveTo(180,220);
+    ctx.lineTo(320,220);
+    ctx.lineTo(250,70);
+    ctx.closePath();
 
-    document.getElementById(
-        "volWidthValue"
-    ).textContent=w;
+    ctx.strokeStyle="#6c4ee3";
+    ctx.lineWidth=6;
 
-    document.getElementById(
-        "volHeightValue"
-    ).textContent=h;
+    ctx.stroke();
 
+    ctx.setLineDash([8,8]);
 
-    const volume=
-    l*w*h;
+    ctx.beginPath();
 
+    if(value===0){
 
-    document.getElementById(
-        "volumeResult"
-    ).innerHTML=`
+        ctx.moveTo(250,40);
+        ctx.lineTo(250,250);
 
-        Volume
+    }else if(value===1){
 
-        = length × width × height
+        ctx.moveTo(120,150);
+        ctx.lineTo(380,150);
 
-        <br><br>
+    }else{
 
-        = ${l} × ${w} × ${h}
+        ctx.moveTo(150,50);
+        ctx.lineTo(350,250);
 
-        <br><br>
+    }
 
-        =
+    ctx.strokeStyle="#e74c3c";
 
-        <span class="highlight">
-        ${volume} cubic units
-        </span>
+    ctx.stroke();
 
-    `;
+    ctx.setLineDash([]);
+
+    const text=[
+        "Vertical line",
+        "Horizontal line",
+        "Diagonal line"
+    ];
+
+    document.getElementById("symmetryResult").innerHTML=
+    "Selected: "+text[value];
 
 }
 
 
-/* =====================================================
-   COORDINATES
-===================================================== */
+/* TRANSFORMATION */
 
-function updateCoordinate(){
+function transform(){
 
-    const x=
-    Number(
-        document.getElementById(
-            "coordX"
-        ).value
+    const rotation=Number(
+        document.getElementById("rotationSlider").value
     );
 
-    const y=
-    Number(
-        document.getElementById(
-            "coordY"
-        ).value
+    const move=Number(
+        document.getElementById("moveSlider").value
     );
 
+    const c=document.getElementById("transformCanvas");
+    const ctx=c.getContext("2d");
 
-    document.getElementById(
-        "coordXValue"
-    ).textContent=x;
+    ctx.clearRect(0,0,c.width,c.height);
 
-    document.getElementById(
-        "coordYValue"
-    ).textContent=y;
+    ctx.save();
 
-
-    const point=
-    document.getElementById(
-        "coordinatePoint"
+    ctx.translate(
+        250+move,
+        150
     );
 
+    ctx.rotate(
+        rotation*Math.PI/180
+    );
 
-    const left=
-    50+
-    x*10;
+    ctx.beginPath();
 
-    const top=
-    50-
-    y*10;
+    ctx.moveTo(-60,-40);
+    ctx.lineTo(60,-40);
+    ctx.lineTo(60,40);
+    ctx.lineTo(-60,40);
+    ctx.closePath();
 
+    ctx.strokeStyle="#6c4ee3";
+    ctx.lineWidth=7;
 
-    point.style.left=
-    left+"%";
+    ctx.stroke();
 
-    point.style.top=
-    top+"%";
-
-
-    document.getElementById(
-        "coordinateResult"
-    ).innerHTML=`
-
-        The point is:
-
-        <span class="highlight">
-        (${x}, ${y})
-        </span>
-
-        <br><br>
-
-        X-coordinate:
-
-        ${x}
-
-        <br>
-
-        Y-coordinate:
-
-        ${y}
-
-    `;
+    ctx.restore();
 
 }
 
 
-/* =====================================================
-   PROBLEMS
-===================================================== */
+/* NOTES */
 
-function toggleAnswer(id){
+function toggleNote(element){
 
-    const element=
-    document.getElementById(id);
+    const content=element.nextElementSibling;
 
-    element.style.display=
-    element.style.display==="block"
-    ?
-    "none"
-    :
-    "block";
+    content.classList.toggle("show");
 
 }
 
 
-/* =====================================================
-   MATCHING GAME
-===================================================== */
+/* QUIZ */
 
-const pairs=[
+const questions=[
 
-    [
-        "Square",
-        "4 equal sides"
-    ],
+{
+q:"An angle of 45° is a:",
+o:["Right angle","Acute angle","Obtuse angle","Straight angle"],
+a:1
+},
 
-    [
-        "Triangle",
-        "3 sides"
-    ],
+{
+q:"How many degrees are in a right angle?",
+o:["45°","90°","180°","360°"],
+a:1
+},
 
-    [
-        "Circle",
-        "No vertices"
-    ],
+{
+q:"How many sides does a triangle have?",
+o:["2","3","4","5"],
+a:1
+},
 
-    [
-        "Rectangle",
-        "4 right angles"
-    ]
+{
+q:"The angles of a triangle add up to:",
+o:["90°","180°","270°","360°"],
+a:1
+},
+
+{
+q:"A triangle with three equal sides is:",
+o:["Scalene","Isosceles","Equilateral","Right"],
+a:2
+},
+
+{
+q:"A quadrilateral has:",
+o:["3 sides","4 sides","5 sides","6 sides"],
+a:1
+},
+
+{
+q:"The angles of a quadrilateral add up to:",
+o:["180°","270°","360°","720°"],
+a:2
+},
+
+{
+q:"The distance from the centre of a circle to its edge is called:",
+o:["Diameter","Radius","Chord","Circumference"],
+a:1
+},
+
+{
+q:"The diameter of a circle is:",
+o:["Half the radius","Equal to radius","Twice the radius","Three times radius"],
+a:2
+},
+
+{
+q:"The formula for rectangle area is:",
+o:["2(l+w)","l×w","πr²","l+w"],
+a:1
+},
+
+{
+q:"Perimeter measures:",
+o:["Space inside","Distance around","Weight","Volume"],
+a:1
+},
+
+{
+q:"A shape flipped over a line undergoes:",
+o:["Translation","Rotation","Reflection","Enlargement"],
+a:2
+},
+
+{
+q:"Turning a shape around a point is called:",
+o:["Reflection","Rotation","Translation","Division"],
+a:1
+},
+
+{
+q:"A straight angle measures:",
+o:["45°","90°","180°","360°"],
+a:2
+},
+
+{
+q:"A complete angle measures:",
+o:["90°","180°","270°","360°"],
+a:3
+}
 
 ];
 
 
-let selected=[];
+function loadQuiz(){
 
-let matched=0;
+    const container=
+    document.getElementById("quizContainer");
 
+    container.innerHTML="";
 
-function startGame(){
+    questions.forEach((item,index)=>{
 
-    let cards=[];
+        const div=document.createElement("div");
 
+        div.className="quiz-question";
 
-    pairs.forEach(pair=>{
+        let html=
+        "<h3>"+(index+1)+". "+item.q+"</h3>";
 
-        cards.push({
-            value:pair[0],
-            pair:pair[0]
-        });
+        item.o.forEach((option,i)=>{
 
-        cards.push({
-            value:pair[1],
-            pair:pair[0]
-        });
+            html+=`
 
-    });
+            <label class="option">
 
+            <input
+            type="radio"
+            name="q${index}"
+            value="${i}">
 
-    cards.sort(
-        ()=>Math.random()-.5
-    );
+            ${option}
 
-
-    const grid=
-    document.getElementById(
-        "matchGrid"
-    );
-
-    grid.innerHTML="";
-
-
-    selected=[];
-
-    matched=0;
-
-
-    cards.forEach(card=>{
-
-        const button=
-        document.createElement(
-            "button"
-        );
-
-        button.className=
-        "match-card";
-
-        button.textContent=
-        card.value;
-
-        button.dataset.pair=
-        card.pair;
-
-        button.onclick=
-        ()=>selectCard(button);
-
-        grid.appendChild(button);
-
-    });
-
-}
-
-
-function selectCard(button){
-
-    if(
-        button.classList.contains(
-            "correct"
-        ) ||
-        selected.length>=2
-    ){
-
-        return;
-
-    }
-
-
-    button.classList.add(
-        "wrong"
-    );
-
-    selected.push(button);
-
-
-    if(selected.length===2){
-
-        const a=selected[0];
-
-        const b=selected[1];
-
-
-        if(
-            a.dataset.pair===
-            b.dataset.pair
-        ){
-
-            a.classList.remove(
-                "wrong"
-            );
-
-            b.classList.remove(
-                "wrong"
-            );
-
-            a.classList.add(
-                "correct"
-            );
-
-            b.classList.add(
-                "correct"
-            );
-
-            matched++;
-
-            selected=[];
-
-
-            document.getElementById(
-                "gameMessage"
-            ).innerHTML=`
-
-                🎉 Correct!
-
-                ${matched}/4 pairs matched.
+            </label>
 
             `;
 
+        });
 
-            if(matched===4){
+        div.innerHTML=html;
 
-                document.getElementById(
-                    "gameMessage"
-                ).innerHTML=
+        container.appendChild(div);
 
-                "🏆 Fantastic! All pairs matched!";
-
-                celebrate();
-
-            }
-
-        }
-
-        else{
-
-            setTimeout(()=>{
-
-                a.classList.remove(
-                    "wrong"
-                );
-
-                b.classList.remove(
-                    "wrong"
-                );
-
-                selected=[];
-
-            },700);
-
-        }
-
-    }
+    });
 
 }
-
-
-/* =====================================================
-   QUIZ
-===================================================== */
-
-const answers={
-
-    q1:"B",
-
-    q2:"C",
-
-    q3:"B",
-
-    q4:"C",
-
-    q5:"C",
-
-    q6:"C",
-
-    q7:"C",
-
-    q8:"B",
-
-    q9:"D",
-
-    q10:"C",
-
-    q11:"C",
-
-    q12:"B",
-
-    q13:"A",
-
-    q14:"B",
-
-    q15:"B"
-
-};
-
-
-function updateQuizProgress(){
-
-    let count=0;
-
-
-    for(let i=1;i<=15;i++){
-
-        if(
-            document.querySelector(
-                `input[name="q${i}"]:checked`
-            )
-        ){
-
-            count++;
-
-        }
-
-    }
-
-
-    document.getElementById(
-        "liveScore"
-    ).textContent=count;
-
-
-    document.getElementById(
-        "quizProgress"
-    ).style.width=
-    count/15*100+"%";
-
-}
-
-
-document
-.querySelectorAll(
-    '#quiz input[type="radio"]'
-)
-.forEach(input=>{
-
-    input.addEventListener(
-        "change",
-        updateQuizProgress
-    );
-
-});
 
 
 function checkQuiz(){
 
     let score=0;
 
-    let unanswered=0;
-
-
-    for(let i=1;i<=15;i++){
+    questions.forEach((question,index)=>{
 
         const selected=
         document.querySelector(
-            `input[name="q${i}"]:checked`
+            `input[name="q${index}"]:checked`
         );
 
-
-        const feedback=
-        document.getElementById(
-            "feedback"+i
+        const options=
+        document.querySelectorAll(
+            `input[name="q${index}"]`
         );
 
+        options.forEach((input,i)=>{
 
-        if(!selected){
+            input.parentElement.classList.remove(
+                "correct",
+                "wrong"
+            );
 
-            unanswered++;
+            if(i===question.a)
+                input.parentElement.classList.add("correct");
 
-            feedback.textContent=
-            "⚠️ Please answer this question.";
+        });
 
-            feedback.className=
-            "quiz-feedback wrong-answer";
+        if(selected){
 
-            continue;
+            if(Number(selected.value)===question.a){
 
-        }
+                score++;
 
+            }else{
 
-        if(
-            selected.value===
-            answers["q"+i]
-        ){
+                selected.parentElement.classList.add("wrong");
 
-            score++;
-
-            feedback.textContent=
-            "✅ Correct!";
-
-            feedback.className=
-            "quiz-feedback correct-answer";
+            }
 
         }
-
-        else{
-
-            feedback.textContent=
-            "❌ Incorrect.";
-
-            feedback.className=
-            "quiz-feedback wrong-answer";
-
-        }
-
-    }
-
-
-    const final=
-    document.getElementById(
-        "finalScore"
-    );
-
-
-    final.style.display=
-    "block";
-
-
-    if(unanswered){
-
-        final.innerHTML=`
-
-            <h2>
-            ⚠️ Complete the quiz
-            </h2>
-
-            <p>
-            Please answer all 15 questions.
-            </p>
-
-        `;
-
-        return;
-
-    }
-
-
-    const percent=
-    Math.round(
-        score/15*100
-    );
-
-
-    let message;
-
-
-    if(score>=13){
-
-        message=
-        "🌟 Outstanding! You are a Geometry Champion!";
-
-        celebrate();
-
-    }
-
-    else if(score>=10){
-
-        message=
-        "👏 Excellent geometry knowledge!";
-
-    }
-
-    else if(score>=7){
-
-        message=
-        "👍 Good work. Keep exploring the simulations.";
-
-    }
-
-    else{
-
-        message=
-        "💪 Keep practising. Review the notes and try again.";
-
-    }
-
-
-    final.innerHTML=`
-
-        <h2>
-        🏆 Your Geometry Score
-        </h2>
-
-        <div class="score-number">
-        ${score}/15
-        </div>
-
-        <h3>
-        ${percent}%
-        </h3>
-
-        <p>
-        ${message}
-        </p>
-
-    `;
-
-
-    final.scrollIntoView({
-
-        behavior:"smooth",
-
-        block:"center"
 
     });
 
+    document.getElementById("score").textContent=score;
+
+    let message="Keep practising!";
+
+    if(score>=13)
+        message="🏆 Excellent! Geometry expert!";
+
+    else if(score>=10)
+        message="🌟 Great work!";
+
+    else if(score>=7)
+        message="👍 Good effort!";
+
+    document.getElementById("quizResult").innerHTML=
+
+    `<div class="result">
+    You scored <b>${score}/15</b>.
+    <br>${message}
+    </div>`;
+
 }
 
-
-/* =====================================================
-   RESET
-===================================================== */
 
 function resetQuiz(){
 
     document
-    .querySelectorAll(
-        '#quiz input[type="radio"]'
-    )
-    .forEach(
-        input=>input.checked=false
-    );
+    .querySelectorAll(".quiz-question input")
+    .forEach(input=>{
 
+        input.checked=false;
+
+    });
 
     document
-    .querySelectorAll(
-        '[id^="feedback"]'
-    )
-    .forEach(
-        element=>element.textContent=""
-    );
+    .querySelectorAll(".option")
+    .forEach(option=>{
 
+        option.classList.remove(
+            "correct",
+            "wrong"
+        );
 
-    document.getElementById(
-        "finalScore"
-    ).style.display=
-    "none";
+    });
 
+    document.getElementById("score").textContent="0";
 
-    document.getElementById(
-        "quizProgress"
-    ).style.width=
-    "0%";
-
-
-    document.getElementById(
-        "liveScore"
-    ).textContent=
-    "0";
+    document.getElementById("quizResult").innerHTML="";
 
 }
 
 
-/* =====================================================
-   CONFETTI
-===================================================== */
+/* INITIALISE */
 
-function celebrate(){
-
-    const symbols=[
-
-        "🎉",
-        "⭐",
-        "✨",
-        "🌟",
-        "📐",
-        "🏆",
-        "🔺"
-
-    ];
-
-
-    for(
-        let i=0;
-        i<60;
-        i++
-    ){
-
-        const piece=
-        document.createElement(
-            "div"
-        );
-
-
-        piece.className=
-        "confetti";
-
-
-        piece.textContent=
-        symbols[
-            Math.floor(
-                Math.random()*
-                symbols.length
-            )
-        ];
-
-
-        piece.style.left=
-        Math.random()*100+"%";
-
-
-        piece.style.fontSize=
-        12+
-        Math.random()*20+
-        "px";
-
-
-        piece.style.animationDelay=
-        Math.random()*1.5+
-        "s";
-
-
-        document.body.appendChild(
-            piece
-        );
-
-
-        setTimeout(
-            ()=>piece.remove(),
-            4500
-        );
-
-    }
-
-}
-
-
-/* =====================================================
-   INITIALISE
-===================================================== */
-
-updateAngle();
-
-updateTriangle();
-
-updatePerimeter();
-
-updateArea();
-
-updateCircle();
-
-updateVolume();
-
-updateCoordinate();
-
-startGame();
+drawLine();
+drawAngle();
+triangle();
+rectangle();
+circle();
+area();
+symmetry();
+transform();
+loadQuiz();
 
 </script>
 
 </body>
-
 </html>
