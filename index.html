@@ -3,257 +3,242 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Interactive Geometry Explorer</title>
+<title>Geometry Playground</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+:root{
+  --bg:#fbf7ef;
+  --ink:#1f2140;
+  --card:#ffffff;
+
+  --lines:#4361ee;
+  --angles:#ff5d73;
+  --triangles:#06a77d;
+  --quads:#f4a300;
+  --circles:#9b5de5;
+  --areas:#2ec4b6;
+  --volume:#3a86ff;
+  --symmetry:#ef476f;
+  --transform:#ff8500;
+  --quiz:#7b2cbf;
+  --notes:#e07a5f;
 }
 
-body {
-    font-family: Arial, Helvetica, sans-serif;
-    background: linear-gradient(135deg, #eef4ff, #fff4fb);
-    color: #20243a;
-    line-height: 1.6;
+*{box-sizing:border-box;margin:0;padding:0;}
+
+html{scroll-behavior:smooth;}
+
+body{
+  font-family:'Nunito',sans-serif;
+  background:
+    radial-gradient(circle at 8% 12%, #ffe9d6 0%, transparent 40%),
+    radial-gradient(circle at 92% 18%, #d9f2ff 0%, transparent 42%),
+    radial-gradient(circle at 50% 95%, #e6ffe9 0%, transparent 45%),
+    var(--bg);
+  color:var(--ink);
+  line-height:1.6;
+  padding-bottom:20px;
 }
 
-header {
-    background: linear-gradient(135deg, #5b4bdb, #9b3db5);
-    color: white;
-    text-align: center;
-    padding: 35px 18px;
+h1,h2,h3{font-family:'Fredoka',sans-serif;}
+
+/* ---------- HEADER ---------- */
+header{
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(120deg,#4361ee,#9b5de5 45%,#ff5d73 100%);
+  color:white;
+  text-align:center;
+  padding:48px 18px 40px;
+}
+header::before,header::after{
+  content:"";
+  position:absolute;
+  border-radius:50%;
+  opacity:.18;
+  background:white;
+}
+header::before{width:220px;height:220px;top:-90px;left:-60px;}
+header::after{width:160px;height:160px;bottom:-80px;right:-40px;}
+header h1{
+  font-size:clamp(30px,5.5vw,52px);
+  margin-bottom:10px;
+  text-shadow:0 4px 18px rgba(0,0,0,.18);
+}
+header p{font-size:18px;opacity:.95;font-weight:600;}
+.progress-wrap{
+  max-width:520px;margin:22px auto 0;background:rgba(255,255,255,.28);
+  border-radius:20px;height:12px;overflow:hidden;
+}
+#headerProgress{height:100%;width:0%;background:#ffd166;border-radius:20px;transition:width .3s ease;}
+.progress-label{font-size:13px;margin-top:6px;opacity:.9;font-weight:700;}
+
+/* ---------- NAV ---------- */
+nav{
+  background:rgba(255,255,255,.9);
+  backdrop-filter:blur(6px);
+  padding:10px;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:8px;
+  position:sticky;
+  top:0;
+  z-index:100;
+  box-shadow:0 3px 15px rgba(0,0,0,.10);
+}
+nav button{
+  border:none;
+  padding:9px 15px;
+  border-radius:20px;
+  background:#f1eef7;
+  color:#3d3160;
+  font-weight:800;
+  font-family:'Nunito',sans-serif;
+  cursor:pointer;
+  transition:transform .15s ease, background .2s ease, color .2s ease;
+  font-size:13.5px;
+}
+nav button:hover{transform:translateY(-2px);}
+nav button.active-nav{color:white;box-shadow:0 4px 10px rgba(0,0,0,.18);}
+
+/* ---------- LAYOUT ---------- */
+.container{width:min(1200px,94%);margin:auto;}
+
+section{
+  background:var(--card);
+  margin:26px 0;
+  padding:26px;
+  border-radius:22px;
+  box-shadow:0 6px 24px rgba(31,33,64,.08);
+  border-top:6px solid var(--accent, #ccc);
+  scroll-margin-top:70px;
 }
 
-header h1 {
-    font-size: clamp(28px, 5vw, 48px);
-    margin-bottom: 8px;
+section h2{margin-bottom:6px;color:var(--ink);display:flex;align-items:center;gap:10px;}
+.subtitle{color:#6a6a86;font-weight:600;margin-bottom:18px;font-size:15px;}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;}
+
+.card{
+  background:#faf9ff;
+  border:2px solid #ecebf7;
+  padding:20px;
+  border-radius:18px;
+}
+.card h3{color:var(--accent,#5b4bdb);margin-bottom:10px;font-size:17px;}
+
+canvas{
+  display:block;width:100%;max-width:600px;height:auto;margin:14px auto;
+  background:white;border:2px solid #eee;border-radius:16px;
+  touch-action:none;
 }
 
-header p {
-    font-size: 18px;
+.control{margin:14px 0;}
+.control label{display:flex;justify-content:space-between;font-weight:800;margin-bottom:6px;font-size:14px;}
+input[type="range"]{width:100%;accent-color:var(--accent,#6c4ee3);}
+
+.value{
+  display:inline-block;background:var(--accent,#6c4ee3);color:white;
+  padding:3px 10px;border-radius:10px;font-size:13px;
 }
 
-nav {
-    background: white;
-    padding: 12px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 8px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 3px 15px rgba(0,0,0,.12);
+.result{
+  background:#eafff4;border-left:5px solid var(--accent,#16a085);
+  padding:12px 14px;border-radius:10px;margin-top:12px;font-weight:700;
 }
 
-nav button {
-    border: none;
-    padding: 9px 14px;
-    border-radius: 20px;
-    background: #eeeaff;
-    color: #513cb6;
-    font-weight: bold;
-    cursor: pointer;
+.info{
+  background:#fff8dc;border-left:5px solid #f1c40f;
+  padding:12px 14px;border-radius:10px;margin:12px 0;font-size:14.5px;
 }
 
-nav button:hover {
-    background: #5b4bdb;
-    color: white;
+.formula-live{
+  font-family:'Fredoka',sans-serif;
+  font-size:16px;
+  background:#f1eef7;
+  border-radius:10px;
+  padding:10px 14px;
+  margin-top:8px;
+  display:inline-block;
 }
 
-.container {
-    width: min(1200px, 94%);
-    margin: auto;
+.preset-row{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0;}
+.chip{
+  border:none;padding:7px 12px;border-radius:14px;background:#f1eef7;
+  color:#3d3160;font-weight:800;cursor:pointer;font-size:12.5px;
+}
+.chip:hover{background:var(--accent,#6c4ee3);color:white;}
+
+.toggle-btn{
+  border:none;padding:9px 15px;border-radius:12px;
+  background:var(--accent,#6c4ee3);color:white;font-weight:800;
+  cursor:pointer;margin:8px 4px 0 0;font-size:13.5px;
+  transition:filter .15s ease;
+}
+.toggle-btn:hover{filter:brightness(1.08);}
+.toggle-btn.ghost{background:white;color:var(--accent,#6c4ee3);border:2px solid var(--accent,#6c4ee3);}
+
+.badge{
+  display:inline-block;padding:4px 12px;border-radius:20px;font-weight:800;
+  font-size:13px;color:white;background:var(--accent,#6c4ee3);
 }
 
-section {
-    background: white;
-    margin: 25px 0;
-    padding: 25px;
-    border-radius: 20px;
-    box-shadow: 0 5px 20px rgba(0,0,0,.08);
+button.action{
+  background:var(--quiz);color:white;border:none;padding:12px 20px;
+  border-radius:12px;cursor:pointer;font-weight:800;margin:6px 6px 6px 0;
+  font-family:'Nunito',sans-serif;
 }
+button.action.secondary{background:#e9e4f5;color:#3d3160;}
+button.action:hover{filter:brightness(1.08);}
 
-section h2 {
-    color: #5538b8;
-    margin-bottom: 18px;
+.quiz-question{
+  background:#faf9ff;padding:20px;border-radius:16px;margin-bottom:16px;
+  border-left:6px solid #ddd;transition:border-color .25s ease;
 }
+.quiz-question h3{font-size:16px;margin-bottom:4px;}
+.qtopic{font-size:12px;font-weight:800;color:white;background:#bbb;border-radius:10px;padding:2px 9px;display:inline-block;margin-bottom:8px;}
 
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
-    gap: 20px;
+.option{
+  display:flex;align-items:center;gap:8px;
+  background:white;border:2px solid #e2e2ee;padding:10px 12px;margin:7px 0;
+  border-radius:12px;cursor:pointer;font-weight:600;transition:all .15s ease;
 }
+.option:hover{border-color:#6c4ee3;transform:translateX(2px);}
+.correct{background:#d9fbe8 !important;border-color:#16a085 !important;}
+.wrong{background:#ffe0e0 !important;border-color:#e74c3c !important;}
 
-.card {
-    background: #f8f8ff;
-    border: 2px solid #e9e5ff;
-    padding: 20px;
-    border-radius: 18px;
+.score-wrap{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:6px;}
+.score{font-size:24px;font-weight:800;color:var(--quiz);}
+.quiz-bar-wrap{flex:1;min-width:180px;background:#eee;border-radius:20px;height:14px;overflow:hidden;}
+#quizBar{height:100%;width:0%;background:linear-gradient(90deg,#06a77d,#7b2cbf);transition:width .3s ease;}
+
+.note{
+  border:2px solid #eee;border-radius:16px;margin:10px 0;overflow:hidden;
 }
-
-.card h3 {
-    color: #5b4bdb;
-    margin-bottom: 12px;
+.note-title{
+  padding:16px;font-weight:800;cursor:pointer;display:flex;
+  justify-content:space-between;align-items:center;color:white;
 }
+.note-arrow{transition:transform .25s ease;}
+.note-title.open .note-arrow{transform:rotate(180deg);}
+.note-content{padding:0 16px;max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s ease;background:#faf9ff;}
+.note-content.show{padding:16px;max-height:300px;}
 
-canvas {
-    display: block;
-    width: 100%;
-    max-width: 600px;
-    height: auto;
-    margin: 15px auto;
-    background: white;
-    border: 2px solid #ddd;
-    border-radius: 15px;
+.drag-hint{font-size:12.5px;color:#8a86a8;font-weight:700;margin-top:4px;}
+
+footer{
+  text-align:center;background:#1f2140;color:white;padding:34px;margin-top:44px;border-radius:30px 30px 0 0;
 }
+footer p{opacity:.85;font-size:14px;}
 
-.control {
-    margin: 15px 0;
-}
+#confettiCanvas{position:fixed;inset:0;pointer-events:none;z-index:9999;}
 
-.control label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-input[type="range"] {
-    width: 100%;
-    accent-color: #6c4ee3;
-}
-
-input[type="number"] {
-    width: 100%;
-    padding: 10px;
-    border: 2px solid #ddd;
-    border-radius: 10px;
-}
-
-.value {
-    display: inline-block;
-    background: #6c4ee3;
-    color: white;
-    padding: 3px 9px;
-    border-radius: 10px;
-}
-
-.result {
-    background: #e9fff3;
-    border-left: 5px solid #16a085;
-    padding: 12px;
-    border-radius: 8px;
-    margin-top: 12px;
-}
-
-.info {
-    background: #fff8dc;
-    border-left: 5px solid #f1c40f;
-    padding: 12px;
-    border-radius: 8px;
-    margin: 12px 0;
-}
-
-button.action {
-    background: #6c4ee3;
-    color: white;
-    border: none;
-    padding: 11px 18px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: bold;
-    margin: 5px;
-}
-
-button.action:hover {
-    background: #4228b0;
-}
-
-.quiz-question {
-    background: #f8f5ff;
-    padding: 20px;
-    border-radius: 15px;
-    margin-bottom: 18px;
-}
-
-.option {
-    display: block;
-    background: white;
-    border: 2px solid #ddd;
-    padding: 10px;
-    margin: 7px 0;
-    border-radius: 10px;
-    cursor: pointer;
-}
-
-.option:hover {
-    border-color: #6c4ee3;
-}
-
-.correct {
-    background: #d9fbe8 !important;
-    border-color: #16a085 !important;
-}
-
-.wrong {
-    background: #ffe0e0 !important;
-    border-color: #e74c3c !important;
-}
-
-.score {
-    font-size: 22px;
-    font-weight: bold;
-    color: #5b4bdb;
-    margin: 15px 0;
-}
-
-.note {
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    margin: 10px 0;
-    overflow: hidden;
-}
-
-.note-title {
-    padding: 15px;
-    background: #eeeaff;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.note-content {
-    padding: 15px;
-    display: none;
-}
-
-.note-content.show {
-    display: block;
-}
-
-footer {
-    text-align: center;
-    background: #29233f;
-    color: white;
-    padding: 30px;
-    margin-top: 40px;
-}
-
-@media(max-width:600px) {
-    section {
-        padding: 16px;
-    }
-
-    nav {
-        position: relative;
-    }
-
-    nav button {
-        font-size: 12px;
-        padding: 8px 10px;
-    }
+@media(max-width:600px){
+  section{padding:18px;}
+  nav button{font-size:11.5px;padding:8px 10px;}
 }
 </style>
 </head>
@@ -261,1813 +246,1245 @@ footer {
 <body>
 
 <header>
-    <h1>📐 Interactive Geometry Explorer</h1>
-    <p>Change the measurements and watch the geometry change!</p>
+  <h1>📐 Geometry Playground</h1>
+  <p>Drag, slide, and play — watch every rule prove itself.</p>
+  <div class="progress-wrap"><div id="headerProgress"></div></div>
+  <div class="progress-label"><span id="visitedCount">0</span>/9 concepts explored</div>
 </header>
 
-<nav>
-    <button onclick="go('lines')">📏 Lines</button>
-    <button onclick="go('angles')">📐 Angles</button>
-    <button onclick="go('triangles')">🔺 Triangles</button>
-    <button onclick="go('quadrilaterals')">▭ Quadrilaterals</button>
-    <button onclick="go('circles')">🔵 Circles</button>
-    <button onclick="go('areas')">📊 Areas</button>
-    <button onclick="go('volume')">🧊 Volume</button>
-    <button onclick="go('symmetry')">🪞 Symmetry</button>
-    <button onclick="go('transform')">🔄 Transform</button>
-    <button onclick="go('quiz')">🧩 Quiz</button>
-    <button onclick="go('notes')">📚 Notes</button>
+<nav id="mainNav">
+  <button data-target="lines" style="--accent:var(--lines)" onclick="go('lines')">📏 Lines</button>
+  <button data-target="angles" style="--accent:var(--angles)" onclick="go('angles')">📐 Angles</button>
+  <button data-target="triangles" style="--accent:var(--triangles)" onclick="go('triangles')">🔺 Triangles</button>
+  <button data-target="quadrilaterals" style="--accent:var(--quads)" onclick="go('quadrilaterals')">▭ Quads</button>
+  <button data-target="circles" style="--accent:var(--circles)" onclick="go('circles')">🔵 Circles</button>
+  <button data-target="areas" style="--accent:var(--areas)" onclick="go('areas')">📊 Area</button>
+  <button data-target="volume" style="--accent:var(--volume)" onclick="go('volume')">🧊 Volume</button>
+  <button data-target="symmetry" style="--accent:var(--symmetry)" onclick="go('symmetry')">🪞 Symmetry</button>
+  <button data-target="transform" style="--accent:var(--transform)" onclick="go('transform')">🔄 Transform</button>
+  <button data-target="quiz" style="--accent:var(--quiz)" onclick="go('quiz')">🧩 Quiz</button>
+  <button data-target="notes" style="--accent:var(--notes)" onclick="go('notes')">📚 Notes</button>
 </nav>
 
 <div class="container">
 
 <!-- ================= LINES ================= -->
-
-<section id="lines">
-
-<h2>📏 Interactive Line Segment</h2>
+<section id="lines" style="--accent:var(--lines)">
+<h2>📏 Line, Ray, or Segment?</h2>
+<p class="subtitle">Drag the green point B — or use the slider. The label updates as the shape changes.</p>
 
 <div class="grid">
-
 <div class="card">
-
-<h3>Move Point B</h3>
-
+<h3>Drag point B on the canvas</h3>
 <canvas id="lineCanvas" width="600" height="250"></canvas>
+<p class="drag-hint">👆 Try dragging the green dot directly</p>
 
 <div class="control">
-<label>
-Position of B:
-<span class="value" id="lineValue">350</span>
-</label>
-
-<input
-type="range"
-id="lineSlider"
-min="80"
-max="520"
-value="350"
-oninput="drawLine()">
+<label>Position of B <span class="value" id="lineValue">350</span></label>
+<input type="range" id="lineSlider" min="80" max="520" value="350" oninput="drawLine(this.value)">
 </div>
 
 <div class="result" id="lineResult"></div>
-
 </div>
 
 <div class="card">
-
-<h3>Remember</h3>
-
-<p>• A line extends infinitely in both directions.</p>
-
-<p>• A line segment has two endpoints.</p>
-
-<p>• A ray has one endpoint.</p>
-
+<h3>Why it matters</h3>
+<p><span class="badge" style="background:#e74c3c">Line</span> extends forever both ways — no endpoints.</p>
+<p style="margin-top:8px"><span class="badge" style="background:#16a085">Segment</span> has two fixed endpoints, A and B — that's what you're dragging.</p>
+<p style="margin-top:8px"><span class="badge" style="background:#f1c40f;color:#332900">Ray</span> has one endpoint and shoots off forever in one direction.</p>
+<div class="info">💡 As you drag B, the segment AB gets longer or shorter — but a true "line" wouldn't change length, because it never ends!</div>
 </div>
-
 </div>
-
 </section>
 
 
 <!-- ================= ANGLES ================= -->
-
-<section id="angles">
-
-<h2>📐 Interactive Angle Explorer</h2>
+<section id="angles" style="--accent:var(--angles)">
+<h2>📐 Angle Explorer</h2>
+<p class="subtitle">Spin the red ray and watch the colored wedge — and its name — change live.</p>
 
 <div class="grid">
-
 <div class="card">
-
 <canvas id="angleCanvas" width="600" height="350"></canvas>
+<p class="drag-hint">👆 Drag the red ray tip to set the angle</p>
 
 <div class="control">
+<label>Angle <span class="value" id="angleValue">60°</span></label>
+<input type="range" id="angleSlider" min="1" max="360" value="60" oninput="drawAngle(this.value)">
+</div>
 
-<label>
-Angle:
-<span class="value" id="angleValue">60°</span>
-</label>
-
-<input
-type="range"
-id="angleSlider"
-min="1"
-max="360"
-value="60"
-oninput="drawAngle()">
-
+<div class="preset-row">
+<button class="chip" onclick="drawAngle(30)">30° acute</button>
+<button class="chip" onclick="drawAngle(90)">90° right</button>
+<button class="chip" onclick="drawAngle(120)">120° obtuse</button>
+<button class="chip" onclick="drawAngle(180)">180° straight</button>
+<button class="chip" onclick="drawAngle(270)">270° reflex</button>
 </div>
 
 <div class="result" id="angleResult"></div>
-
 </div>
 
 <div class="card">
-
-<h3>Angle Types</h3>
-
-<p>Acute: less than 90°</p>
-<p>Right: exactly 90°</p>
-<p>Obtuse: 90°–180°</p>
-<p>Straight: exactly 180°</p>
-<p>Reflex: 180°–360°</p>
-<p>Complete: 360°</p>
-
+<h3>The angle family</h3>
+<p>🟢 <b>Acute</b> — less than 90°, a tight little wedge</p>
+<p>🟦 <b>Right</b> — exactly 90°, a perfect corner</p>
+<p>🟧 <b>Obtuse</b> — 90°–180°, a wide-open wedge</p>
+<p>🟥 <b>Straight</b> — exactly 180°, a flat line</p>
+<p>🟪 <b>Reflex</b> — 180°–360°, the "long way around"</p>
+<div class="info">💡 Notice the colored wedge fills more of the circle as the angle grows — that fraction IS the angle.</div>
 </div>
-
 </div>
-
 </section>
 
 
 <!-- ================= TRIANGLES ================= -->
-
-<section id="triangles">
-
-<h2>🔺 Fully Interactive Triangle</h2>
+<section id="triangles" style="--accent:var(--triangles)">
+<h2>🔺 Triangle Builder</h2>
+<p class="subtitle">Change any side. The triangle, its area, and its three interior angles all update — and they always sum to 180°.</p>
 
 <div class="grid">
-
 <div class="card">
+<div class="control"><label>Side A <span class="value" id="aValue">6</span></label>
+<input type="range" id="sideA" min="2" max="15" value="6" oninput="drawTriangle()"></div>
+<div class="control"><label>Side B <span class="value" id="bValue">7</span></label>
+<input type="range" id="sideB" min="2" max="15" value="7" oninput="drawTriangle()"></div>
+<div class="control"><label>Side C <span class="value" id="cValue">8</span></label>
+<input type="range" id="sideC" min="2" max="15" value="8" oninput="drawTriangle()"></div>
 
-<h3>Change All Three Sides</h3>
-
-<div class="control">
-
-<label>
-Side A:
-<span class="value" id="aValue">6</span>
-</label>
-
-<input
-type="range"
-id="sideA"
-min="2"
-max="15"
-value="6"
-oninput="drawTriangle()">
-
-</div>
-
-<div class="control">
-
-<label>
-Side B:
-<span class="value" id="bValue">7</span>
-</label>
-
-<input
-type="range"
-id="sideB"
-min="2"
-max="15"
-value="7"
-oninput="drawTriangle()">
-
-</div>
-
-<div class="control">
-
-<label>
-Side C:
-<span class="value" id="cValue">8</span>
-</label>
-
-<input
-type="range"
-id="sideC"
-min="2"
-max="15"
-value="8"
-oninput="drawTriangle()">
-
+<div class="preset-row">
+<button class="chip" onclick="setTriangle(6,6,6)">Equilateral</button>
+<button class="chip" onclick="setTriangle(5,5,8)">Isosceles</button>
+<button class="chip" onclick="setTriangle(5,7,9)">Scalene</button>
+<button class="chip" onclick="setTriangle(3,4,5)">Right (3-4-5)</button>
 </div>
 
 <canvas id="triangleCanvas" width="600" height="400"></canvas>
-
 <div class="result" id="triangleResult"></div>
-
+<div class="formula-live" id="angleSumBadge">∠A + ∠B + ∠C = 180°</div>
 </div>
 
 <div class="card">
-
-<h3>Experiment</h3>
-
-<p>Make all three sides equal.</p>
-
-<p>Then make only two sides equal.</p>
-
-<p>Finally make all three different.</p>
-
-<div class="info">
-The drawing itself changes because the three side lengths are used to calculate the actual triangle coordinates.
+<h3>Try this</h3>
+<p>Make all three sides equal → watch the colored angle arcs become identical too.</p>
+<p style="margin-top:8px">Make one side almost as long as the other two combined → the triangle flattens and turns red — that's the <b>triangle inequality</b> at work.</p>
+<div class="info">💡 No matter what triangle you build, the three colored angle arcs at the corners always add up to exactly 180°. That's the interior angle sum rule — proven live, every time.</div>
 </div>
-
 </div>
-
-</div>
-
 </section>
 
 
 <!-- ================= QUADRILATERAL ================= -->
-
-<section id="quadrilaterals">
-
-<h2>▭ Interactive Rectangle — Perimeter & Area</h2>
+<section id="quadrilaterals" style="--accent:var(--quads)">
+<h2>▭ Rectangle: Perimeter vs Area</h2>
+<p class="subtitle">Toggle the grid to literally count the unit squares that make up the area.</p>
 
 <div class="grid">
-
 <div class="card">
+<div class="control"><label>Length <span class="value" id="rectLengthValue">10</span></label>
+<input type="range" id="rectLength" min="2" max="20" value="10" oninput="drawRectangle()"></div>
+<div class="control"><label>Width <span class="value" id="rectWidthValue">6</span></label>
+<input type="range" id="rectWidth" min="2" max="15" value="6" oninput="drawRectangle()"></div>
 
-<h3>Change Length</h3>
-
-<div class="control">
-
-<label>
-Length:
-<span class="value" id="rectLengthValue">10</span>
-</label>
-
-<input
-type="range"
-id="rectLength"
-min="2"
-max="20"
-value="10"
-oninput="drawRectangle()">
-
-</div>
-
-<div class="control">
-
-<label>
-Width:
-<span class="value" id="rectWidthValue">6</span>
-</label>
-
-<input
-type="range"
-id="rectWidth"
-min="2"
-max="15"
-value="6"
-oninput="drawRectangle()">
-
-</div>
+<button class="toggle-btn" id="gridToggleBtn" onclick="toggleRectGrid()">Show unit squares</button>
 
 <canvas id="rectCanvas" width="600" height="400"></canvas>
-
 <div class="result" id="rectResult"></div>
-
 </div>
 
 <div class="card">
-
-<h3>What to Observe</h3>
-
-<p>Increase the length.</p>
-
-<p>Increase the width.</p>
-
-<p>Watch the rectangle actually become longer or wider.</p>
-
-<p><b>Perimeter = 2 × (L + W)</b></p>
-
-<p><b>Area = L × W</b></p>
-
+<h3>Two different ideas</h3>
+<p><b>Perimeter</b> = the fence around the outside → <span class="badge" style="background:#5b4bdb">2 × (L + W)</span></p>
+<p style="margin-top:10px"><b>Area</b> = the carpet that fills the inside → <span class="badge" style="background:#16a085">L × W</span></p>
+<div class="info">💡 Turn on the grid: every little square is 1 unit². Count the rows (W of them) times the columns (L of them) — that's exactly L × W.</div>
 </div>
-
 </div>
-
 </section>
 
 
 <!-- ================= CIRCLE ================= -->
-
-<section id="circles">
-
-<h2>🔵 Interactive Circle</h2>
+<section id="circles" style="--accent:var(--circles)">
+<h2>🔵 Circle Explorer</h2>
+<p class="subtitle">See circumference "unroll" into a straight line, and area "unfold" into a near-rectangle.</p>
 
 <div class="grid">
-
 <div class="card">
+<div class="control"><label>Radius <span class="value" id="radiusValue">5</span></label>
+<input type="range" id="radiusSlider" min="1" max="15" value="5" oninput="drawCircle()"></div>
 
-<div class="control">
-
-<label>
-Radius:
-<span class="value" id="radiusValue">5</span>
-</label>
-
-<input
-type="range"
-id="radiusSlider"
-min="1"
-max="15"
-value="5"
-oninput="drawCircle()">
-
-</div>
+<button class="toggle-btn" onclick="toggleCircleView('circle')">Circle view</button>
+<button class="toggle-btn ghost" onclick="toggleCircleView('unroll')">Unroll circumference</button>
+<button class="toggle-btn ghost" onclick="toggleCircleView('slices')">Unfold area (pizza trick)</button>
 
 <canvas id="circleCanvas" width="600" height="400"></canvas>
-
 <div class="result" id="circleResult"></div>
-
 </div>
 
 <div class="card">
-
-<h3>Circle Relationships</h3>
-
-<p><b>Diameter = 2 × radius</b></p>
-
-<p><b>Circumference = 2πr</b></p>
-
-<p><b>Area = πr²</b></p>
-
+<h3>Circle relationships</h3>
+<p><b>Diameter</b> = 2 × radius</p>
+<p><b>Circumference</b> = 2πr — the distance if you "unrolled" the rim into a straight line</p>
+<p><b>Area</b> = πr² — cut the circle into thin pizza slices, alternate them, and they form a shape close to a rectangle with height r and base πr!</p>
+<div class="info">💡 Click "Unfold area" to see the pizza-slice trick that explains where πr² comes from.</div>
 </div>
-
 </div>
-
 </section>
 
 
 <!-- ================= AREA ================= -->
-
-<section id="areas">
-
-<h2>📊 Interactive Area Investigation</h2>
+<section id="areas" style="--accent:var(--areas)">
+<h2>📊 Area Investigation</h2>
+<p class="subtitle">Predict first, then test — the unit grid counts itself.</p>
 
 <div class="grid">
-
 <div class="card">
-
-<div class="control">
-
-<label>
-Length:
-<span class="value" id="areaLengthValue">8</span>
-</label>
-
-<input
-type="range"
-id="areaLength"
-min="1"
-max="20"
-value="8"
-oninput="drawArea()">
-
-</div>
-
-<div class="control">
-
-<label>
-Width:
-<span class="value" id="areaWidthValue">5</span>
-</label>
-
-<input
-type="range"
-id="areaWidth"
-min="1"
-max="15"
-value="5"
-oninput="drawArea()">
-
-</div>
-
+<div class="control"><label>Length <span class="value" id="areaLengthValue">8</span></label>
+<input type="range" id="areaLength" min="1" max="20" value="8" oninput="drawArea()"></div>
+<div class="control"><label>Width <span class="value" id="areaWidthValue">5</span></label>
+<input type="range" id="areaWidth" min="1" max="15" value="5" oninput="drawArea()"></div>
 <canvas id="areaCanvas" width="600" height="400"></canvas>
-
 <div class="result" id="areaResult"></div>
-
 </div>
 
 <div class="card">
-
-<h3>Predict First</h3>
-
-<p>What will happen to the area if you double the length?</p>
-
-<p>Change the slider and test your prediction.</p>
-
+<h3>Predict first</h3>
+<p>If you <b>double the length</b>, does the area double, or quadruple?</p>
+<p style="margin-top:8px">If you <b>double both</b> length and width, what happens?</p>
+<div class="info">💡 Watch the square count in the corner of the canvas as you drag — it updates live so you can check your prediction instantly.</div>
 </div>
-
 </div>
-
 </section>
 
 
 <!-- ================= VOLUME ================= -->
-
-<section id="volume">
-
-<h2>🧊 Interactive 3D Volume Explorer</h2>
+<section id="volume" style="--accent:var(--volume)">
+<h2>🧊 3D Volume Explorer</h2>
+<p class="subtitle">Volume = area of one layer × how many layers stack up.</p>
 
 <div class="grid">
-
 <div class="card">
+<div class="control"><label>Length <span class="value" id="volumeLengthValue">8</span></label>
+<input type="range" id="volumeLength" min="2" max="15" value="8" oninput="drawCuboid()"></div>
+<div class="control"><label>Width <span class="value" id="volumeWidthValue">5</span></label>
+<input type="range" id="volumeWidth" min="2" max="12" value="5" oninput="drawCuboid()"></div>
+<div class="control"><label>Height <span class="value" id="volumeHeightValue">4</span></label>
+<input type="range" id="volumeHeight" min="2" max="10" value="4" oninput="drawCuboid()"></div>
 
-<div class="control">
-
-<label>
-Length:
-<span class="value" id="volumeLengthValue">8</span>
-</label>
-
-<input
-type="range"
-id="volumeLength"
-min="2"
-max="15"
-value="8"
-oninput="drawCuboid()">
-
-</div>
-
-<div class="control">
-
-<label>
-Width:
-<span class="value" id="volumeWidthValue">5</span>
-</label>
-
-<input
-type="range"
-id="volumeWidth"
-min="2"
-max="12"
-value="5"
-oninput="drawCuboid()">
-
-</div>
-
-<div class="control">
-
-<label>
-Height:
-<span class="value" id="volumeHeightValue">4</span>
-</label>
-
-<input
-type="range"
-id="volumeHeight"
-min="2"
-max="10"
-value="4"
-oninput="drawCuboid()">
-
-</div>
+<button class="toggle-btn" id="layerToggleBtn" onclick="toggleLayers()">Show layers</button>
 
 <canvas id="volumeCanvas" width="600" height="450"></canvas>
-
 <div class="result" id="volumeResult"></div>
-
 </div>
 
 <div class="card">
-
-<h3>Explore Volume</h3>
-
-<p>Change length.</p>
-
-<p>Change width.</p>
-
-<p>Change height.</p>
-
-<p>Watch the 3D cuboid change in all three dimensions.</p>
-
-<p><b>Volume = Length × Width × Height</b></p>
-
+<h3>Explore volume</h3>
+<p>One "layer" on the floor of the box is L × W unit squares.</p>
+<p style="margin-top:8px">Stack H of those layers on top of each other, and you get the whole solid.</p>
+<div class="info">💡 Turn on "Show layers" — the height slider now visibly stacks flat slabs, each worth L × W, exactly H times.</div>
 </div>
-
 </div>
-
 </section>
 
 
 <!-- ================= SYMMETRY ================= -->
-
-<section id="symmetry">
-
-<h2>🪞 Interactive Symmetry</h2>
+<section id="symmetry" style="--accent:var(--symmetry)">
+<h2>🪞 Symmetry Mirror</h2>
+<p class="subtitle">Slide the mirror line all the way around — the reflection updates live, in real time.</p>
 
 <div class="grid">
-
 <div class="card">
+<div class="control"><label>Mirror line angle <span class="value" id="symmetryValue">0°</span></label>
+<input type="range" id="symmetrySlider" min="0" max="180" value="0" oninput="drawSymmetry(this.value)"></div>
 
-<div class="control">
-
-<label>
-Symmetry Line:
-<span class="value" id="symmetryValue">Vertical</span>
-</label>
-
-<input
-type="range"
-id="symmetrySlider"
-min="0"
-max="2"
-value="0"
-oninput="drawSymmetry()">
-
+<div class="preset-row">
+<button class="chip" onclick="drawSymmetry(0)">Vertical</button>
+<button class="chip" onclick="drawSymmetry(90)">Horizontal</button>
+<button class="chip" onclick="drawSymmetry(45)">Diagonal</button>
 </div>
 
 <canvas id="symmetryCanvas" width="600" height="350"></canvas>
-
 <div class="result" id="symmetryResult"></div>
-
 </div>
 
 <div class="card">
-
-<h3>Think</h3>
-
-<p>A line of symmetry divides a shape into matching halves.</p>
-
-<p>Try all three positions.</p>
-
+<h3>Think about it</h3>
+<p>A line of symmetry divides a shape into two matching, mirror-image halves.</p>
+<div class="info">💡 Watch closely: only a couple of special angles make the reflected (dashed) copy line up perfectly with the original shape. Can you find one?</div>
 </div>
-
 </div>
-
 </section>
 
 
 <!-- ================= TRANSFORMATIONS ================= -->
-
-<section id="transform">
-
-<h2>🔄 Interactive Transformation</h2>
+<section id="transform" style="--accent:var(--transform)">
+<h2>🔄 Transformation Studio</h2>
+<p class="subtitle">The grey outline is the original. Move the sliders to translate, rotate, and resize the colored copy.</p>
 
 <div class="grid">
-
 <div class="card">
+<div class="control"><label>Rotation <span class="value" id="rotationValue">0°</span></label>
+<input type="range" id="rotationSlider" min="0" max="360" value="0" oninput="drawTransform()"></div>
+<div class="control"><label>Horizontal move <span class="value" id="moveValue">0</span></label>
+<input type="range" id="moveSlider" min="-150" max="150" value="0" oninput="drawTransform()"></div>
+<div class="control"><label>Scale <span class="value" id="scaleValue">1.0×</span></label>
+<input type="range" id="scaleSlider" min="40" max="200" value="100" oninput="drawTransform()"></div>
 
-<div class="control">
-
-<label>
-Rotation:
-<span class="value" id="rotationValue">0°</span>
+<label style="display:flex;align-items:center;gap:8px;font-weight:800;margin-top:6px;">
+<input type="checkbox" id="reflectCheck" onchange="drawTransform()"> Reflect (flip)
 </label>
-
-<input
-type="range"
-id="rotationSlider"
-min="0"
-max="360"
-value="0"
-oninput="drawTransform()">
-
-</div>
-
-<div class="control">
-
-<label>
-Horizontal Movement:
-<span class="value" id="moveValue">0</span>
-</label>
-
-<input
-type="range"
-id="moveSlider"
-min="-150"
-max="150"
-value="0"
-oninput="drawTransform()">
-
-</div>
 
 <canvas id="transformCanvas" width="600" height="350"></canvas>
-
 </div>
 
 <div class="card">
-
-<h3>Transformations</h3>
-
-<p>Translation = moving.</p>
-
-<p>Rotation = turning.</p>
-
-<p>Reflection = flipping.</p>
-
-<p>Enlargement = changing size.</p>
-
+<h3>Four transformations</h3>
+<p>🚚 <b>Translation</b> — slide it, nothing else changes</p>
+<p style="margin-top:6px">🔁 <b>Rotation</b> — turn it around a point</p>
+<p style="margin-top:6px">🪞 <b>Reflection</b> — flip it like a mirror</p>
+<p style="margin-top:6px">🔍 <b>Enlargement</b> — scale it bigger or smaller</p>
+<div class="info">💡 Combine all four at once — that's exactly what happens in video game character animation!</div>
 </div>
-
 </div>
-
 </section>
 
 
 <!-- ================= QUIZ ================= -->
+<section id="quiz" style="--accent:var(--quiz)">
+<h2>🧩 Geometry Challenge</h2>
+<p class="subtitle">15 questions — instant feedback, correct answers always revealed.</p>
 
-<section id="quiz">
-
-<h2>🧩 Geometry Challenge — 15 MCQs</h2>
-
-<div class="score">
-Score: <span id="score">0</span>/15
+<div class="score-wrap">
+<div class="score">Score: <span id="score">0</span>/15</div>
+<div class="quiz-bar-wrap"><div id="quizBar"></div></div>
 </div>
 
 <div id="quizContainer"></div>
 
-<button class="action" onclick="checkQuiz()">
-Check Answers
-</button>
-
-<button class="action" onclick="resetQuiz()">
-Reset
-</button>
+<button class="action" onclick="checkQuiz()">✅ Check Answers</button>
+<button class="action secondary" onclick="resetQuiz()">↺ Reset</button>
 
 <div id="quizResult"></div>
-
 </section>
 
 
 <!-- ================= NOTES ================= -->
-
-<section id="notes">
-
+<section id="notes" style="--accent:var(--notes)">
 <h2>📚 Study Notes</h2>
+<p class="subtitle">Quick, colorful summaries — tap to expand.</p>
 
-<div class="note">
-
-<div class="note-title" onclick="toggleNote(this)">
-📐 Angles
-</div>
-
-<div class="note-content">
-An angle is formed by two rays meeting at a common endpoint called the vertex.
-</div>
-
-</div>
-
-<div class="note">
-
-<div class="note-title" onclick="toggleNote(this)">
-🔺 Triangles
-</div>
-
-<div class="note-content">
-A triangle has three sides and three angles. The interior angles total 180°.
-</div>
-
-</div>
-
-<div class="note">
-
-<div class="note-title" onclick="toggleNote(this)">
-▭ Quadrilaterals
-</div>
-
-<div class="note-content">
-A quadrilateral has four sides. Its interior angles total 360°.
-</div>
-
-</div>
-
-<div class="note">
-
-<div class="note-title" onclick="toggleNote(this)">
-🔵 Circles
-</div>
-
-<div class="note-content">
-Radius is the distance from the centre to the circumference. Diameter is twice the radius.
-</div>
-
-</div>
-
-<div class="note">
-
-<div class="note-title" onclick="toggleNote(this)">
-📊 Area
-</div>
-
-<div class="note-content">
-Area measures the surface inside a two-dimensional shape.
-</div>
-
-</div>
-
-<div class="note">
-
-<div class="note-title" onclick="toggleNote(this)">
-🧊 Volume
-</div>
-
-<div class="note-content">
-Volume measures the amount of three-dimensional space occupied by an object.
-</div>
-
-</div>
-
-<div class="note">
-
-<div class="note-title" onclick="toggleNote(this)">
-🔄 Transformations
-</div>
-
-<div class="note-content">
-Translations move shapes, rotations turn shapes, and reflections flip shapes.
-</div>
-
-</div>
-
+<div id="notesContainer"></div>
 </section>
 
 </div>
 
-
 <footer>
-
-<p>📐 Interactive Geometry Explorer</p>
-<p>Learn Geometry by changing it.</p>
-
+<p>📐 Geometry Playground</p>
+<p>Learn geometry by changing it — with your own hands.</p>
 </footer>
 
+<canvas id="confettiCanvas"></canvas>
 
 <script>
 
-/* ================= NAVIGATION ================= */
+/* ================= NAVIGATION + PROGRESS ================= */
 
-function go(id) {
-    document.getElementById(id).scrollIntoView({
-        behavior: "smooth"
-    });
+const sectionIds = ["lines","angles","triangles","quadrilaterals","circles","areas","volume","symmetry","transform"];
+const visited = new Set();
+
+function go(id){
+  document.getElementById(id).scrollIntoView({behavior:"smooth"});
 }
+
+function markVisited(id){
+  if(sectionIds.includes(id) && !visited.has(id)){
+    visited.add(id);
+    document.getElementById("visitedCount").textContent = visited.size;
+    document.getElementById("headerProgress").style.width = (visited.size/sectionIds.length*100)+"%";
+  }
+}
+
+const navButtons = document.querySelectorAll("#mainNav button");
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    const id = entry.target.id;
+    if(entry.isIntersecting){
+      markVisited(id);
+      navButtons.forEach(b=>{
+        if(b.dataset.target===id){
+          b.classList.add("active-nav");
+          b.style.background = getComputedStyle(b).getPropertyValue('--accent');
+        } else if(sectionIds.includes(b.dataset.target) || b.dataset.target===id){
+          b.classList.remove("active-nav");
+          b.style.background = "";
+        }
+      });
+    }
+  });
+},{rootMargin:"-40% 0px -50% 0px"});
+
+document.querySelectorAll("section").forEach(s=>observer.observe(s));
 
 
 /* ================= LINE ================= */
 
-function drawLine() {
+let lineX = 350;
 
-    const canvas = document.getElementById("lineCanvas");
-    const ctx = canvas.getContext("2d");
+function drawLine(x){
+  if(x!==undefined) lineX = Number(x);
+  const canvas = document.getElementById("lineCanvas");
+  const ctx = canvas.getContext("2d");
 
-    const x = Number(document.getElementById("lineSlider").value);
+  document.getElementById("lineSlider").value = lineX;
+  document.getElementById("lineValue").textContent = Math.round(lineX);
 
-    document.getElementById("lineValue").textContent = x;
+  ctx.clearRect(0,0,canvas.width,canvas.height);
 
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-
+  // tick marks like a ruler
+  ctx.strokeStyle = "#e6e6f0";
+  ctx.lineWidth = 1;
+  for(let t=70;t<=530;t+=20){
     ctx.beginPath();
-    ctx.moveTo(70,125);
-    ctx.lineTo(530,125);
-
-    ctx.strokeStyle = "#6c4ee3";
-    ctx.lineWidth = 6;
+    ctx.moveTo(t,115);
+    ctx.lineTo(t,135);
     ctx.stroke();
+  }
 
-    ctx.fillStyle = "#e74c3c";
-    ctx.beginPath();
-    ctx.arc(70,125,10,0,Math.PI*2);
-    ctx.fill();
+  ctx.beginPath();
+  ctx.moveTo(70,125);
+  ctx.lineTo(530,125);
+  ctx.strokeStyle = "#4361ee";
+  ctx.lineWidth = 6;
+  ctx.stroke();
 
-    ctx.fillStyle = "#16a085";
-    ctx.beginPath();
-    ctx.arc(x,125,11,0,Math.PI*2);
-    ctx.fill();
+  ctx.fillStyle = "#e74c3c";
+  ctx.beginPath();
+  ctx.arc(70,125,10,0,Math.PI*2);
+  ctx.fill();
 
-    ctx.fillStyle = "#222";
-    ctx.font = "18px Arial";
+  ctx.fillStyle = "#16a085";
+  ctx.beginPath();
+  ctx.arc(lineX,125,12,0,Math.PI*2);
+  ctx.fill();
 
-    ctx.fillText("A",60,100);
-    ctx.fillText("B",x-5,100);
+  ctx.fillStyle = "#222";
+  ctx.font = "bold 18px Nunito, Arial";
+  ctx.fillText("A",60,100);
+  ctx.fillText("B",lineX-5,100);
 
-    const distance = (x-70)/10;
-
-    document.getElementById("lineResult").innerHTML =
-        "Distance AB = <b>" + distance.toFixed(1) +
-        " units</b>";
-
+  const distance = (lineX-70)/10;
+  document.getElementById("lineResult").innerHTML =
+    "Distance AB = <b>" + distance.toFixed(1) + " units</b>";
 }
+
+function setupDrag(canvasId, hitTest, onDrag){
+  const canvas = document.getElementById(canvasId);
+  let dragging = false;
+  function getPos(e){
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width/rect.width;
+    const scaleY = canvas.height/rect.height;
+    const cx = (e.touches? e.touches[0].clientX : e.clientX) - rect.left;
+    const cy = (e.touches? e.touches[0].clientY : e.clientY) - rect.top;
+    return {x:cx*scaleX, y:cy*scaleY};
+  }
+  function start(e){
+    const p = getPos(e);
+    if(hitTest(p)){ dragging = true; }
+  }
+  function move(e){
+    if(!dragging) return;
+    e.preventDefault();
+    onDrag(getPos(e));
+  }
+  function end(){ dragging = false; }
+
+  canvas.addEventListener("mousedown", start);
+  canvas.addEventListener("mousemove", move);
+  window.addEventListener("mouseup", end);
+  canvas.addEventListener("touchstart", start, {passive:true});
+  canvas.addEventListener("touchmove", move, {passive:false});
+  canvas.addEventListener("touchend", end);
+}
+
+setupDrag("lineCanvas",
+  p => Math.hypot(p.x-lineX, p.y-125) < 25,
+  p => drawLine(Math.min(520,Math.max(80,p.x)))
+);
 
 
 /* ================= ANGLE ================= */
 
-function drawAngle() {
+let currentAngle = 60;
 
-    const canvas = document.getElementById("angleCanvas");
-    const ctx = canvas.getContext("2d");
+function drawAngle(angle){
+  if(angle!==undefined) currentAngle = Number(angle);
+  const canvas = document.getElementById("angleCanvas");
+  const ctx = canvas.getContext("2d");
 
-    const angle = Number(
-        document.getElementById("angleSlider").value
-    );
+  document.getElementById("angleSlider").value = currentAngle;
+  document.getElementById("angleValue").textContent = currentAngle + "°";
 
-    document.getElementById("angleValue").textContent =
-        angle + "°";
+  ctx.clearRect(0,0,canvas.width,canvas.height);
 
-    ctx.clearRect(0,0,canvas.width,canvas.height);
+  const cx = 300, cy = 190, r = 130;
+  const rad = -currentAngle * Math.PI / 180;
 
-    const cx = 300;
-    const cy = 190;
-    const r = 130;
+  let color;
+  if(currentAngle < 90) color = "#2ec4b6";
+  else if(currentAngle === 90) color = "#3a86ff";
+  else if(currentAngle < 180) color = "#ff8500";
+  else if(currentAngle === 180) color = "#e63946";
+  else color = "#9b5de5";
 
-    const rad = -angle * Math.PI / 180;
+  // filled wedge
+  ctx.beginPath();
+  ctx.moveTo(cx,cy);
+  ctx.arc(cx,cy,90,0,rad,true);
+  ctx.closePath();
+  ctx.fillStyle = color + "33";
+  ctx.fill();
 
-    ctx.beginPath();
-    ctx.moveTo(cx,cy);
-    ctx.lineTo(cx+r,cy);
+  ctx.beginPath();
+  ctx.moveTo(cx,cy);
+  ctx.lineTo(cx+r,cy);
+  ctx.moveTo(cx,cy);
+  ctx.lineTo(cx+r*Math.cos(rad), cy+r*Math.sin(rad));
+  ctx.strokeStyle = "#4a4a68";
+  ctx.lineWidth = 6;
+  ctx.stroke();
 
-    ctx.moveTo(cx,cy);
-    ctx.lineTo(
-        cx+r*Math.cos(rad),
-        cy+r*Math.sin(rad)
-    );
+  // draggable tip
+  ctx.fillStyle = "#e74c3c";
+  ctx.beginPath();
+  ctx.arc(cx+r*Math.cos(rad), cy+r*Math.sin(rad), 11, 0, Math.PI*2);
+  ctx.fill();
 
-    ctx.strokeStyle = "#6c4ee3";
-    ctx.lineWidth = 7;
-    ctx.stroke();
+  ctx.beginPath();
+  ctx.arc(cx,cy,70,0,rad,true);
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 5;
+  ctx.stroke();
 
-    ctx.beginPath();
-    ctx.arc(cx,cy,70,0,rad,true);
+  ctx.fillStyle = "#222";
+  ctx.beginPath();
+  ctx.arc(cx,cy,5,0,Math.PI*2);
+  ctx.fill();
 
-    ctx.strokeStyle = "#e74c3c";
-    ctx.lineWidth = 5;
-    ctx.stroke();
+  let type;
+  if(currentAngle < 90) type = "Acute Angle";
+  else if(currentAngle === 90) type = "Right Angle";
+  else if(currentAngle < 180) type = "Obtuse Angle";
+  else if(currentAngle === 180) type = "Straight Angle";
+  else if(currentAngle < 360) type = "Reflex Angle";
+  else type = "Complete Angle";
 
-    let type;
-
-    if(angle < 90) type = "Acute Angle";
-    else if(angle === 90) type = "Right Angle";
-    else if(angle < 180) type = "Obtuse Angle";
-    else if(angle === 180) type = "Straight Angle";
-    else if(angle < 360) type = "Reflex Angle";
-    else type = "Complete Angle";
-
-    document.getElementById("angleResult").innerHTML =
-        "<b>" + angle + "°</b> → " + type;
+  document.getElementById("angleResult").innerHTML =
+    "<span class='badge' style='background:"+color+"'>"+currentAngle+"°</span> &nbsp;→&nbsp; <b>"+type+"</b>";
 }
+
+setupDrag("angleCanvas",
+  p => {
+    const rad = -currentAngle*Math.PI/180;
+    const tx = 300+130*Math.cos(rad), ty = 190+130*Math.sin(rad);
+    return Math.hypot(p.x-tx,p.y-ty) < 30;
+  },
+  p => {
+    let a = Math.atan2(-(p.y-190), p.x-300) * 180/Math.PI;
+    if(a<0) a+=360;
+    drawAngle(Math.max(1,Math.min(360,Math.round(a))));
+  }
+);
 
 
 /* ================= TRIANGLE ================= */
 
+function setTriangle(a,b,c){
+  document.getElementById("sideA").value=a;
+  document.getElementById("sideB").value=b;
+  document.getElementById("sideC").value=c;
+  drawTriangle();
+}
+
 function drawTriangle() {
+  const a = Number(document.getElementById("sideA").value);
+  const b = Number(document.getElementById("sideB").value);
+  const c = Number(document.getElementById("sideC").value);
 
-    const a = Number(document.getElementById("sideA").value);
-    const b = Number(document.getElementById("sideB").value);
-    const c = Number(document.getElementById("sideC").value);
+  document.getElementById("aValue").textContent = a;
+  document.getElementById("bValue").textContent = b;
+  document.getElementById("cValue").textContent = c;
 
-    document.getElementById("aValue").textContent = a;
-    document.getElementById("bValue").textContent = b;
-    document.getElementById("cValue").textContent = c;
+  const canvas = document.getElementById("triangleCanvas");
+  const ctx = canvas.getContext("2d");
+  ctx.clearRect(0,0,canvas.width,canvas.height);
 
-    const canvas = document.getElementById("triangleCanvas");
-    const ctx = canvas.getContext("2d");
-
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-
-    /*
-       Triangle construction using
-       side lengths.
-
-       A = left point
-       B = right point
-       C = calculated third point
-    */
-
-    if(a+b <= c || a+c <= b || b+c <= a) {
-
-        ctx.fillStyle = "#e74c3c";
-        ctx.font = "22px Arial";
-        ctx.textAlign = "center";
-
-        ctx.fillText(
-            "These sides cannot form a triangle",
-            300,
-            200
-        );
-
-        document.getElementById("triangleResult").innerHTML =
-            "<b>Invalid triangle</b> — the sum of any two sides must be greater than the third.";
-
-        return;
-    }
-
-    const scale = 30;
-
-    const base = c * scale;
-
-    const xA = 300 - base/2;
-    const xB = 300 + base/2;
-
-    const xC =
-        (a*a - b*b + c*c) / (2*c);
-
-    const heightSquared =
-        a*a - xC*xC;
-
-    const height =
-        Math.sqrt(Math.max(0,heightSquared));
-
-    const maxWidth = 480;
-    const maxHeight = 300;
-
-    const drawingScale =
-        Math.min(
-            maxWidth / base,
-            maxHeight / (height*scale)
-        );
-
-    const finalBase = base * drawingScale;
-    const finalHeight = height * scale * drawingScale;
-
-    const left =
-        300 - finalBase/2;
-
-    const right =
-        300 + finalBase/2;
-
-    const thirdX =
-        left + xC*scale*drawingScale;
-
-    const bottom = 320;
-
-    const top =
-        bottom - finalHeight;
-
-    ctx.beginPath();
-
-    ctx.moveTo(left,bottom);
-    ctx.lineTo(right,bottom);
-    ctx.lineTo(thirdX,top);
-    ctx.closePath();
-
-    ctx.fillStyle = "#eeeaff";
-    ctx.fill();
-
-    ctx.strokeStyle = "#5b4bdb";
-    ctx.lineWidth = 6;
-    ctx.stroke();
-
+  if(a+b <= c || a+c <= b || b+c <= a) {
     ctx.fillStyle = "#e74c3c";
-
-    [
-        [left,bottom],
-        [right,bottom],
-        [thirdX,top]
-    ].forEach(p => {
-
-        ctx.beginPath();
-        ctx.arc(p[0],p[1],8,0,Math.PI*2);
-        ctx.fill();
-
-    });
-
-    ctx.fillStyle = "#222";
-    ctx.font = "18px Arial";
-
-    ctx.fillText("A",left-20,bottom+5);
-    ctx.fillText("B",right+10,bottom+5);
-    ctx.fillText("C",thirdX+10,top-10);
-
-    let type;
-
-    if(a === b && b === c)
-        type = "Equilateral Triangle";
-    else if(a === b || a === c || b === c)
-        type = "Isosceles Triangle";
-    else
-        type = "Scalene Triangle";
-
-    const s = (a+b+c)/2;
-
-    const area =
-        Math.sqrt(
-            s*(s-a)*(s-b)*(s-c)
-        );
-
+    ctx.font = "bold 20px Nunito, Arial";
+    ctx.textAlign = "center";
+    ctx.fillText("⚠️ These sides can't form a triangle", 300, 200);
+    ctx.textAlign = "left";
     document.getElementById("triangleResult").innerHTML =
-        "<b>" + type + "</b>" +
-        "<br>Perimeter = " + (a+b+c).toFixed(2) +
-        " units" +
-        "<br>Area = " + area.toFixed(2) +
-        " square units";
+      "<b style='color:#e74c3c'>Invalid triangle</b> — the sum of any two sides must be greater than the third.";
+    document.getElementById("angleSumBadge").textContent = "Angle sum rule only applies to real triangles!";
+    return;
+  }
+
+  const scale = 30;
+  const base = c * scale;
+  const xC = (a*a - b*b + c*c) / (2*c);
+  const heightSquared = a*a - xC*xC;
+  const height = Math.sqrt(Math.max(0,heightSquared));
+
+  const maxWidth = 480, maxHeight = 260;
+  const drawingScale = Math.min(maxWidth/base, maxHeight/(height*scale));
+
+  const finalBase = base*drawingScale;
+  const finalHeight = height*scale*drawingScale;
+  const left = 300 - finalBase/2;
+  const right = 300 + finalBase/2;
+  const thirdX = left + xC*scale*drawingScale;
+  const bottom = 320;
+  const top = bottom - finalHeight;
+
+  ctx.beginPath();
+  ctx.moveTo(left,bottom);
+  ctx.lineTo(right,bottom);
+  ctx.lineTo(thirdX,top);
+  ctx.closePath();
+  ctx.fillStyle = "#e3fbf3";
+  ctx.fill();
+  ctx.strokeStyle = "#06a77d";
+  ctx.lineWidth = 6;
+  ctx.stroke();
+
+  // interior angles (law of cosines), using side lengths a(BC),b(AC),c(AB) with vertices A,B,C
+  const angleA_deg = Math.acos((b*b + c*c - a*a) / (2*b*c)) * 180/Math.PI; // at vertex A(left)
+  const angleB_deg = Math.acos((a*a + c*c - b*b) / (2*a*c)) * 180/Math.PI; // at vertex B(right)
+  const angleC_deg = 180 - angleA_deg - angleB_deg; // at vertex C(top)
+
+  function drawAngleArc(x,y,startPt,endPt,radius,color,label){
+    const a1 = Math.atan2(startPt[1]-y, startPt[0]-x);
+    const a2 = Math.atan2(endPt[1]-y, endPt[0]-x);
+    ctx.beginPath();
+    ctx.moveTo(x,y);
+    ctx.arc(x,y,radius,a1,a2, a2 < a1);
+    ctx.closePath();
+    ctx.fillStyle = color+"55";
+    ctx.fill();
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  }
+
+  drawAngleArc(left,bottom,[right,bottom],[thirdX,top],28,"#4361ee");
+  drawAngleArc(right,bottom,[left,bottom],[thirdX,top],28,"#ff5d73");
+  drawAngleArc(thirdX,top,[left,bottom],[right,bottom],28,"#f4a300");
+
+  ctx.fillStyle = "#e74c3c";
+  [[left,bottom],[right,bottom],[thirdX,top]].forEach(p=>{
+    ctx.beginPath();
+    ctx.arc(p[0],p[1],7,0,Math.PI*2);
+    ctx.fill();
+  });
+
+  ctx.fillStyle = "#222";
+  ctx.font = "bold 16px Nunito, Arial";
+  ctx.fillText("A "+angleA_deg.toFixed(0)+"°", left-45, bottom+8);
+  ctx.fillText("B "+angleB_deg.toFixed(0)+"°", right+10, bottom+8);
+  ctx.fillText("C "+angleC_deg.toFixed(0)+"°", thirdX-15, top-14);
+
+  let type;
+  if(a===b && b===c) type = "Equilateral Triangle";
+  else if(a===b || a===c || b===c) type = "Isosceles Triangle";
+  else type = "Scalene Triangle";
+
+  const s = (a+b+c)/2;
+  const area = Math.sqrt(s*(s-a)*(s-b)*(s-c));
+
+  document.getElementById("triangleResult").innerHTML =
+    "<span class='badge' style='background:#06a77d'>"+type+"</span>" +
+    "<br>Perimeter = " + (a+b+c).toFixed(2) + " units" +
+    "<br>Area = " + area.toFixed(2) + " square units";
+
+  document.getElementById("angleSumBadge").textContent =
+    "∠A ("+angleA_deg.toFixed(0)+"°) + ∠B ("+angleB_deg.toFixed(0)+"°) + ∠C ("+angleC_deg.toFixed(0)+"°) = " +
+    (angleA_deg+angleB_deg+angleC_deg).toFixed(0) + "°";
 }
 
 
 /* ================= RECTANGLE ================= */
 
+let showRectGrid = false;
+
+function toggleRectGrid(){
+  showRectGrid = !showRectGrid;
+  document.getElementById("gridToggleBtn").textContent = showRectGrid ? "Hide unit squares" : "Show unit squares";
+  drawRectangle();
+}
+
 function drawRectangle() {
+  const length = Number(document.getElementById("rectLength").value);
+  const width = Number(document.getElementById("rectWidth").value);
 
-    const length =
-        Number(document.getElementById("rectLength").value);
+  document.getElementById("rectLengthValue").textContent = length;
+  document.getElementById("rectWidthValue").textContent = width;
 
-    const width =
-        Number(document.getElementById("rectWidth").value);
+  const canvas = document.getElementById("rectCanvas");
+  const ctx = canvas.getContext("2d");
+  ctx.clearRect(0,0,canvas.width,canvas.height);
 
-    document.getElementById("rectLengthValue").textContent =
-        length;
+  const availableWidth = 480, availableHeight = 280;
+  const scale = Math.min(availableWidth/length, availableHeight/width);
+  const w = length*scale, h = width*scale;
+  const x = (600-w)/2, y = (400-h)/2;
 
-    document.getElementById("rectWidthValue").textContent =
-        width;
+  ctx.fillStyle = "#fff6e0";
+  ctx.fillRect(x,y,w,h);
 
-    const canvas =
-        document.getElementById("rectCanvas");
+  if(showRectGrid){
+    ctx.strokeStyle = "#f4a30099";
+    ctx.lineWidth = 1;
+    for(let i=1;i<length;i++){
+      ctx.beginPath(); ctx.moveTo(x+i*scale,y); ctx.lineTo(x+i*scale,y+h); ctx.stroke();
+    }
+    for(let j=1;j<width;j++){
+      ctx.beginPath(); ctx.moveTo(x,y+j*scale); ctx.lineTo(x+w,y+j*scale); ctx.stroke();
+    }
+  }
 
-    const ctx =
-        canvas.getContext("2d");
+  ctx.strokeStyle = "#f4a300";
+  ctx.lineWidth = 6;
+  ctx.strokeRect(x,y,w,h);
 
-    ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle = "#222";
+  ctx.font = "bold 16px Nunito, Arial";
+  ctx.fillText("L = "+length, x+w/2-25, y-14);
+  ctx.fillText("W = "+width, x+w+10, y+h/2);
 
-    const availableWidth = 480;
-    const availableHeight = 280;
+  const perimeter = 2*(length+width);
+  const area = length*width;
 
-    const scale =
-        Math.min(
-            availableWidth/length,
-            availableHeight/width
-        );
-
-    const w = length * scale;
-    const h = width * scale;
-
-    const x = (600-w)/2;
-    const y = (400-h)/2;
-
-    ctx.fillStyle = "#eeeaff";
-
-    ctx.fillRect(x,y,w,h);
-
-    ctx.strokeStyle = "#5b4bdb";
-    ctx.lineWidth = 6;
-
-    ctx.strokeRect(x,y,w,h);
-
-    ctx.fillStyle = "#222";
-    ctx.font = "18px Arial";
-
-    ctx.fillText(
-        "L = " + length,
-        x+w/2-30,
-        y-15
-    );
-
-    ctx.fillText(
-        "W = " + width,
-        x+w+10,
-        y+h/2
-    );
-
-    const perimeter =
-        2*(length+width);
-
-    const area =
-        length*width;
-
-    document.getElementById("rectResult").innerHTML =
-        "<b>Perimeter = " +
-        perimeter +
-        " units</b>" +
-        "<br>Area = " +
-        area +
-        " square units";
+  document.getElementById("rectResult").innerHTML =
+    "<b>Perimeter = 2 × ("+length+" + "+width+") = "+perimeter+" units</b>" +
+    "<br>Area = "+length+" × "+width+" = <b>"+area+" square units</b>" +
+    (showRectGrid ? "<br><span style='color:#f4a300'>▢</span> count the squares — "+area+" of them!" : "");
 }
 
 
 /* ================= CIRCLE ================= */
 
+let circleView = "circle";
+
+function toggleCircleView(mode){
+  circleView = mode;
+  drawCircle();
+}
+
 function drawCircle() {
+  const r = Number(document.getElementById("radiusSlider").value);
+  document.getElementById("radiusValue").textContent = r;
 
-    const r =
-        Number(document.getElementById("radiusSlider").value);
+  const canvas = document.getElementById("circleCanvas");
+  const ctx = canvas.getContext("2d");
+  ctx.clearRect(0,0,canvas.width,canvas.height);
 
-    document.getElementById("radiusValue").textContent = r;
+  const radius = Math.min(r*15,150);
+  const cx = 300, cy = 200;
+  const diameter = 2*r;
+  const circumference = 2*Math.PI*r;
+  const area = Math.PI*r*r;
 
-    const canvas =
-        document.getElementById("circleCanvas");
-
-    const ctx =
-        canvas.getContext("2d");
-
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-
-    const radius =
-        Math.min(
-            r*15,
-            150
-        );
-
-    const cx = 300;
-    const cy = 200;
-
+  if(circleView === "circle"){
     ctx.beginPath();
-
-    ctx.arc(
-        cx,
-        cy,
-        radius,
-        0,
-        Math.PI*2
-    );
-
-    ctx.fillStyle = "#eeeaff";
+    ctx.arc(cx,cy,radius,0,Math.PI*2);
+    ctx.fillStyle = "#f3ebff";
     ctx.fill();
-
-    ctx.strokeStyle = "#5b4bdb";
+    ctx.strokeStyle = "#9b5de5";
     ctx.lineWidth = 6;
     ctx.stroke();
 
-    /* radius */
-
     ctx.beginPath();
-
     ctx.moveTo(cx,cy);
     ctx.lineTo(cx+radius,cy);
-
     ctx.strokeStyle = "#e74c3c";
     ctx.lineWidth = 5;
     ctx.stroke();
 
     ctx.fillStyle = "#222";
-    ctx.font = "18px Arial";
+    ctx.font = "bold 16px Nunito, Arial";
+    ctx.fillText("r = "+r, cx+radius/2-10, cy-10);
 
-    ctx.fillText(
-        "r = " + r,
-        cx+radius/2,
-        cy-10
-    );
+  } else if(circleView === "unroll"){
+    // circle + straight line of same length as circumference
+    ctx.beginPath();
+    ctx.arc(150,200,radius*0.7,0,Math.PI*2);
+    ctx.strokeStyle = "#9b5de5";
+    ctx.lineWidth = 5;
+    ctx.stroke();
 
-    const diameter = 2*r;
+    const lineLen = Math.min(circumference*8, 420);
+    ctx.beginPath();
+    ctx.moveTo(300,200);
+    ctx.lineTo(300+lineLen,200);
+    ctx.strokeStyle = "#e63946";
+    ctx.lineWidth = 6;
+    ctx.stroke();
 
-    const circumference =
-        2*Math.PI*r;
+    ctx.fillStyle="#222";
+    ctx.font = "bold 15px Nunito, Arial";
+    ctx.fillText("circumference = 2πr = "+circumference.toFixed(1), 300, 230);
+    ctx.fillText("↑ same length as the rim!", 300, 250);
 
-    const area =
-        Math.PI*r*r;
+  } else if(circleView === "slices"){
+    const slices = 16;
+    const gapX = 300, gapY = 210;
+    const sliceLen = radius;
+    const baseLen = Math.PI*radius; // half circumference
+    for(let i=0;i<slices;i++){
+      const up = i%2===0;
+      const xOff = gapX - baseLen + (i*(baseLen*2/slices));
+      const h = up ? -sliceLen : sliceLen;
+      ctx.beginPath();
+      ctx.moveTo(xOff, gapY);
+      ctx.lineTo(xOff + baseLen/slices, gapY);
+      ctx.lineTo(xOff + baseLen/slices/2, gapY+h);
+      ctx.closePath();
+      ctx.fillStyle = i%2===0 ? "#c9a6ff" : "#9b5de5";
+      ctx.fill();
+    }
+    ctx.strokeStyle="#4a4a68";
+    ctx.setLineDash([6,5]);
+    ctx.strokeRect(gapX-baseLen, gapY-sliceLen, baseLen*2, sliceLen*2);
+    ctx.setLineDash([]);
+    ctx.fillStyle="#222";
+    ctx.font="bold 15px Nunito, Arial";
+    ctx.fillText("base ≈ πr, height = r → area ≈ πr × r = πr²", gapX-baseLen, gapY+sliceLen+30);
+  }
 
-    document.getElementById("circleResult").innerHTML =
-        "Radius = <b>" + r + "</b>" +
-        "<br>Diameter = <b>" + diameter.toFixed(2) + "</b>" +
-        "<br>Circumference = <b>" +
-        circumference.toFixed(2) +
-        "</b>" +
-        "<br>Area = <b>" +
-        area.toFixed(2) +
-        " square units</b>";
+  document.getElementById("circleResult").innerHTML =
+    "Radius = <b>"+r+"</b>" +
+    "<br>Diameter = <b>"+diameter.toFixed(2)+"</b>" +
+    "<br>Circumference = <b>"+circumference.toFixed(2)+"</b>" +
+    "<br>Area = <b>"+area.toFixed(2)+" square units</b>";
 }
 
 
 /* ================= AREA ================= */
 
 function drawArea() {
+  const length = Number(document.getElementById("areaLength").value);
+  const width = Number(document.getElementById("areaWidth").value);
 
-    const length =
-        Number(document.getElementById("areaLength").value);
+  document.getElementById("areaLengthValue").textContent = length;
+  document.getElementById("areaWidthValue").textContent = width;
 
-    const width =
-        Number(document.getElementById("areaWidth").value);
+  const canvas = document.getElementById("areaCanvas");
+  const ctx = canvas.getContext("2d");
+  ctx.clearRect(0,0,canvas.width,canvas.height);
 
-    document.getElementById("areaLengthValue").textContent =
-        length;
+  const scale = Math.min(500/length, 300/width);
+  const w = length*scale, h = width*scale;
+  const x = (600-w)/2, y = (400-h)/2;
 
-    document.getElementById("areaWidthValue").textContent =
-        width;
+  ctx.fillStyle = "#dff8ee";
+  ctx.fillRect(x,y,w,h);
 
-    const canvas =
-        document.getElementById("areaCanvas");
+  ctx.strokeStyle = "#2ec4b699";
+  ctx.lineWidth = 1;
+  for(let i=1;i<length;i++){
+    ctx.beginPath(); ctx.moveTo(x+i*scale,y); ctx.lineTo(x+i*scale,y+h); ctx.stroke();
+  }
+  for(let j=1;j<width;j++){
+    ctx.beginPath(); ctx.moveTo(x,y+j*scale); ctx.lineTo(x+w,y+j*scale); ctx.stroke();
+  }
 
-    const ctx =
-        canvas.getContext("2d");
+  ctx.strokeStyle = "#16a085";
+  ctx.lineWidth = 6;
+  ctx.strokeRect(x,y,w,h);
 
-    ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle = "#222";
+  ctx.font = "bold 18px Nunito, Arial";
+  ctx.textAlign = "center";
+  ctx.fillText(length+" units", 300, y-15);
+  ctx.save();
+  ctx.translate(x-25, y+h/2);
+  ctx.rotate(-Math.PI/2);
+  ctx.fillText(width+" units", 0, 0);
+  ctx.restore();
+  ctx.textAlign = "left";
 
-    const scale =
-        Math.min(
-            500/length,
-            300/width
-        );
-
-    const w = length*scale;
-    const h = width*scale;
-
-    const x = (600-w)/2;
-    const y = (400-h)/2;
-
-    ctx.fillStyle = "#dff8ee";
-
-    ctx.fillRect(x,y,w,h);
-
-    ctx.strokeStyle = "#16a085";
-    ctx.lineWidth = 6;
-
-    ctx.strokeRect(x,y,w,h);
-
-    ctx.fillStyle = "#222";
-    ctx.font = "20px Arial";
-    ctx.textAlign = "center";
-
-    ctx.fillText(
-        length + " units",
-        300,
-        y-15
-    );
-
-    ctx.save();
-
-    ctx.translate(
-        x-25,
-        y+h/2
-    );
-
-    ctx.rotate(-Math.PI/2);
-
-    ctx.fillText(
-        width + " units",
-        0,
-        0
-    );
-
-    ctx.restore();
-
-    const area =
-        length*width;
-
-    document.getElementById("areaResult").innerHTML =
-        "<b>Area = " +
-        area +
-        " square units</b>";
+  const area = length*width;
+  document.getElementById("areaResult").innerHTML =
+    "<b>"+length+" × "+width+" = "+area+" square units</b> — that's "+area+" little squares in the grid.";
 }
 
 
 /* ================= VOLUME ================= */
 
+let showLayers = false;
+
+function toggleLayers(){
+  showLayers = !showLayers;
+  document.getElementById("layerToggleBtn").textContent = showLayers ? "Hide layers" : "Show layers";
+  drawCuboid();
+}
+
 function drawCuboid() {
+  const L = Number(document.getElementById("volumeLength").value);
+  const W = Number(document.getElementById("volumeWidth").value);
+  const H = Number(document.getElementById("volumeHeight").value);
 
-    const L =
-        Number(document.getElementById("volumeLength").value);
+  document.getElementById("volumeLengthValue").textContent = L;
+  document.getElementById("volumeWidthValue").textContent = W;
+  document.getElementById("volumeHeightValue").textContent = H;
 
-    const W =
-        Number(document.getElementById("volumeWidth").value);
+  const canvas = document.getElementById("volumeCanvas");
+  const ctx = canvas.getContext("2d");
+  ctx.clearRect(0,0,canvas.width,canvas.height);
 
-    const H =
-        Number(document.getElementById("volumeHeight").value);
+  const scale = Math.min(28, 300/(L+W), 280/H);
+  const frontW = L*scale, frontH = H*scale;
+  const depthX = W*scale*0.55, depthY = W*scale*0.30;
+  const x = 300 - frontW/2 - depthX/2;
+  const y = 330 - frontH;
 
-    document.getElementById("volumeLengthValue").textContent = L;
-    document.getElementById("volumeWidthValue").textContent = W;
-    document.getElementById("volumeHeightValue").textContent = H;
-
-    const canvas =
-        document.getElementById("volumeCanvas");
-
-    const ctx =
-        canvas.getContext("2d");
-
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-
-    /*
-       Isometric 3D projection.
-
-       Every dimension changes the
-       actual visible cuboid.
-    */
-
-    const scale =
-        Math.min(
-            28,
-            300/(L+W),
-            280/H
-        );
-
-    const frontW = L*scale;
-    const frontH = H*scale;
-
-    const depthX = W*scale*0.55;
-    const depthY = W*scale*0.30;
-
-    const x = 300 - frontW/2 - depthX/2;
-    const y = 330 - frontH;
-
-    /* FRONT */
-
+  function face(pts, color){
     ctx.beginPath();
-
-    ctx.moveTo(x,y);
-    ctx.lineTo(x+frontW,y);
-    ctx.lineTo(x+frontW,y+frontH);
-    ctx.lineTo(x,y+frontH);
+    ctx.moveTo(pts[0][0],pts[0][1]);
+    for(let i=1;i<pts.length;i++) ctx.lineTo(pts[i][0],pts[i][1]);
     ctx.closePath();
-
-    ctx.fillStyle = "#eeeaff";
+    ctx.fillStyle = color;
     ctx.fill();
-
-    ctx.strokeStyle = "#5b4bdb";
-    ctx.lineWidth = 4;
+    ctx.strokeStyle = "#3a86ff";
+    ctx.lineWidth = showLayers ? 1.5 : 4;
     ctx.stroke();
+  }
 
+  if(showLayers){
+    const layerH = frontH / H;
+    for(let l=0;l<H;l++){
+      const ly = y + frontH - (l+1)*layerH;
+      const shade = l%2===0 ? "#dbe9ff" : "#bcd6ff";
+      const sideShade = l%2===0 ? "#c7ddff" : "#a9c9ff";
+      const topShade = l%2===0 ? "#eef5ff" : "#d5e6ff";
 
-    /* TOP */
+      face([[x,ly],[x+frontW,ly],[x+frontW,ly+layerH],[x,ly+layerH]], shade);
+      face([[x+frontW,ly],[x+frontW+depthX,ly-depthY],[x+frontW+depthX,ly+layerH-depthY],[x+frontW,ly+layerH]], sideShade);
+      if(l===H-1){
+        face([[x,ly],[x+depthX,ly-depthY],[x+frontW+depthX,ly-depthY],[x+frontW,ly]], topShade);
+      }
+    }
+  } else {
+    face([[x,y],[x+frontW,y],[x+frontW,y+frontH],[x,y+frontH]], "#e4ecff");
+    face([[x,y],[x+depthX,y-depthY],[x+frontW+depthX,y-depthY],[x+frontW,y]], "#c7d7ff");
+    face([[x+frontW,y],[x+frontW+depthX,y-depthY],[x+frontW+depthX,y+frontH-depthY],[x+frontW,y+frontH]], "#aac0ff");
+  }
 
-    ctx.beginPath();
+  ctx.fillStyle = "#222";
+  ctx.font = "bold 16px Nunito, Arial";
+  ctx.fillText("L = "+L, x+frontW/2-25, y+frontH+30);
+  ctx.fillText("H = "+H, x-55, y+frontH/2);
+  ctx.fillText("W = "+W, x+frontW+depthX/2-10, y-depthY/2-8);
 
-    ctx.moveTo(x,y);
-
-    ctx.lineTo(
-        x+depthX,
-        y-depthY
-    );
-
-    ctx.lineTo(
-        x+frontW+depthX,
-        y-depthY
-    );
-
-    ctx.lineTo(
-        x+frontW,
-        y
-    );
-
-    ctx.closePath();
-
-    ctx.fillStyle = "#d9d2ff";
-    ctx.fill();
-
-    ctx.stroke();
-
-
-    /* SIDE */
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-        x+frontW,
-        y
-    );
-
-    ctx.lineTo(
-        x+frontW+depthX,
-        y-depthY
-    );
-
-    ctx.lineTo(
-        x+frontW+depthX,
-        y+frontH-depthY
-    );
-
-    ctx.lineTo(
-        x+frontW,
-        y+frontH
-    );
-
-    ctx.closePath();
-
-    ctx.fillStyle = "#c5bbff";
-    ctx.fill();
-
-    ctx.stroke();
-
-
-    /* LABELS */
-
-    ctx.fillStyle = "#222";
-    ctx.font = "18px Arial";
-
-    ctx.fillText(
-        "L = "+L,
-        x+frontW/2-25,
-        y+frontH+30
-    );
-
-    ctx.fillText(
-        "H = "+H,
-        x-50,
-        y+frontH/2
-    );
-
-    ctx.fillText(
-        "W = "+W,
-        x+frontW+depthX/2,
-        y-depthY/2
-    );
-
-
-    const volume =
-        L*W*H;
-
-    document.getElementById("volumeResult").innerHTML =
-        "<b>Volume = " +
-        volume +
-        " cubic units</b>" +
-        "<br>" +
-        L + " × " +
-        W + " × " +
-        H +
-        " = " +
-        volume;
+  const volume = L*W*H;
+  document.getElementById("volumeResult").innerHTML =
+    "<b>Volume = "+volume+" cubic units</b>" +
+    "<br>"+L+" × "+W+" × "+H+" = "+volume +
+    (showLayers ? "<br>Each layer = "+(L*W)+" unit cubes, stacked "+H+" times" : "");
 }
 
 
 /* ================= SYMMETRY ================= */
 
-function drawSymmetry() {
+function drawSymmetry(value) {
+  const deg = value!==undefined ? Number(value) : Number(document.getElementById("symmetrySlider").value);
+  document.getElementById("symmetrySlider").value = deg;
 
-    const value =
-        Number(document.getElementById("symmetrySlider").value);
+  const canvas = document.getElementById("symmetryCanvas");
+  const ctx = canvas.getContext("2d");
+  ctx.clearRect(0,0,canvas.width,canvas.height);
 
-    const canvas =
-        document.getElementById("symmetryCanvas");
+  const cx = 300, cy = 165;
 
-    const ctx =
-        canvas.getContext("2d");
+  function butterflyPath(){
+    const p = new Path2D();
+    p.moveTo(300,70);
+    p.bezierCurveTo(220,90,170,150,220,230);
+    p.bezierCurveTo(260,250,280,220,300,200);
+    p.bezierCurveTo(320,220,340,250,380,230);
+    p.bezierCurveTo(430,150,380,90,300,70);
+    p.closePath();
+    return p;
+  }
 
-    ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.save();
+  ctx.fillStyle = "#ffe3ea";
+  ctx.fill(butterflyPath());
+  ctx.strokeStyle = "#ef476f";
+  ctx.lineWidth = 5;
+  ctx.stroke(butterflyPath());
+  ctx.restore();
 
-    /* draw butterfly-like shape */
+  // reflection across a line through center at angle `deg`
+  const rad = deg * Math.PI/180;
+  ctx.save();
+  ctx.translate(cx,cy);
+  ctx.rotate(rad);
+  ctx.scale(1,-1); // reflect across the local x-axis (the mirror line)
+  ctx.rotate(-rad);
+  ctx.translate(-cx,-cy);
+  ctx.globalAlpha = 0.55;
+  ctx.setLineDash([8,6]);
+  ctx.strokeStyle = "#9b5de5";
+  ctx.lineWidth = 4;
+  ctx.stroke(butterflyPath());
+  ctx.setLineDash([]);
+  ctx.globalAlpha = 1;
+  ctx.restore();
 
-    ctx.beginPath();
+  // mirror line
+  ctx.save();
+  ctx.translate(cx,cy);
+  ctx.rotate(rad);
+  ctx.setLineDash([10,8]);
+  ctx.beginPath();
+  ctx.moveTo(-260,0);
+  ctx.lineTo(260,0);
+  ctx.strokeStyle = "#e74c3c";
+  ctx.lineWidth = 4;
+  ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.restore();
 
-    ctx.moveTo(300,70);
-    ctx.bezierCurveTo(
-        220,90,
-        170,150,
-        220,230
-    );
+  let label;
+  if(deg===0) label = "Vertical mirror";
+  else if(deg===90) label = "Horizontal mirror";
+  else label = deg+"° mirror";
 
-    ctx.bezierCurveTo(
-        260,250,
-        280,220,
-        300,200
-    );
-
-    ctx.bezierCurveTo(
-        320,220,
-        340,250,
-        380,230
-    );
-
-    ctx.bezierCurveTo(
-        430,150,
-        380,90,
-        300,70
-    );
-
-    ctx.closePath();
-
-    ctx.fillStyle = "#eeeaff";
-    ctx.fill();
-
-    ctx.strokeStyle = "#5b4bdb";
-    ctx.lineWidth = 5;
-    ctx.stroke();
-
-    ctx.setLineDash([10,8]);
-
-    ctx.beginPath();
-
-    if(value === 0) {
-
-        ctx.moveTo(300,40);
-        ctx.lineTo(300,290);
-
-    } else if(value === 1) {
-
-        ctx.moveTo(100,165);
-        ctx.lineTo(500,165);
-
-    } else {
-
-        ctx.moveTo(150,50);
-        ctx.lineTo(450,280);
-
-    }
-
-    ctx.strokeStyle = "#e74c3c";
-    ctx.lineWidth = 4;
-    ctx.stroke();
-
-    ctx.setLineDash([]);
-
-    const names = [
-        "Vertical symmetry",
-        "Horizontal symmetry",
-        "Diagonal symmetry"
-    ];
-
-    document.getElementById("symmetryValue").textContent =
-        names[value];
-
-    document.getElementById("symmetryResult").innerHTML =
-        "Selected: <b>" + names[value] + "</b>";
+  document.getElementById("symmetryValue").textContent = deg+"°";
+  document.getElementById("symmetryResult").innerHTML =
+    "Selected: <b>"+label+"</b> — dashed shape is the reflection";
 }
 
 
 /* ================= TRANSFORMATION ================= */
 
 function drawTransform() {
+  const rotation = Number(document.getElementById("rotationSlider").value);
+  const movement = Number(document.getElementById("moveSlider").value);
+  const scaleVal = Number(document.getElementById("scaleSlider").value)/100;
+  const reflect = document.getElementById("reflectCheck").checked;
 
-    const rotation =
-        Number(document.getElementById("rotationSlider").value);
+  document.getElementById("rotationValue").textContent = rotation+"°";
+  document.getElementById("moveValue").textContent = movement;
+  document.getElementById("scaleValue").textContent = scaleVal.toFixed(1)+"×";
 
-    const movement =
-        Number(document.getElementById("moveSlider").value);
+  const canvas = document.getElementById("transformCanvas");
+  const ctx = canvas.getContext("2d");
+  ctx.clearRect(0,0,canvas.width,canvas.height);
 
-    document.getElementById("rotationValue").textContent =
-        rotation + "°";
+  ctx.strokeStyle = "#ccc";
+  ctx.lineWidth = 3;
+  ctx.setLineDash([6,5]);
+  ctx.strokeRect(220,120,100,80);
+  ctx.setLineDash([]);
 
-    document.getElementById("moveValue").textContent =
-        movement;
+  ctx.save();
+  ctx.translate(300+movement,160);
+  ctx.rotate(rotation*Math.PI/180);
+  ctx.scale(scaleVal * (reflect?-1:1), scaleVal);
 
-    const canvas =
-        document.getElementById("transformCanvas");
+  ctx.beginPath();
+  ctx.rect(-50,-40,100,80);
+  ctx.fillStyle = "#ffe4c2";
+  ctx.fill();
+  ctx.strokeStyle = "#ff8500";
+  ctx.lineWidth = 6;
+  ctx.stroke();
 
-    const ctx =
-        canvas.getContext("2d");
+  ctx.fillStyle = "#ff8500";
+  ctx.beginPath();
+  ctx.arc(-50,-40,7,0,Math.PI*2);
+  ctx.fill();
 
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-
-    /* original shape */
-
-    ctx.strokeStyle = "#aaa";
-    ctx.lineWidth = 3;
-
-    ctx.strokeRect(
-        220,
-        120,
-        100,
-        80
-    );
-
-    /* transformed shape */
-
-    ctx.save();
-
-    ctx.translate(
-        300+movement,
-        160
-    );
-
-    ctx.rotate(
-        rotation*Math.PI/180
-    );
-
-    ctx.beginPath();
-
-    ctx.rect(
-        -50,
-        -40,
-        100,
-        80
-    );
-
-    ctx.fillStyle = "#eeeaff";
-    ctx.fill();
-
-    ctx.strokeStyle = "#5b4bdb";
-    ctx.lineWidth = 6;
-    ctx.stroke();
-
-    ctx.restore();
-
+  ctx.restore();
 }
 
 
 /* ================= NOTES ================= */
 
+const notesData = [
+  {icon:"📐", title:"Angles", color:"var(--angles)", text:"An angle is formed by two rays meeting at a common endpoint called the vertex. The size of the angle depends only on how far the rays have turned, not on how long they're drawn."},
+  {icon:"🔺", title:"Triangles", color:"var(--triangles)", text:"A triangle has three sides and three angles. The interior angles always total 180° — no matter the shape or size of the triangle."},
+  {icon:"▭", title:"Quadrilaterals", color:"var(--quads)", text:"A quadrilateral has four sides. Its interior angles total 360° — exactly double a triangle's, because any quadrilateral can be split into two triangles."},
+  {icon:"🔵", title:"Circles", color:"var(--circles)", text:"Radius is the distance from the centre to the circumference. Diameter is twice the radius, and it's the longest line you can draw inside the circle."},
+  {icon:"📊", title:"Area", color:"var(--areas)", text:"Area measures the surface inside a two-dimensional shape, counted in square units — how many unit squares would tile it exactly."},
+  {icon:"🧊", title:"Volume", color:"var(--volume)", text:"Volume measures the amount of three-dimensional space occupied by an object, counted in cubic units — how many unit cubes would fill it exactly."},
+  {icon:"🔄", title:"Transformations", color:"var(--transform)", text:"Translations slide shapes, rotations turn shapes around a point, reflections flip shapes across a line, and enlargements scale shapes up or down."}
+];
+
+function loadNotes(){
+  const container = document.getElementById("notesContainer");
+  notesData.forEach(n=>{
+    const div = document.createElement("div");
+    div.className = "note";
+    div.innerHTML = `
+      <div class="note-title" style="background:${n.color}" onclick="toggleNote(this)">
+        <span>${n.icon} ${n.title}</span>
+        <span class="note-arrow">▾</span>
+      </div>
+      <div class="note-content">${n.text}</div>
+    `;
+    container.appendChild(div);
+  });
+}
+
 function toggleNote(element) {
-
-    element.nextElementSibling.classList.toggle("show");
-
+  element.classList.toggle("open");
+  element.nextElementSibling.classList.toggle("show");
 }
 
 
 /* ================= QUIZ ================= */
 
 const questions = [
-
-{
-q:"An angle of 45° is:",
-o:["Right","Acute","Obtuse","Straight"],
-a:1
-},
-
-{
-q:"A right angle measures:",
-o:["45°","90°","180°","360°"],
-a:1
-},
-
-{
-q:"A triangle has:",
-o:["2 sides","3 sides","4 sides","5 sides"],
-a:1
-},
-
-{
-q:"Angles in a triangle total:",
-o:["90°","180°","270°","360°"],
-a:1
-},
-
-{
-q:"Three equal sides make a:",
-o:["Scalene","Isosceles","Equilateral","Right"],
-a:2
-},
-
-{
-q:"A quadrilateral has:",
-o:["3 sides","4 sides","5 sides","6 sides"],
-a:1
-},
-
-{
-q:"Angles in a quadrilateral total:",
-o:["180°","270°","360°","720°"],
-a:2
-},
-
-{
-q:"Distance from centre to circumference:",
-o:["Diameter","Radius","Chord","Perimeter"],
-a:1
-},
-
-{
-q:"Diameter is:",
-o:["Half radius","Equal radius","Twice radius","Three times radius"],
-a:2
-},
-
-{
-q:"Rectangle area is:",
-o:["2(L+W)","L×W","L+W","L×2"],
-a:1
-},
-
-{
-q:"Perimeter measures:",
-o:["Inside space","Distance around","Weight","Volume"],
-a:1
-},
-
-{
-q:"Flipping a shape is:",
-o:["Translation","Rotation","Reflection","Enlargement"],
-a:2
-},
-
-{
-q:"Turning a shape is:",
-o:["Reflection","Rotation","Translation","Division"],
-a:1
-},
-
-{
-q:"A straight angle is:",
-o:["45°","90°","180°","360°"],
-a:2
-},
-
-{
-q:"A complete angle is:",
-o:["90°","180°","270°","360°"],
-a:3
-}
-
+{topic:"Angles", color:"var(--angles)", q:"An angle of 45° is:", o:["Right","Acute","Obtuse","Straight"], a:1},
+{topic:"Angles", color:"var(--angles)", q:"A right angle measures:", o:["45°","90°","180°","360°"], a:1},
+{topic:"Triangles", color:"var(--triangles)", q:"A triangle has:", o:["2 sides","3 sides","4 sides","5 sides"], a:1},
+{topic:"Triangles", color:"var(--triangles)", q:"Angles in a triangle total:", o:["90°","180°","270°","360°"], a:1},
+{topic:"Triangles", color:"var(--triangles)", q:"Three equal sides make a:", o:["Scalene","Isosceles","Equilateral","Right"], a:2},
+{topic:"Quadrilaterals", color:"var(--quads)", q:"A quadrilateral has:", o:["3 sides","4 sides","5 sides","6 sides"], a:1},
+{topic:"Quadrilaterals", color:"var(--quads)", q:"Angles in a quadrilateral total:", o:["180°","270°","360°","720°"], a:2},
+{topic:"Circles", color:"var(--circles)", q:"Distance from centre to circumference:", o:["Diameter","Radius","Chord","Perimeter"], a:1},
+{topic:"Circles", color:"var(--circles)", q:"Diameter is:", o:["Half radius","Equal radius","Twice radius","Three times radius"], a:2},
+{topic:"Area", color:"var(--areas)", q:"Rectangle area is:", o:["2(L+W)","L×W","L+W","L×2"], a:1},
+{topic:"Area", color:"var(--areas)", q:"Perimeter measures:", o:["Inside space","Distance around","Weight","Volume"], a:1},
+{topic:"Transform", color:"var(--transform)", q:"Flipping a shape is:", o:["Translation","Rotation","Reflection","Enlargement"], a:2},
+{topic:"Transform", color:"var(--transform)", q:"Turning a shape is:", o:["Reflection","Rotation","Translation","Division"], a:1},
+{topic:"Angles", color:"var(--angles)", q:"A straight angle is:", o:["45°","90°","180°","360°"], a:2},
+{topic:"Angles", color:"var(--angles)", q:"A complete angle is:", o:["90°","180°","270°","360°"], a:3}
 ];
 
-
 function loadQuiz() {
+  const container = document.getElementById("quizContainer");
+  questions.forEach((question,index) => {
+    const box = document.createElement("div");
+    box.className = "quiz-question";
+    box.id = "qbox"+index;
 
-    const container =
-        document.getElementById("quizContainer");
+    let html = `<span class="qtopic" style="background:${question.color}">${question.topic}</span>`;
+    html += "<h3>" + (index+1) + ". " + question.q + "</h3>";
 
-    questions.forEach((question,index) => {
-
-        const box =
-            document.createElement("div");
-
-        box.className = "quiz-question";
-
-        let html =
-            "<h3>" +
-            (index+1) +
-            ". " +
-            question.q +
-            "</h3>";
-
-        question.o.forEach((option,i) => {
-
-            html += `
-                <label class="option">
-                    <input
-                        type="radio"
-                        name="q${index}"
-                        value="${i}">
-                    ${option}
-                </label>
-            `;
-
-        });
-
-        box.innerHTML = html;
-
-        container.appendChild(box);
-
+    question.o.forEach((option,i) => {
+      html += `
+        <label class="option">
+          <input type="radio" name="q${index}" value="${i}" onchange="liveCheck(${index})">
+          ${option}
+        </label>
+      `;
     });
+
+    box.innerHTML = html;
+    container.appendChild(box);
+  });
 }
 
+function liveCheck(index){
+  updateScoreDisplay();
+}
+
+function updateScoreDisplay(){
+  let answered = 0;
+  questions.forEach((q,i)=>{
+    if(document.querySelector(`input[name="q${i}"]:checked`)) answered++;
+  });
+  document.getElementById("quizBar").style.width = (answered/questions.length*100)+"%";
+}
 
 function checkQuiz() {
+  let score = 0;
 
-    let score = 0;
+  questions.forEach((question,index) => {
+    const selected = document.querySelector(`input[name="q${index}"]:checked`);
+    const options = document.querySelectorAll(`input[name="q${index}"]`);
+    const box = document.getElementById("qbox"+index);
 
-    questions.forEach((question,index) => {
-
-        const selected =
-            document.querySelector(
-                `input[name="q${index}"]:checked`
-            );
-
-        const options =
-            document.querySelectorAll(
-                `input[name="q${index}"]`
-            );
-
-        options.forEach((input,i) => {
-
-            input.parentElement.classList.remove(
-                "correct",
-                "wrong"
-            );
-
-            if(i === question.a) {
-
-                input.parentElement.classList.add(
-                    "correct"
-                );
-
-            }
-
-        });
-
-        if(selected) {
-
-            if(Number(selected.value) === question.a) {
-
-                score++;
-
-            } else {
-
-                selected.parentElement.classList.add(
-                    "wrong"
-                );
-
-            }
-
-        }
-
+    options.forEach((input,i) => {
+      input.parentElement.classList.remove("correct","wrong");
+      if(i === question.a) input.parentElement.classList.add("correct");
     });
 
-    document.getElementById("score").textContent =
-        score;
+    if(selected) {
+      if(Number(selected.value) === question.a){
+        score++;
+        box.style.borderLeftColor = "#16a085";
+      } else {
+        selected.parentElement.classList.add("wrong");
+        box.style.borderLeftColor = "#e74c3c";
+      }
+    }
+  });
 
-    let message;
+  document.getElementById("score").textContent = score;
+  document.getElementById("quizBar").style.width = (score/questions.length*100)+"%";
 
-    if(score >= 13)
-        message = "🏆 Excellent!";
-    else if(score >= 10)
-        message = "🌟 Great work!";
-    else if(score >= 7)
-        message = "👍 Good effort!";
-    else
-        message = "📚 Keep practising!";
+  let message;
+  if(score >= 13){ message = "🏆 Excellent! You're a geometry pro!"; launchConfetti(); }
+  else if(score >= 10) message = "🌟 Great work!";
+  else if(score >= 7) message = "👍 Good effort — review the highlighted answers!";
+  else message = "📚 Keep practising — check the green answers above!";
 
-    document.getElementById("quizResult").innerHTML =
-        `<div class="result">
-            You scored <b>${score}/15</b>.
-            <br>${message}
-        </div>`;
+  document.getElementById("quizResult").innerHTML =
+    `<div class="result">You scored <b>${score}/15</b>.<br>${message}</div>`;
+}
+
+function resetQuiz() {
+  document.querySelectorAll(".quiz-question input").forEach(input => input.checked = false);
+  document.querySelectorAll(".option").forEach(option => option.classList.remove("correct","wrong"));
+  document.querySelectorAll(".quiz-question").forEach(box => box.style.borderLeftColor = "#ddd");
+  document.getElementById("score").textContent = "0";
+  document.getElementById("quizBar").style.width = "0%";
+  document.getElementById("quizResult").innerHTML = "";
 }
 
 
-function resetQuiz() {
+/* ================= CONFETTI ================= */
 
-    document
-        .querySelectorAll(".quiz-question input")
-        .forEach(input => {
-            input.checked = false;
-        });
+function launchConfetti(){
+  const canvas = document.getElementById("confettiCanvas");
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const ctx = canvas.getContext("2d");
+  const colors = ["#4361ee","#ff5d73","#06a77d","#f4a300","#9b5de5","#2ec4b6"];
+  const pieces = Array.from({length:120}, () => ({
+    x: Math.random()*canvas.width,
+    y: -20,
+    r: 4+Math.random()*5,
+    c: colors[Math.floor(Math.random()*colors.length)],
+    vy: 2+Math.random()*3,
+    vx: -1.5+Math.random()*3,
+    rot: Math.random()*360
+  }));
 
-    document
-        .querySelectorAll(".option")
-        .forEach(option => {
-            option.classList.remove(
-                "correct",
-                "wrong"
-            );
-        });
-
-    document.getElementById("score").textContent =
-        "0";
-
-    document.getElementById("quizResult").innerHTML =
-        "";
+  let frame = 0;
+  function animate(){
+    frame++;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    pieces.forEach(p=>{
+      p.x += p.vx;
+      p.y += p.vy;
+      p.rot += 6;
+      ctx.save();
+      ctx.translate(p.x,p.y);
+      ctx.rotate(p.rot*Math.PI/180);
+      ctx.fillStyle = p.c;
+      ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r*1.6);
+      ctx.restore();
+    });
+    if(frame < 130) requestAnimationFrame(animate);
+    else ctx.clearRect(0,0,canvas.width,canvas.height);
+  }
+  animate();
 }
 
 
@@ -2080,9 +1497,10 @@ drawRectangle();
 drawCircle();
 drawArea();
 drawCuboid();
-drawSymmetry();
+drawSymmetry(0);
 drawTransform();
 loadQuiz();
+loadNotes();
 
 </script>
 
